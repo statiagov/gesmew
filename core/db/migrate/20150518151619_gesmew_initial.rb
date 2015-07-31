@@ -50,30 +50,33 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    create_table :spree_preferences do |t|
+    create_table :gesmew_preferences do |t|
       t.text       :value
       t.string     :key
       t.string     :value_type
       t.timestamps null: false
     end
 
-    add_index :spree_preferences, [:key], :name => 'index_spree_preferences_on_key', :unique => true
+    add_index :gesmew_preferences, [:key], :name => 'index_gesmew_preferences_on_key', :unique => true
 
-    create_table :gesmew_addresses do |t|
-      t.string     :firstname
-      t.string     :lastname
-      t.string     :address1
-      t.string     :address2
-      t.string     :city
-      t.string     :zipcode
-      t.string     :phone
-      t.string     :state_name
-      t.string     :alternative_phone
-      t.string     :company
-      t.references :state
-      t.references :country
-      t.timestamps null: false
+    create_table :gesmew_districts do |t|
+      t.string     :name
+      t.string     :abbr
     end
+
+    create_table :gesmew_contact_information do |t|
+      t.string        :firstname
+      t.string        :lastname
+      t.string        :address
+      t.references    :district
+      t.string        :phone
+      t.string        :alternative_phone
+      t.timestamps    null: false
+    end
+
+    add_index :gesmew_contact_information, [:firstname], :name => 'index_addresses_on_firstname'
+    add_index :gesmew_contact_information, [:lastname],  :name => 'index_addresses_on_lastname'
+
 
     create_table :gesmew_users do |t|
       t.string     :encrypted_password,     :limit => 128
@@ -99,15 +102,15 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    create_table :establishment do |t|
+    create_table :establishments do |t|
       t.string     :name
       t.references :establishment_type
-      t.references :ge
+      t.references :contact_information
 
       t.timestamps null: false
     end
 
-    create_table :establishment_type do |t|
+    create_table :establishment_types do |t|
       t.string :name
       t.string :description
     end
