@@ -1,0 +1,42 @@
+<%= render partial: 'gesmew/admin/shared/order_tabs', locals: { current: :state_changes } %>
+
+<% content_for :page_title do %>
+  <%= plural_resource_name(Gesmew::StateChange) %>
+<% end %>
+
+<% if @state_changes.any? %>
+  <table class="table" id="listing_order_state_changes" data-hook>
+    <thead>
+      <tr data-hook="admin_orders_state_changes_headers">
+        <th><%= Gesmew::StateChange.human_attribute_name(:type) %></th>
+        <th><%= Gesmew::StateChange.human_attribute_name(:state_from) %></th>
+        <th><%= Gesmew::StateChange.human_attribute_name(:state_to) %></th>
+        <th><%= Gesmew::StateChange.human_attribute_name(:user) %></th>
+        <th><%= Gesmew::StateChange.human_attribute_name(:timestamp) %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @state_changes.each do |state_change| %>
+        <tr>
+          <td><%= Gesmew.t("state_machine_states.#{state_change.name}") %></td>
+          <td><%= state_change.previous_state ? Gesmew.t(state_change.previous_state) : Gesmew.t(:previous_state_missing) %></td>
+          <td><%= Gesmew.t(state_change.next_state) %></td>
+          <td>
+            <%= link_to state_change.user.login, gesmew.admin_user_path(state_change.user) if state_change.user %>
+          </td>
+          <td>
+            <%= l(state_change.created_at) %>
+            <% if state_change.created_at != state_change.updated_at %>
+              <small><%= Gesmew::StateChange.human_attribute_name(:updated)%>: <%= l(state_change.updated_at) %></small>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Gesmew.t(:no_state_changes) %>
+  </div>
+<% end %>

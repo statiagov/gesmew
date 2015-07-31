@@ -1,0 +1,11 @@
+require 'rails/all'
+require 'sprockets/rails'
+
+require 'bootstrap-sass'
+require 'canonical-rails'
+require 'deface'
+require 'jquery-rails'
+require 'gesmew/core'
+require 'gesmew/frontend/middleware/seo_assist'
+require 'gesmew/frontend/engine'
+require 'gesmew/responder'

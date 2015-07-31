@@ -1,0 +1,6 @@
+/*
+* This is a manifest file that includes stylesheets for gesmew_frontend
+ *= require gesmew/frontend/frontend_bootstrap
+ *= require_self
+ *= require_tree .
+*/

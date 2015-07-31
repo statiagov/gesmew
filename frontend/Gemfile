@@ -1,0 +1,6 @@
+eval(File.read(File.dirname(__FILE__) + '/../common_gesmew_dependencies.rb'))
+
+gem 'gesmew_core', path: '../core'
+gem 'gesmew_api', path: '../api'
+
+gemspec

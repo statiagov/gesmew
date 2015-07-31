@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+
+gem 'gesmew', github: 'gesmew/gesmew', branch: 'master'
+# Provides basic authentication functionality for testing parts of your engine
+gem 'gesmew_auth_devise', github: 'gesmew/gesmew_auth_devise', branch: 'master'
+
+gemspec

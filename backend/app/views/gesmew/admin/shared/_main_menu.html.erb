@@ -1,0 +1,35 @@
+<% if can? :admin, Gesmew::Order %>
+  <ul class="nav nav-sidebar">
+    <%= tab *Gesmew::BackendConfiguration::ORDER_TABS, icon: 'shopping-cart' %>
+  </ul>
+<% end %>
+
+<% if can? :admin, Gesmew::Product %>
+  <ul class="nav nav-sidebar">
+    <%= main_menu_tree Gesmew.t(:products), icon: "th-large", sub_menu: "product", url: "#sidebar-product" %>
+  </ul>
+<% end %>
+
+<% if can? :admin, Gesmew::Admin::ReportsController %>
+  <ul class="nav nav-sidebar">
+    <%= tab *Gesmew::BackendConfiguration::REPORT_TABS, icon: 'file'  %>
+  </ul>
+<% end %>
+
+<% if can? :admin, Gesmew::Promotion %>
+  <ul class="nav nav-sidebar">
+    <%= main_menu_tree Gesmew.t(:promotions), icon: "gift", sub_menu: "promotion", url: "#sidebar-promotions" %>
+  </ul>
+<% end %>
+
+<% if Gesmew.user_class && can?(:admin, Gesmew.user_class) %>
+  <ul class="nav nav-sidebar">
+    <%= tab *Gesmew::BackendConfiguration::USER_TABS, url: gesmew.admin_users_path, icon: 'user' %>
+  </ul>
+<% end %>
+
+<% if can? :admin, current_store %>
+  <ul class="nav nav-sidebar">
+    <%= main_menu_tree Gesmew.t(:configurations), icon: "wrench", sub_menu: "configuration", url: "#sidebar-configuration" %>
+  </ul>
+<% end %>

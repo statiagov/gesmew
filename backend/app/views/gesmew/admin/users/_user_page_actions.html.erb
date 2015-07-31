@@ -1,0 +1,4 @@
+<% content_for :page_actions do %>
+  <%= button_link_to Gesmew.t(:back_to_users_list), gesmew.admin_users_path, class: 'btn-primary', icon: 'chevron-left' %>
+  <%= button_link_to Gesmew.t(:create_new_order), gesmew.new_admin_order_path(user_id: @user.id), class: "btn-success", icon: 'add' %>
+<% end %>

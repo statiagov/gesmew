@@ -1,0 +1,2 @@
+require 'gesmew_core'
+require '<%=file_name%>/engine'

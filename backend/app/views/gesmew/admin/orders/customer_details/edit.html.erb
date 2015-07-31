@@ -1,0 +1,29 @@
+<%= render 'gesmew/admin/shared/order_tabs', current: :customer_details %>
+
+<% content_for :page_title do %>
+  / <%= Gesmew.t(:customer_details) %>
+<% end %>
+
+<% if can? :edit, @order.user %>
+  <div id="select-customer" class="panel panel-default" data-hook>
+    <div class="panel-heading">
+      <h1 class="panel-title">
+        <%= Gesmew.t(:customer_search) %>
+      </h1>
+    </div>
+    <div class="panel-body">
+      <%= hidden_field_tag :customer_search,  nil, class: 'error-message' %>
+      <%= render partial: "gesmew/admin/orders/customer_details/autocomplete", formats: :js %>
+    </div>
+  </div>
+<% end %>
+
+<%= render 'gesmew/admin/shared/error_messages', target: @order %>
+
+<%= form_for @order, url: gesmew.admin_order_customer_url(@order) do |f| %>
+  <%= render 'form', f: f %>
+<% end %>
+
+<br>
+
+<%= render 'gesmew/admin/shared/order_summary' %>

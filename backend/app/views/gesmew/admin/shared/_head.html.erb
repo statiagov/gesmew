@@ -1,0 +1,26 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<%= csrf_meta_tags %>
+
+<title>
+  <% if content_for? :title %>
+    <%= yield :title %>
+  <% else %>
+    <%= "Gesmew #{Gesmew.t('administration')}: " %>
+    <%= Gesmew.t(controller.controller_name, :default => controller.controller_name.titleize) %>
+  <% end %>
+</title>
+
+<%= stylesheet_link_tag 'gesmew/backend/all' %>
+
+<%= javascript_include_tag 'gesmew/backend/all' %>
+<%= render "gesmew/admin/shared/translations" %>
+
+<%= javascript_tag do %>
+  <%== "var AUTH_TOKEN = #{form_authenticity_token.inspect};" %>
+  <%== "Gesmew.api_key = '#{try_gesmew_current_user.gesmew_api_key}';" if try_gesmew_current_user %>
+<% end %>
+
+<%= yield :head %>

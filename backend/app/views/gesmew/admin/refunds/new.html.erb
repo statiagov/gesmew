@@ -1,0 +1,35 @@
+<%= render partial: 'gesmew/admin/shared/order_tabs', locals: {current: :payments} %>
+
+<% content_for :page_title do %>
+  / <%= link_to "#{Gesmew.t(:payment)} #{@refund.payment.id}", admin_order_payment_path(@refund.payment.order, @refund.payment) %>
+  / <%= Gesmew.t(:new_refund) %>
+<% end %>
+
+<%= form_for [:admin, @refund.payment.order, @refund.payment, @refund] do |f| %>
+  <fieldset>
+    <div data-hook="admin_refund_form_fields">
+      <div class="form-group">
+        <%= f.label :payment_amount, Gesmew.t(:payment_amount) %><br/>
+        <%= @refund.payment.amount %>
+      </div>
+      <div class="form-group">
+        <%= f.label :credit_allowed, Gesmew.t(:credit_allowed) %><br/>
+        <%= @refund.payment.credit_allowed %>
+      </div>
+      <div class="form-group">
+        <%= f.label :amount, Gesmew.t(:amount) %>
+        <%= f.text_field :amount, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.label :refund_reason_id, Gesmew.t(:reason) %>
+        <%= f.collection_select(:refund_reason_id, refund_reasons, :id, :name, {include_blank: true}, {class: 'select2'}) %>
+      </div>
+    </div>
+
+    <div class="form-actions" data-hook="buttons">
+      <%= button Gesmew.t(:refund), 'save' %>
+      <span class="or"><%= Gesmew.t(:or) %></span>
+      <%= button_link_to Gesmew.t('actions.cancel'), gesmew.admin_order_payments_url(@refund.payment.order), icon: "delete" %>
+    </div>
+  </fieldset>
+<% end %>

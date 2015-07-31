@@ -1,0 +1,16 @@
+<% content_for :page_title do %>
+  <%= Gesmew.t(:editing_resource, resource: Gesmew::ShippingMethod.model_name.human) %>
+<% end %>
+
+<div data-hook="admin_shipping_method_edit_form_header">
+  <%= render :partial => 'gesmew/admin/shared/error_messages', :locals => { :target => @shipping_method } %>
+</div>
+
+<div data-hook="admin_shipping_method_edit_form">
+  <%= form_for [:admin, @shipping_method] do |f| %>
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <div data-hook="admin_shipping_method_edit_form_buttons">
+      <%= render :partial => 'gesmew/admin/shared/edit_resource_links' %>
+    </div>
+  <% end %>
+</div>

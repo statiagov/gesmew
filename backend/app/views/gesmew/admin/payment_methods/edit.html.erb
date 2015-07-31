@@ -1,0 +1,14 @@
+<% content_for :page_title do %>
+  <%= Gesmew.t(:editing_resource, resource: Gesmew::PaymentMethod.model_name.human) %> / <%= @payment_method.name %>
+<% end %>
+
+<%= render :partial => 'gesmew/admin/shared/error_messages', :locals => { :target => @payment_method } %>
+
+<%= form_for @payment_method, :url => admin_payment_method_path(@payment_method) do |f| %>
+  <fieldset>
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <div data-hook="buttons" class="actions">
+      <%= button Gesmew.t('actions.update'), 'save' %>
+    </div>
+  </fieldset>
+<% end %>

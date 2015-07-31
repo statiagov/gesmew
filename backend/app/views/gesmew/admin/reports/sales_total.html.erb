@@ -1,0 +1,32 @@
+<% content_for :page_title do %>
+  <%= Gesmew.t(:sales_totals) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to_with_icon 'arrow-left', Gesmew.t(:back_to_resource_list, resource: Gesmew.t(:report)), gesmew.admin_reports_url, class: 'btn btn-default' %>
+<% end %>
+
+<div class="well">
+  <%= render :partial => 'gesmew/admin/shared/report_order_criteria' %>
+</div>
+
+<table class="table table-bordered admin-report" data-hook="sales_total">
+  <thead>
+    <tr>
+      <th><%= Gesmew.t(:currency) %></th>
+      <th><%= Gesmew.t(:item_total) %></th>
+      <th><%= Gesmew.t(:adjustment_total) %></th>
+      <th><%= Gesmew.t(:sales_total) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @totals.each do |key, row| %>
+      <tr>
+        <td><%= key %></td>
+        <td><%= row[:item_total].format %></td>
+        <td><%= row[:adjustment_total].format %></td>
+        <td><%= row[:sales_total].format %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
