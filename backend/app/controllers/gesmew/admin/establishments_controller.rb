@@ -1,4 +1,4 @@
-module Spree
+module Gesmew
   module Admin
     class EstablishmentsController < ResourceController
       # helper 'gesmew/establishments'
@@ -46,7 +46,7 @@ module Spree
         @establishment = Establishment.friendly.find(params[:id])
         @establishment.destroy
 
-        flash[:success] = Spree.t('notice_messages.establishment_deleted')
+        flash[:success] = Gesmew.t('notice_messages.establishment_deleted')
 
         respond_with(@establishment) do |format|
           format.html { redirect_to collection_url }
@@ -58,9 +58,9 @@ module Spree
         @new = @establishment.duplicate
 
         if @new.save
-          flash[:success] = Spree.t('notice_messages.establishment_cloned')
+          flash[:success] = Gesmew.t('notice_messages.establishment_cloned')
         else
-          flash[:error] = Spree.t('notice_messages.establishment_not_cloned')
+          flash[:error] = Gesmew.t('notice_messages.establishment_not_cloned')
         end
 
         redirect_to edit_admin_establishment_url(@new)
@@ -71,7 +71,7 @@ module Spree
         @variants = [@establishment.master] if @variants.empty?
         @stock_locations = StockLocation.accessible_by(current_ability, :read)
         if @stock_locations.empty?
-          flash[:error] = Spree.t(:stock_management_requires_a_stock_location)
+          flash[:error] = Gesmew.t(:stock_management_requires_a_stock_location)
           redirect_to admin_stock_locations_path
         end
       end
@@ -83,7 +83,7 @@ module Spree
       end
 
       def location_after_save
-        spree.edit_admin_establishment_url(@establishment)
+        Gesmew.edit_admin_establishment_url(@establishment)
       end
 
       def load_data
@@ -113,13 +113,13 @@ module Spree
               distinct_by_establishment_ids(params[:q][:s]).
               includes(establishment_includes).
               page(params[:page]).
-              per(params[:per_page] || Spree::Config[:admin_establishments_per_page])
+              per(params[:per_page] || Gesmew::Config[:admin_establishments_per_page])
         @collection
       end
 
       def create_before
         return if params[:establishment][:prototype_id].blank?
-        @prototype = Spree::Prototype.find(params[:establishment][:prototype_id])
+        @prototype = Gesmew::Prototype.find(params[:establishment][:prototype_id])
       end
 
       def update_before

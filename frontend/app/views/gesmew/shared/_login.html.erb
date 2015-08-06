@@ -1,0 +1,19 @@
+<%= form_for Gesmew::User.new, :as => :Gesmew_user, :url => Gesmew.create_new_session_path do |f| %>
+  <fieldset id="password-credentials">
+    <div class="form-group">
+      <%= f.email_field :email, :class => 'form-control', :tabindex => 1, :placeholder => Gesmew.t(:email) %>
+    </div>
+    <div class="form-group">
+      <%= f.password_field :password, :class => 'form-control', :tabindex => 2, :placeholder => Gesmew.t(:password) %>
+    </div>
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, Gesmew.t(:remember_me) %>
+      </label>
+    </div>
+    <div class="form-group">
+      <%= f.submit Gesmew.t(:login), :class => 'btn btn-lg btn-success btn-block', :tabindex => 3 %>
+    </div>
+  </fieldset>
+<% end %>

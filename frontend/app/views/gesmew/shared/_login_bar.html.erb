@@ -1,0 +1,6 @@
+<% if Gesmew_current_user %>
+  <li><%= link_to Gesmew.t(:my_account), Gesmew.account_path %></li>
+  <li><%= link_to Gesmew.t(:logout), Gesmew.logout_path %></li>
+<% else %>
+  <li id="link-to-login"><%= link_to Gesmew.t(:login), Gesmew.login_path %></li>
+<% end %>

@@ -84,19 +84,19 @@ describe "Stock Management", type: :feature, js: true do
 
     context "with multiple variants" do
       before do
-        variant = product.variants.create!(sku: 'SPREEC')
+        variant = product.variants.create!(sku: 'GesmewC')
         variant.stock_items.first.update_column(:count_on_hand, 30)
         visit current_url
       end
 
       it "can create a new stock movement for the specified variant", js: true do
         fill_in "stock_movement_quantity", with: 10
-        select2 "SPREEC", from: "Variant"
+        select2 "GesmewC", from: "Variant"
         click_button "Add Stock"
 
         expect(page).to have_content('successfully created')
 
-        within("#listing_product_stock tr", :text => "SPREEC") do
+        within("#listing_product_stock tr", :text => "GesmewC") do
           within("table") do
             expect(column_text(2)).to eq '40'
           end

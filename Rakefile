@@ -73,7 +73,7 @@ end
 namespace :gem do
   desc "run gem install for all gems"
   task :install do
-    version = File.read(File.expand_path("../SPREE_VERSION", __FILE__)).strip
+    version = File.read(File.expand_path("../Gesmew_VERSION", __FILE__)).strip
 
     %w(core api backend frontend sample cmd).each do |gem_name|
       puts "########################### #{gem_name} #########################"
@@ -92,7 +92,7 @@ end
 namespace :gem do
   desc "Release all gems to gemcutter. Package gesmew components, then push gesmew"
   task :release do
-    version = File.read(File.expand_path("../SPREE_VERSION", __FILE__)).strip
+    version = File.read(File.expand_path("../Gesmew_VERSION", __FILE__)).strip
 
     %w(core api backend frontend sample cmd).each do |gem_name|
       puts "########################### #{gem_name} #########################"
