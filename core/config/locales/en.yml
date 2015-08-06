@@ -797,7 +797,7 @@ en:
     logged_in_succesfully: Logged in successfully
     logged_out: You have been logged out.
     login: Login
-    login_as_existing: Login as Existing Customer
+    login_as_employee: Login as Employee
     login_failed: Login authentication failed.
     login_name: Login
     logout: Logout

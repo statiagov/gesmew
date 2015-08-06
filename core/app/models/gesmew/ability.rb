@@ -40,6 +40,8 @@ module Gesmew
         can :manage, :all
       else
         can :display, Establishment
+        can :create, Spree.user_class
+        can [:read, :update, :destroy], Spree.user_class, id: user.id
       end
 
       # Include any abilities registered by extensions, etc.
