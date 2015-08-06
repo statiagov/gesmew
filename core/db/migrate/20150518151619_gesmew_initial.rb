@@ -69,8 +69,8 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps    null: false
     end
 
-    add_index :gesmew_contact_information, [:firstname], :name => 'index_addresses_on_firstname'
-    add_index :gesmew_contact_information, [:lastname],  :name => 'index_addresses_on_lastname'
+    add_index :gesmew_contact_information, [:firstname], :name => 'index_contact_information_on_firstname'
+    add_index :gesmew_contact_information, [:lastname],  :name => 'index_contact_information_on_lastname'
 
 
     create_table :gesmew_users do |t|

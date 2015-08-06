@@ -3,6 +3,8 @@ Gesmew::Core::Engine.config.to_prepare do
     Gesmew.user_class.class_eval do
       include Gesmew::UserApiAuthentication
 
+      belongs_to :contact_information
+
       has_many :role_users, class_name: 'Gesmew::RoleUser', foreign_key: :user_id
       has_many :gesmew_roles, through: :role_users, class_name: 'Gesmew::Role', source: :role
 
