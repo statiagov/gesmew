@@ -1,5 +1,5 @@
 module Gesmew
-  class HomeController < Gesmew::StoreController
+  class HomeController < Gesmew::BaseController
     respond_to :html
 
     def index
