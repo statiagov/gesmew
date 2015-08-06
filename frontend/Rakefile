@@ -16,7 +16,7 @@ end
 
 desc "Release to gemcutter"
 task :release do
-  version = File.read(File.expand_path("../../Gesmew_VERSION", __FILE__)).strip
+  version = File.read(File.expand_path("../../GESMEW_VERSION", __FILE__)).strip
   cmd = "cd pkg && gem push gesmew_frontend-#{version}.gem"; puts cmd; system cmd
 end
 
