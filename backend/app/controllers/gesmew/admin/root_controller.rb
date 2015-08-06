@@ -11,7 +11,7 @@ module Gesmew
       protected
 
       def admin_root_redirect_path
-        gesmew.admin_orders_path
+        gesmew.admin_inspections_path
       end
     end
   end

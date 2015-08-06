@@ -66,90 +66,15 @@ describe Gesmew::Admin::UsersController, :type => :controller do
     end
   end
 
-  describe "#create" do
-    before do
-      use_mock_user
-      user.gesmew_roles << Gesmew::Role.find_or_create_by(name: 'admin')
-    end
-
-    it "can create a shipping_address" do
-      expect(Gesmew.user_class).to receive(:new).with(hash_including(
-        "ship_address_attributes" => { "city" => "New York" }
-      ))
-      gesmew_post :create, { :user => { :ship_address_attributes => { :city => "New York" } } }
-    end
-
-    it "can create a billing_address" do
-      expect(Gesmew.user_class).to receive(:new).with(hash_including(
-        "bill_address_attributes" => { "city" => "New York" }
-      ))
-      gesmew_post :create, { :user => { :bill_address_attributes => { :city => "New York" } } }
-    end
-  end
-
   describe "#update" do
     before do
       use_mock_user
       user.gesmew_roles << Gesmew::Role.find_or_create_by(name: 'admin')
     end
 
-    it "allows shipping address attributes through" do
-      expect(mock_user).to receive(:update_attributes).with(hash_including(
-        "ship_address_attributes" => { "city" => "New York" }
-      ))
-      gesmew_put :update, { :id => mock_user.id, :user => { :ship_address_attributes => { :city => "New York" } } }
-    end
-
-    it "allows billing address attributes through" do
-      expect(mock_user).to receive(:update_attributes).with(hash_including(
-        "bill_address_attributes" => { "city" => "New York" }
-      ))
-      gesmew_put :update, { :id => mock_user.id, :user => { :bill_address_attributes => { :city => "New York" } } }
-    end
-
     it "allows updating without password resetting" do
       expect(mock_user).to receive(:update_attributes).with(hash_not_including(password: '', password_confirmation: ''))
       gesmew_put :update, id: mock_user.id, user: { password: '', password_confirmation: '', email: 'gesmew@example.com' }
-    end
-  end
-
-  describe "#orders" do
-    let(:order) { create(:order) }
-    before do
-      user.orders << order
-      user.gesmew_roles << Gesmew::Role.find_or_create_by(name: 'admin')
-    end
-
-    it "assigns a list of the users orders" do
-      gesmew_get :orders, { :id => user.id }
-      expect(assigns[:orders].count).to eq 1
-      expect(assigns[:orders].first).to eq order
-    end
-
-    it "assigns a ransack search for Gesmew::Order" do
-      gesmew_get :orders, { :id => user.id }
-      expect(assigns[:search]).to be_a Ransack::Search
-      expect(assigns[:search].klass).to eq Gesmew::Order
-    end
-  end
-
-  describe "#items" do
-    let(:order) { create(:order) }
-    before do
-      user.orders << order
-      user.gesmew_roles << Gesmew::Role.find_or_create_by(name: 'admin')
-    end
-
-    it "assigns a list of the users orders" do
-      gesmew_get :items, { :id => user.id }
-      expect(assigns[:orders].count).to eq 1
-      expect(assigns[:orders].first).to eq order
-    end
-
-    it "assigns a ransack search for Gesmew::Order" do
-      gesmew_get :items, { :id => user.id }
-      expect(assigns[:search]).to be_a Ransack::Search
-      expect(assigns[:search].klass).to eq Gesmew::Order
     end
   end
 end

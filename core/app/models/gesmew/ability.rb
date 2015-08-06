@@ -39,24 +39,7 @@ module Gesmew
       if user.respond_to?(:has_gesmew_role?) && user.has_gesmew_role?('admin')
         can :manage, :all
       else
-        can :display, Country
-        can :display, OptionType
-        can :display, OptionValue
-        can :create, Order
-        can [:read, :update], Order do |order, token|
-          order.user == user || order.guest_token && token == order.guest_token
-        end
-        can :display, CreditCard, user_id: user.id
-        can :display, Product
-        can :display, ProductProperty
-        can :display, Property
-        can :create, Gesmew.user_class
-        can [:read, :update, :destroy], Gesmew.user_class, id: user.id
-        can :display, State
-        can :display, Taxon
-        can :display, Taxonomy
-        can :display, Variant
-        can :display, Zone
+        can :display, Establishment
       end
 
       # Include any abilities registered by extensions, etc.

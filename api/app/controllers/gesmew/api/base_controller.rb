@@ -4,14 +4,13 @@ module Gesmew
   module Api
     class BaseController < ActionController::Base
       include Gesmew::Api::ControllerSetup
-      include Gesmew::Core::ControllerHelpers::Store
       include Gesmew::Core::ControllerHelpers::StrongParameters
 
       attr_accessor :current_api_user
 
       before_action :set_content_type
       before_action :load_user
-      before_action :authorize_for_order, if: Proc.new { order_token.present? }
+      # before_action :authorize_for_order, if: Proc.new { order_token.present? }
       before_action :authenticate_user
       before_action :load_user_roles
 

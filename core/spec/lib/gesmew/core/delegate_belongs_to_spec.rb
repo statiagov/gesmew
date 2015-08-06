@@ -6,9 +6,9 @@ require 'spec_helper'
 # loaded) and adding a column here might make the test even crazy so here we go
 module Gesmew
   class DelegateBelongsToStubModel < Gesmew::Base
-    self.table_name = "gesmew_payment_methods"
-    belongs_to :product
-    delegate_belongs_to :product, :name
+    self.table_name = "gesmew_establishment_types"
+    belongs_to :contact_information
+    delegate_belongs_to :contact_informationt, :firstname
   end
 
   describe DelegateBelongsToStubModel do
@@ -18,5 +18,5 @@ module Gesmew
         subject.name
       end
     end
-  end 
+  end
 end

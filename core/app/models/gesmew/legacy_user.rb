@@ -3,7 +3,8 @@ module Gesmew
 
     self.table_name = 'gesmew_users'
 
-    # has_many :orders, foreign_key: :user_id
+    has_many :inspection_users, class_name: Gesmew::InspectionUser
+    has_many :inspections, class_name: Gesmew::Inspection, foreign_key: :inspection_id, through: :inspection_users, source: :inspection
 
     def has_gesmew_role?(role)
       true

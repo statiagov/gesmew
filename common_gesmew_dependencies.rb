@@ -34,9 +34,11 @@ group :test do
   gem 'timecop'
   gem 'with_model'
   gem 'mutant-rspec', '~> 0.8.0'
+  gem 'selenium-webdriver'
 end
 
 group :test, :development do
   gem 'rubocop', require: false
   gem 'pry-byebug'
+  gem 'rsense'
 end

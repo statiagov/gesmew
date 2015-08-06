@@ -10,28 +10,28 @@ describe Gesmew::Admin::NavigationHelper, type: :helper do
 
     context "creating an admin tab" do
       it "should capitalize the first letter of each word in the tab's label" do
-        admin_tab = helper.tab(:orders)
-        expect(admin_tab).to include("Orders")
+        admin_tab = helper.tab(:inspection)
+        expect(admin_tab).to include("Inspections")
       end
     end
 
     it "should accept options with label and capitalize each word of it" do
-      admin_tab = helper.tab(:orders, label: "delivered orders")
+      admin_tab = helper.tab(:inspection, label: "delivered orders")
       expect(admin_tab).to include("Delivered Orders")
     end
 
     it "should capitalize words with unicode characters" do
       # overview
-      admin_tab = helper.tab(:orders, label: "přehled")
+      admin_tab = helper.tab(:inspection, label: "přehled")
       expect(admin_tab).to include("Přehled")
     end
 
     describe "selection" do
       context "when match_path option is not supplied" do
-        subject(:tab) { helper.tab(:orders) }
+        subject(:tab) { helper.tab(:inspection) }
 
         it "should be selected if the controller matches" do
-          allow(controller).to receive(:controller_name).and_return("orders")
+          allow(controller).to receive(:controller_name).and_return("inspections")
           expect(subject).to include('selected')
         end
 
@@ -44,30 +44,30 @@ describe Gesmew::Admin::NavigationHelper, type: :helper do
 
       context "when match_path option is supplied" do
         before do
-          allow(helper).to receive(:request).and_return(double(ActionDispatch::Request, fullpath: "/admin/orders/edit/1"))
+          allow(helper).to receive(:request).and_return(double(ActionDispatch::Request, fullpath: "/admin/inspections/edit/1"))
         end
 
         it "should be selected if the fullpath matches" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:orders, label: "delivered orders", match_path: '/orders')
+          tab = helper.tab(:inspection, label: "delivered orders", match_path: '/inspections')
           expect(tab).to include('selected')
         end
 
         it "should be selected if the fullpath matches a regular expression" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:orders, label: "delivered orders", match_path: /orders$|orders\//)
+          tab = helper.tab(:inspection, label: "delivered orders", match_path: /inspections$|inspections\//)
           expect(tab).to include('selected')
         end
 
         it "should not be selected if the fullpath does not match" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:orders, label: "delivered orders", match_path: '/shady')
+          tab = helper.tab(:inspection, label: "delivered orders", match_path: '/shady')
           expect(tab).not_to include('selected')
         end
 
         it "should not be selected if the fullpath does not match a regular expression" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:orders, label: "delivered orders", match_path: /shady$|shady\//)
+          tab = helper.tab(:inspection, label: "delivered orders", match_path: /shady$|shady\//)
           expect(tab).not_to include('selected')
         end
       end
@@ -77,8 +77,8 @@ describe Gesmew::Admin::NavigationHelper, type: :helper do
   describe '#klass_for' do
 
     it 'returns correct klass for Gesmew model' do
-      expect(klass_for(:products)).to eq(Gesmew::Product)
-      expect(klass_for(:product_properties)).to eq(Gesmew::ProductProperty)
+      expect(klass_for(:inspection)).to eq(Gesmew::Inspection)
+      expect(klass_for(:establishments)).to eq(Gesmew::Establishment)
     end
 
     it 'returns correct klass for non-gesmew model' do

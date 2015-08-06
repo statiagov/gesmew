@@ -6,9 +6,9 @@ class BarAbility
     user ||= Gesmew::User.new
     if user.has_gesmew_role? 'bar'
       # allow dispatch to :admin, :index, and :show on Gesmew::Order
-      can [:admin, :index, :show], Gesmew::Order
+      can [:admin, :index, :show], Gesmew::Inspection
       # allow dispatch to :index, :show, :create and :update shipments on the admin
-      can [:admin, :manage], Gesmew::Shipment
+      can [:admin, :manage], Gesmew::Establishment
     end
   end
 end

@@ -16,7 +16,7 @@ describe 'Users', type: :feature do
     end
   end
 
-  let(:orders) { [order, order_2] }
+  let(:inspection) { [order, order_2] }
 
   before do
     stub_const('Gesmew::User', create(:user, email: 'example@example.com').class)

@@ -6,7 +6,7 @@
     <li<%== ' class="active"' if current == :address %>>
       <%= link_to_with_icon 'user', Gesmew.t(:"admin.user.addresses"), gesmew.addresses_admin_user_path(@user) %>
     </li>
-    <li<%== ' class="active"' if current == :orders %>>
+    <li<%== ' class="active"' if current == :inspection %>>
       <%= link_to_with_icon 'shopping-cart', Gesmew.t(:"admin.user.orders"), gesmew.orders_admin_user_path(@user) %>
     </li>
     <li<%== ' class="active"' if current == :items %>>

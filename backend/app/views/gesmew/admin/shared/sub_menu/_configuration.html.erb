@@ -1,22 +1,3 @@
 <ul data-hook="admin_configurations_sidebar_menu" class="collapse nav nav-pills nav-stacked" id="sidebar-configuration">
-  <%= configurations_sidebar_menu_item(Gesmew.t(:general_settings), gesmew.edit_admin_general_settings_path) if can? :manage, Gesmew::Config %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:tax_categories), gesmew.admin_tax_categories_path) if can? :manage, Gesmew::TaxCategory %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:tax_rates), gesmew.admin_tax_rates_path) if can? :manage, Gesmew::TaxRate %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:zones), gesmew.admin_zones_path) if can? :manage, Gesmew::Zone %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:countries), gesmew.admin_countries_path) if can? :manage, Gesmew::Country %>
 
-  <% if country = Gesmew::Country.find_by_id(Gesmew::Config[:default_country_id]) || Gesmew::Country.first %>
-    <%= configurations_sidebar_menu_item(Gesmew.t(:states), gesmew.admin_country_states_path(country)) if can? :manage, Gesmew::Country %>
-  <% end %>
-
-  <%= configurations_sidebar_menu_item(Gesmew.t(:payment_methods), gesmew.admin_payment_methods_path) if can? :manage, Gesmew::PaymentMethod %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:shipping_methods), gesmew.admin_shipping_methods_path) if can? :manage, Gesmew::ShippingMethod %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:shipping_categories), gesmew.admin_shipping_categories_path) if can? :manage, Gesmew::ShippingCategory %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:stock_transfers), gesmew.admin_stock_transfers_path) if can? :manage, Gesmew::StockTransfer %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:stock_locations), gesmew.admin_stock_locations_path) if can? :manage, Gesmew::StockLocation %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:analytics_trackers), gesmew.admin_trackers_path) if can? :manage, Gesmew::Tracker %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:refund_reasons), gesmew.admin_refund_reasons_path) if can? :manage, Gesmew::RefundReason %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:reimbursement_types), gesmew.admin_reimbursement_types_path) if can? :manage, Gesmew::ReimbursementType %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:return_authorization_reasons), gesmew.admin_return_authorization_reasons_path) if can? :manage, Gesmew::ReturnAuthorizationReason %>
-  <%= configurations_sidebar_menu_item(Gesmew.t(:roles), gesmew.admin_roles_path) if can? :manage, Gesmew::Role %>
 </ul>

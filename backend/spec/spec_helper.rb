@@ -43,8 +43,8 @@ require 'gesmew/testing_support/capybara_ext'
 
 require 'paperclip/matchers'
 
-require 'capybara/poltergeist'
-Capybara.javascript_driver = :poltergeist
+require 'capybara/selenium/driver'
+Capybara.javascript_driver = :selenium
 
 # Set timeout to something high enough to allow CI to pass
 Capybara.default_wait_time = 10
@@ -89,10 +89,6 @@ RSpec.configure do |config|
     wait_for_ajax if RSpec.current_example.metadata[:js]
 
     DatabaseCleaner.clean
-  end
-
-  config.around do |example|
-    Timeout.timeout(20, &example)
   end
 
   config.after(:each, :type => :feature) do |example|

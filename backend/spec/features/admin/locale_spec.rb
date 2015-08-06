@@ -11,7 +11,7 @@ describe "setting locale", :type => :feature do
       },
       :gesmew => {
         :admin => {
-          :tab => { :orders => "Ordres" }
+          :tab => { :inspection => "Ordres" }
         },
         :listing_orders => "Ordres",
       })

@@ -598,7 +598,7 @@ module Gesmew
         it "returns unique orders" do
           api_get :index
 
-          orders = json_response[:orders]
+          orders = json_response[:inspection]
           expect(orders.count).to be >= 3
           expect(orders.map { |o| o[:id] }).to match_array Order.pluck(:id)
         end

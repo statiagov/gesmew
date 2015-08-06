@@ -59,16 +59,11 @@ class GesmewInitial < ActiveRecord::Migration
 
     add_index :gesmew_preferences, [:key], :name => 'index_gesmew_preferences_on_key', :unique => true
 
-    create_table :gesmew_districts do |t|
-      t.string     :name
-      t.string     :abbr
-    end
-
     create_table :gesmew_contact_information do |t|
       t.string        :firstname
       t.string        :lastname
       t.string        :address
-      t.references    :district
+      t.string        :district
       t.string        :phone
       t.string        :alternative_phone
       t.timestamps    null: false
@@ -92,6 +87,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.datetime   :current_sign_in_at
       t.datetime   :last_sign_in_at
       t.string     :current_sign_in_ip
+      t.references :contact_information
       t.string     :last_sign_in_ip
       t.string     :login
       t.string     :authentication_token
@@ -102,19 +98,48 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    create_table :establishments do |t|
+
+    create_table :gesmew_establishments do |t|
       t.string     :name
       t.references :establishment_type
       t.references :contact_information
-
+      t.integer    :workers
       t.timestamps null: false
     end
 
-    create_table :establishment_types do |t|
+    create_table :gesmew_establishment_types do |t|
       t.string :name
       t.string :description
     end
 
+    create_table :gesmew_state_changes do |t|
+      t.string     :name
+      t.string     :previous_state
+      t.references :stateful
+      t.string     :stateful_type
+      t.string     :next_state
+      t.timestamps null: false
+    end
+
+
+    add_index :gesmew_state_changes, [:stateful_id, :stateful_type]
+
+    create_table :gesmew_inspections do |t|
+      t.references  :establishment
+      t.string      :state
+      t.string      :number, :limit => 15
+      t.datetime    :completed_at
+      t.integer     :state_lock_version, default: 0, null: false
+      t.timestamps  null: false
+    end
+
+    create_table :gesmew_inspection_users do |t|
+      t.references :user
+      t.references :inspection
+    end
+
+    add_index :gesmew_inspection_users, [:inspection_id], :name => 'index_gesmew_inspection_users_on_inspection_id'
+    add_index :gesmew_inspection_users, [:user_id], :name => 'index_gesmew_inspection_users_on_user_id'
 
   end
 end

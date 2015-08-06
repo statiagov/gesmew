@@ -32,12 +32,12 @@ module Gesmew
           end
 
           def default_title
-            current_store.name
+            Gesmew.t(:title)
           end
 
           # this is a hook for subclasses to provide title
           def accurate_title
-            current_store.seo_title
+            Gesmew.t(:title)
           end
 
           def render_404(exception = nil)

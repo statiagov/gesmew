@@ -6,7 +6,7 @@ require 'spec_helper'
 describe Gesmew::Admin::BaseController, type: :controller do
   controller(Gesmew::Admin::BaseController) do
     def index
-      authorize! :update, Gesmew::Order
+      authorize! :update, Gesmew::Inspection
       render text: 'test'
     end
   end

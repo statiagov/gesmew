@@ -25,7 +25,6 @@ module Gesmew
           options = options.merge(args.pop)
         end
         options[:route] ||=  "admin_#{args.first}"
-
         destination_url = options[:url] || gesmew.send("#{options[:route]}_path")
         titleized_label = Gesmew.t(options[:label], default: options[:label], scope: [:admin, :tab]).titleize
 

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'gesmew/core/validators/email'
 
 describe EmailValidator do
 

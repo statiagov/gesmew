@@ -40,7 +40,7 @@ module Gesmew
     preference :layout, :string, default: 'gesmew/layouts/gesmew_application'
     preference :logo, :string, default: 'logo/gesmew_50.png'
     preference :max_level_in_taxons_menu, :integer, default: 1 # maximum nesting level in taxons menu
-    preference :orders_per_page, :integer, default: 15
+    preference :inspections_per_page, :integer, default: 15
     preference :properties_per_page, :integer, default: 15
     preference :products_per_page, :integer, default: 12
     preference :promotions_per_page, :integer, default: 15
@@ -49,7 +49,7 @@ module Gesmew
     preference :restock_inventory, :boolean, default: true # Determines if a return item is restocked automatically once it has been received
     preference :return_eligibility_number_of_days, :integer, default: 365
     preference :shipping_instructions, :boolean, default: false # Request instructions/info for shipping
-    preference :show_only_complete_orders_by_default, :boolean, default: true
+    preference :show_only_complete_inspections_by_default, :boolean, default: false
     preference :show_variant_full_price, :boolean, default: false #Displays variant full price or difference with product price. Default false to be compatible with older behavior
     preference :show_products_without_price, :boolean, default: false
     preference :show_raw_product_description, :boolean, default: false

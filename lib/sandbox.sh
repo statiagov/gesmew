@@ -12,12 +12,11 @@ cd ./sandbox
 
 cat <<RUBY >> Gemfile
 gem 'gesmew', path: '..'
-gem 'gesmew_auth_devise', github: 'gesmew/gesmew_auth_devise', branch: 'master'
+gem 'gesmew_auth_devise', github: 'statiagov/gesmew_auth_devise', branch: 'master'
 
 group :test, :development do
   gem 'bullet'
   gem 'pry-byebug'
-  gem 'rack-mini-profiler'
 end
 RUBY
 

@@ -17,8 +17,8 @@ describe Gesmew::Admin::BaseHelper, :type => :helper do
 
   context "#plural_resource_name" do
     it "should return correct form of class" do
-      resource_class = Gesmew::Product
-      expect(plural_resource_name(resource_class)).to eq("Products")
+      resource_class = Gesmew::Inspection
+      expect(plural_resource_name(resource_class)).to eq("Inspections")
     end
   end
 end

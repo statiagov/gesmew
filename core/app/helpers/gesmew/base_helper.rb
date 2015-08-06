@@ -1,21 +1,6 @@
 module Gesmew
   module BaseHelper
 
-    def available_countries
-      checkout_zone = Zone.find_by(name: Gesmew::Config[:checkout_zone])
-
-      if checkout_zone && checkout_zone.kind == 'country'
-        countries = checkout_zone.country_list
-      else
-        countries = Country.all
-      end
-
-      countries.collect do |country|
-        country.name = Gesmew.t(country.iso, scope: 'country_names', default: country.name)
-        country
-      end.sort_by { |c| c.name.parameterize }
-    end
-
     def display_price(product_or_variant)
       product_or_variant.
         price_in(current_currency).
@@ -45,15 +30,6 @@ module Gesmew
         meta[:keywords] = object.meta_keywords if object[:meta_keywords].present?
         meta[:description] = object.meta_description if object[:meta_description].present?
       end
-
-      if meta[:description].blank? && object.kind_of?(Gesmew::Product)
-        meta[:description] = truncate(strip_tags(object.description), length: 160, separator: ' ')
-      end
-
-      meta.reverse_merge!({
-        keywords: current_store.meta_keywords,
-        description: current_store.meta_description,
-      }) if meta[:keywords].blank? or meta[:description].blank?
       meta
     end
 

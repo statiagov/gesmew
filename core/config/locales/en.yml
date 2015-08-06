@@ -180,18 +180,18 @@ en:
       gesmew/option_value:
         one: Option Value
         other: Option Values
-      gesmew/order:
-        one: Order
-        other: Orders
+      gesmew/inspection:
+        one: Inspection
+        other: Inspections
       gesmew/payment:
         one: Payment
         other: Payments
       gesmew/payment_method:
         one: Payment Method
         other: Payment Methods
-      gesmew/product:
-        one: Product
-        other: Products
+      gesmew/establishment:
+        one: Establishment
+        other: Establishments
       gesmew/promotion:
         one: Promotion
         other: Promotions
@@ -427,9 +427,9 @@ en:
       tab:
         configuration: Configuration
         option_types: Option Types
-        orders: Orders
+        inspections: Inspections
         overview: Overview
-        products: Products
+        establishments: Establishments
         promotions: Promotions
         promotion_categories: Promotion Categories
         properties: Properties
@@ -667,6 +667,7 @@ en:
     errors_prohibited_this_record_from_being_saved:
       one: 1 error prohibited this record from being saved
       other: ! '%{count} errors prohibited this record from being saved'
+    establishment: Establishment
     event: Event
     events:
       gesmew:
@@ -737,6 +738,8 @@ en:
     implement_requires_manual_intervention: "Must implement #requires_manual_intervention? for your EligibilityValidator."
     inactive: Inactive
     incl: incl.
+    inspection_approved: Inspection Aproved
+    inspection_number: Inspection Number
     included_in_price: Included in Price
     included_price_validation: cannot be selected unless you have set a Default Tax Zone
     incomplete: Incomplete
@@ -826,7 +829,7 @@ en:
     name_on_card: Name on card
     name_or_sku: Name or SKU (enter at least first 3 characters of product name)
     new: New
-    new_adjustment: New Adjustment
+    new_inspection: New Inspection
     new_customer: New Customer
     new_customer_return: New Customer Return
     new_country: New Country
@@ -1015,7 +1018,7 @@ en:
       product_source:
         group: From product group
         manual: Manually choose
-    products: Products
+    establishments: Establishments
     promotion: Promotion
     promotionable: Promotable
     promotion_action: Promotion Action
@@ -1227,7 +1230,7 @@ en:
     show: Show
     show_active: Show Active
     show_deleted: Show Deleted
-    show_only_complete_orders: Only show complete orders
+    show_only_complete_inspections: Only show complete inspections
     show_only_considered_risky: Only show risky orders
     show_rate_in_label: Show rate in label
     sku: SKU
@@ -1339,6 +1342,7 @@ en:
     tiered_flat_rate: Tiered Flat Rate
     tiered_percent: Tiered Percent
     time: Time
+    title: Directorate St. Eustatius Society & Welfare
     to_add_variants_you_must_first_define: To add variants, you must first define
     total: Total
     total_per_item: Total per item

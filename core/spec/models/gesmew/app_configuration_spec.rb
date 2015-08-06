@@ -13,11 +13,5 @@ describe Gesmew::AppConfiguration, :type => :model do
     Gesmew::Config.layout = "my/layout"
     expect(Gesmew::Config.layout).to eq "my/layout"
   end
-
-  it "uses base searcher class by default" do
-    prefs.searcher_class = nil
-    expect(prefs.searcher_class).to eq Gesmew::Core::Search::Base
-  end
-
 end
 

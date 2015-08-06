@@ -59,7 +59,7 @@ Gesmew::Core::Engine.add_routes do
       get '/orders/mine', to: 'orders#mine', as: 'my_orders'
       get "/orders/current", to: "orders#current", as: "current_order"
 
-      resources :orders, concerns: :order_routes
+      resources :inspection, concerns: :order_routes
 
       resources :zones
       resources :countries, only: [:index, :show] do
