@@ -1,5 +1,5 @@
 Gesmew::Core::Engine.add_routes do
-  root :to => redirect('/login')
+  root :to => 'home#index'
 
   get '/unauthorized', :to => 'home#unauthorized', :as => :unauthorized
 end
