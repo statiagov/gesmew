@@ -1,13 +1,14 @@
 en:
   activerecord:
     attributes:
-      gesmew/address:
+      gesmew/contact_information:
         address1: Address
         address2: Address (contd.)
         city: City
         country: Country
         firstname: First Name
         lastname: Last Name
+        fullname: Full Name
         phone: Phone
         state: State
         zipcode: Zip Code
@@ -41,6 +42,7 @@ en:
         presentation: Presentation
       gesmew/inspection:
         checkout_complete: Checkout Complete
+        number_of_inspectors: Number of Inspectors
         completed_at: Completed At
         coupon_code: Coupon Code
         created_at: Inspection Date
@@ -741,6 +743,9 @@ en:
     incl: incl.
     inspection_approved: Inspection Aproved
     inspection_number: Inspection Number
+    inspection_state:
+      establishment: choosing establishment
+      pending: pending
     included_in_price: Included in Price
     included_price_validation: cannot be selected unless you have set a Default Tax Zone
     incomplete: Incomplete

@@ -9,3 +9,9 @@
     <%= main_menu_tree Gesmew.t(:establishment), icon: "th-large", sub_menu: "establishment", url: "#sidebar-establishment" %>
   </ul>
 <% end %>
+
+<% if Gesmew.user_class && can?(:admin, Gesmew.user_class) %>
+  <ul class="nav nav-sidebar">
+    <%= tab *Gesmew::BackendConfiguration::USER_TABS, url: gesmew.admin_users_path, icon: 'user' %>
+  </ul>
+<% end %>

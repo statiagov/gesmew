@@ -106,8 +106,9 @@
           <th><%= sort_link @search, :created_at,     I18n.t(:created_at, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <% end %>
         <th><%= sort_link @search, :number,           I18n.t(:number, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :considered_risky, I18n.t(:considered_risky, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th><%= sort_link @search, :state,            I18n.t(:state, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :email,            I18n.t(:email, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :email,            I18n.t(:number_of_inspectors, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th><%= sort_link @search, :total,            I18n.t(:total, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th data-hook="admin_inspections_index_header_actions" class="actions"></th>
       </tr>
@@ -127,30 +128,13 @@
           <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_state_eq" data-ransack-value="<%= inspection.state %>"></span>
         </td>
         <td>
-          <% if inspection.payment_state %>
-            <span class="label label-<%= inspection.payment_state %>"><%= link_to Gesmew.t("payment_states.#{inspection.payment_state}"), admin_inspection_payments_path(inspection) %></span>
-            <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_payment_state_eq" data-ransack-value="<%= inspection.payment_state %>"></span>
-          <% end %>
+          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_email_cont" data-ransack-value="<%= inspection.inspector_total %>"></span>
+          <!-- <% inspection.inspectors.all.each do |inspector| %>
+            <%= link_to("#{inspector.full_name}", edit_admin_user_path(inspector)) %>
+            <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_email_cont" data-ransack-value="<%= inspector.full_name %>"></span>
+          <% end %> -->
         </td>
-        <% if Gesmew::Inspection.checkout_step_names.include?(:delivery) %>
-          <td>
-            <% if inspection.shipment_state %>
-              <span class="label label-<%= inspection.shipment_state %>"><%= Gesmew.t("shipment_states.#{inspection.shipment_state}") %></span>
-              <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_shipment_state_eq" data-ransack-value="<%= inspection.shipment_state %>"></span>
-            <% end %>
-          </td>
-        <% end %>
-        <td>
-          <% if inspection.user %>
-            <%= link_to inspection.email, edit_admin_user_path(inspection.user) %>
-          <% else %>
-            <%= mail_to inspection.email %>
-          <% end %>
-          <% if inspection.user || inspection.email %>
-            <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_email_cont" data-ransack-value="<%= inspection.email %>"></span>
-          <% end %>
-        </td>
-        <td><%= inspection.display_total.to_html %></td>
+        <td><%=inspection.score_total%></td>
         <td class='actions actions-1' data-hook="admin_inspections_index_row_actions">
           <%= link_to_edit_url edit_admin_inspection_path(inspection), :title => "admin_edit_#{dom_id(inspection)}", :no_text => true %>
         </td>

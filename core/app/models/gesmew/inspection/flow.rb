@@ -38,7 +38,7 @@ module Gesmew
           # To avoid multiple occurrences of the same transition being defined
           # On first definition, state_machines will not be defined
           state_machines.clear if respond_to?(:state_machines)
-          state_machine :state, initial: :establishment, use_transactions: false, action: :save_state do
+          state_machine :state, initial: :pending, use_transactions: false, action: :save_state do
             klass.next_event_transitions.each { |t| transition(t.merge(on: :next)) }
 
             # Persist the state on the inspection
@@ -121,7 +121,7 @@ module Gesmew
           end
         end
 
-        def self.isnpection_step_names
+        def self.inspection_step_names
           self.inspection_steps.keys
         end
 

@@ -129,13 +129,15 @@ class GesmewInitial < ActiveRecord::Migration
       t.string      :state
       t.string      :number, :limit => 15
       t.datetime    :completed_at
+      t.boolean     :considered_risky, :default => false
       t.integer     :state_lock_version, default: 0, null: false
       t.timestamps  null: false
     end
 
     create_table :gesmew_inspection_users do |t|
-      t.references :user
-      t.references :inspection
+      t.belongs_to :user
+      t.belongs_to :inspection
+      t.timestamps null: false
     end
 
     add_index :gesmew_inspection_users, [:inspection_id], :name => 'index_gesmew_inspection_users_on_inspection_id'

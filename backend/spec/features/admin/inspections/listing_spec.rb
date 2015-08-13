@@ -1,42 +1,48 @@
 require 'spec_helper'
 
-describe "Orders Listing", type: :feature do
+describe "Inspection Listing", type: :feature, js:true do
   stub_authorization!
 
-  let(:order1) do
-    create :order_with_line_items,
+  let!(:user_a) { create(:admin_user, email: 'a@example.com') }
+  let!(:user_b) { create(:admin_user, email: 'b@example.com') }
+
+  let(:inspection_1) do
+    create :inspection,
       created_at: 1.day.from_now,
       completed_at: 1.day.from_now,
       considered_risky: true,
-      number: "R100"
+      number: "I100"
   end
 
-  let(:order2) do
+  let(:inspection_2) do
     create :inspection,
       created_at: 1.day.ago,
       completed_at: 1.day.ago,
-      number: "R200"
+      number: "I200"
   end
 
   before do
-    allow_any_instance_of(Gesmew::OrderInventory).to receive(:add_to_shipment)
-    # create the inspection instances after stubbing the `add_to_shipment` method
-    order1; order2
-    visit gesmew.admin_orders_path
+    user_a.inspections << inspection_1
+    user_b.inspections << inspection_2
+    user_a.inspections << inspection_2
+    user_b.inspections << inspection_1
+
+    visit gesmew.admin_inspections_path
   end
 
   describe "listing inspections" do
     it "should list existing inspections" do
       within_row(1) do
-        expect(column_text(2)).to eq "R100"
+        expect(column_text(2)).to eq "I100"
         expect(find("td:nth-child(3)")).to have_css '.label-considered_risky'
-        expect(column_text(4)).to eq "cart"
+        # expect(column_text(4)).to eq "cart"
       end
 
       within_row(2) do
-        expect(column_text(2)).to eq "R200"
+        expect(column_text(2)).to eq "I200"
         expect(find("td:nth-child(3)")).to have_css '.label-considered_safe'
       end
+      sleep 20.seconds
     end
 
     it "should be able to sort the inspections listing" do

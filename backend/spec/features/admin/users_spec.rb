@@ -1,24 +1,21 @@
 require 'spec_helper'
 
-describe 'Users', type: :feature do
+describe 'Users', type: :feature, js:true do
   stub_authorization!
+  let!(:inspection_1) { create(:inspection, number: "I123") }
+  let!(:inspection_2) { create(:inspection, number: "I456") }
 
-  let!(:user_a) { create(:user_with_contact_info, email: 'a@example.com') }
-  let!(:user_b) { create(:user_with_contact_info, email: 'b@example.com') }
 
-  let(:inspection) { create(:completed_order_with_totals, user: user_a, number: "R123") }
+  let!(:user_a) { create(:admin_user, email: 'a@example.com') }
+  let!(:user_b) { create(:admin_user, email: 'b@example.com') }
 
-  let(:order_2) do
-    create(:completed_order_with_totals, user: user_a, number: "R456").tap do |o|
-      li = o.line_items.last
-      li.update_column(:price, li.price + 10)
-    end
-  end
-
-  let(:inspection) { [inspection, order_2] }
 
   before do
     stub_const('Gesmew::User', create(:user, email: 'example@example.com').class)
+    user_a.inspections << inspection_1
+    user_b.inspections << inspection_2
+    user_a.inspections << inspection_2
+    user_b.inspections << inspection_1
   end
 
   shared_examples_for 'a user page' do

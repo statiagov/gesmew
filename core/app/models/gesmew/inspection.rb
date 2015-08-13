@@ -10,18 +10,25 @@ module Gesmew
     belongs_to :establishment
     has_many   :state_changes, as: :stateful, dependent: :destroy
 
-    has_many  :inspection_users, class_name: Gesmew::InspectionUser
+    has_many  :inspection_users, class_name: Gesmew::InspectionUser, :foreign_key => :inspection_id
 
     if Gesmew.user_class
-      has_many   :inspectors, as: :user, class_name: Gesmew.user_class.to_s, through: :inspection_users, source: :user
+      has_many   :inspectors, class_name: Gesmew.user_class.to_s, :through => :inspection_users, :source => :user
     else
-      has_many   :inspectors, as: :user, through: :inspection_users, source: :user
+      has_many   :inspectors, -> {distinct}, :through => :inspection_users, source: :user
+    end
+
+    def inspector_total
+      inspectors.all.count
+    end
+
+    def score_total
+      Random.rand(10) + 1
     end
 
 
     inspection_flow do
-      go_to_state :establishment
+      go_to_state :pending
     end
-
   end
 end
