@@ -35,7 +35,6 @@ group :test do
   gem 'with_model'
   gem 'mutant-rspec', '~> 0.8.0'
   gem 'selenium-webdriver'
-  gem 'capybara-webkit'
 end
 
 group :test, :development do
