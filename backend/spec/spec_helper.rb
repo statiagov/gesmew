@@ -54,18 +54,14 @@ RSpec.configure do |config|
     mock.syntax = [:should, :expect]
   end
   config.before :suite do
-    Capybara.match = :prefer_exact
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with :truncation
   end
 
-  config.before(:each) do
+  config.before do
     Rails.cache.clear
     WebMock.disable!
-    if RSpec.current_example.metadata[:js]
-      DatabaseCleaner.strategy = :truncation
-    else
-      DatabaseCleaner.strategy = :transaction
-    end
+    DatabaseCleaner.strategy = RSpec.current_example.metadata[:js] ? :truncation : :transaction
     # TODO: Find out why open_transactions ever gets below 0
     # See issue #3428
     if ActiveRecord::Base.connection.open_transactions < 0
@@ -76,10 +72,8 @@ RSpec.configure do |config|
     reset_gesmew_preferences
   end
 
-  config.after(:each) do
-    # Ensure js requests finish processing before advancing to the next test
+  config.after do
     wait_for_ajax if RSpec.current_example.metadata[:js]
-
     DatabaseCleaner.clean
   end
 
