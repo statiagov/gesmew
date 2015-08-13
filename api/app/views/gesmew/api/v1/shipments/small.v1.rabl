@@ -2,7 +2,7 @@ object @shipment
 cache [I18n.locale, 'small_shipment', root_object]
 
 attributes *shipment_attributes
-node(:order_id) { |shipment| shipment.order.number }
+node(:order_id) { |shipment| shipment.inspection.number }
 node(:stock_location_name) { |shipment| shipment.stock_location.name }
 
 child :shipping_rates => :shipping_rates do

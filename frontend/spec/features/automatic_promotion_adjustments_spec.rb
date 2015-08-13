@@ -6,7 +6,7 @@ describe "Automatic promotions", :type => :feature, :js => true do
   let!(:zone) { create(:zone) }
   let!(:shipping_method) { create(:shipping_method) }
   let!(:payment_method) { create(:check_payment_method) }
-  let!(:product) { create(:product, :name => "RoR Mug", :price => 20) }
+  let!(:establishment) { create(:establishment, :name => "RoR Mug", :price => 20) }
 
   let!(:promotion) do
     promotion = Gesmew::Promotion.create!(:name => "$10 off when you spend more than $100")
@@ -31,11 +31,11 @@ describe "Automatic promotions", :type => :feature, :js => true do
 
     before do
       visit gesmew.root_path
-      click_link product.name
+      click_link establishment.name
       click_button "add-to-cart-button"
     end
 
-    it "automatically applies the promotion once the order crosses the threshold" do
+    it "automatically applies the promotion once the inspection crosses the threshold" do
       fill_in "order_line_items_attributes_0_quantity", :with => 10
       click_button "Update"
       expect(page).to have_content("Promotion ($10 off when you spend more than $100) -$10.00")

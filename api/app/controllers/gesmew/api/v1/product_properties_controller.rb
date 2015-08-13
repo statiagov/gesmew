@@ -6,7 +6,7 @@ module Gesmew
         before_action :product_property, only: [:show, :update, :destroy]
 
         def index
-          @product_properties = @product.product_properties.accessible_by(current_ability, :read).
+          @product_properties = @establishment.product_properties.accessible_by(current_ability, :read).
                                 ransack(params[:q]).result.
                                 page(params[:page]).per(params[:per_page])
           respond_with(@product_properties)
@@ -21,7 +21,7 @@ module Gesmew
 
         def create
           authorize! :create, ProductProperty
-          @product_property = @product.product_properties.new(product_property_params)
+          @product_property = @establishment.product_properties.new(product_property_params)
           if @product_property.save
             respond_with(@product_property, status: 201, default_template: :show)
           else
@@ -52,14 +52,14 @@ module Gesmew
         private
 
         def find_product
-          @product = super(params[:product_id])
-          authorize! :read, @product
+          @establishment = super(params[:product_id])
+          authorize! :read, @establishment
         end
 
         def product_property
-          if @product
-            @product_property ||= @product.product_properties.find_by(id: params[:id])
-            @product_property ||= @product.product_properties.includes(:property).where(gesmew_properties: { name: params[:id] }).first
+          if @establishment
+            @product_property ||= @establishment.product_properties.find_by(id: params[:id])
+            @product_property ||= @establishment.product_properties.includes(:property).where(gesmew_properties: { name: params[:id] }).first
             authorize! :read, @product_property
           end
         end

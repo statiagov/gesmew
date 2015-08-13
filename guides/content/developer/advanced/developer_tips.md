@@ -95,7 +95,7 @@ forked version, but this can also be a headache to get right. There's also the h
 changes to `gesmew/master` and pulling them into your project at the right time.
 
 So here's a compromise: have an extra extension, say `gesmew-tweaks`, to
-contain your small collection of modified files, which is loaded first in the extension order. The
+contain your small collection of modified files, which is loaded first in the extension inspection. The
 benefits are:
 
 -   it's clear what you are overriding, and easier to check against core

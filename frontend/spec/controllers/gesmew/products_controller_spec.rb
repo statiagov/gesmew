@@ -1,18 +1,18 @@
 require 'spec_helper'
 
 describe Gesmew::ProductsController, :type => :controller do
-  let!(:product) { create(:product, :available_on => 1.year.from_now) }
+  let!(:establishment) { create(:establishment, :available_on => 1.year.from_now) }
   let(:taxon) { create(:taxon) }
 
   # Regression test for #1390
-  it "allows admins to view non-active products" do
+  it "allows admins to view non-active establishments" do
     allow(controller).to receive_messages :gesmew_current_user => mock_model(Gesmew.user_class, :has_gesmew_role? => true, :last_incomplete_gesmew_order => nil, :gesmew_api_key => 'fake')
-    gesmew_get :show, :id => product.to_param
+    gesmew_get :show, :id => establishment.to_param
     expect(response.status).to eq(200)
   end
 
-  it "cannot view non-active products" do
-    gesmew_get :show, :id => product.to_param
+  it "cannot view non-active establishments" do
+    gesmew_get :show, :id => establishment.to_param
     expect(response.status).to eq(404)
   end
 
@@ -31,34 +31,34 @@ describe Gesmew::ProductsController, :type => :controller do
     request.env['HTTP_REFERER'] = "not|a$url"
 
     # Previously a URI::InvalidURIError exception was being thrown
-    expect { gesmew_get :show, :id => product.to_param }.not_to raise_error
+    expect { gesmew_get :show, :id => establishment.to_param }.not_to raise_error
   end
 
   context 'with history slugs present' do
-    let!(:product) { create(:product, available_on: 1.day.ago) }
+    let!(:establishment) { create(:establishment, available_on: 1.day.ago) }
 
     it 'will redirect with a 301 with legacy url used' do
-      legacy_params = product.to_param
-      product.name = product.name + " Brand New"
-      product.slug = nil
-      product.save!
+      legacy_params = establishment.to_param
+      establishment.name = establishment.name + " Brand New"
+      establishment.slug = nil
+      establishment.save!
       gesmew_get :show, id: legacy_params
       expect(response.status).to eq(301)
     end
 
     it 'will redirect with a 301 with id used' do
-      product.name = product.name + " Brand New"
-      product.slug = nil
-      product.save!
-      gesmew_get :show, id: product.id
+      establishment.name = establishment.name + " Brand New"
+      establishment.slug = nil
+      establishment.save!
+      gesmew_get :show, id: establishment.id
       expect(response.status).to eq(301)
     end
 
     it "will keep url params on legacy url redirect" do
-      legacy_params = product.to_param
-      product.name = product.name + " Brand New"
-      product.slug = nil
-      product.save!
+      legacy_params = establishment.to_param
+      establishment.name = establishment.name + " Brand New"
+      establishment.slug = nil
+      establishment.save!
       gesmew_get :show, id: legacy_params, taxon_id: taxon.id
       expect(response.status).to eq(301)
       expect(response.header["Location"]).to include("taxon_id=#{taxon.id}")

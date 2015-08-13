@@ -31,7 +31,7 @@ module Gesmew
         end.with_indifferent_access
       end
 
-      # users should be able to set price when importing orders via api
+      # users should be able to set price when importing inspections via api
       def permitted_line_item_attributes
         if @current_user_roles.include?("admin")
           super + [:price, :variant_id, :sku]
@@ -92,8 +92,8 @@ module Gesmew
       end
 
       def gateway_error(exception)
-        @order.errors.add(:base, exception.message)
-        invalid_resource!(@order)
+        @inspection.errors.add(:base, exception.message)
+        invalid_resource!(@inspection)
       end
 
       def requires_authentication?
@@ -119,7 +119,7 @@ module Gesmew
       helper_method :api_key
 
       def order_token
-        request.headers["X-Gesmew-Order-Token"] || params[:order_token]
+        request.headers["X-Gesmew-Inspection-Token"] || params[:order_token]
       end
 
       def find_product(id)
@@ -130,13 +130,13 @@ module Gesmew
 
       def product_scope
         if @current_user_roles.include?("admin")
-          scope = Product.with_deleted.accessible_by(current_ability, :read).includes(*product_includes)
+          scope = Establishment.with_deleted.accessible_by(current_ability, :read).includes(*product_includes)
 
           unless params[:show_deleted]
             scope = scope.not_deleted
           end
         else
-          scope = Product.accessible_by(current_ability, :read).active.includes(*product_includes)
+          scope = Establishment.accessible_by(current_ability, :read).active.includes(*product_includes)
         end
 
         scope
@@ -155,8 +155,8 @@ module Gesmew
       end
 
       def authorize_for_order
-        @order = Gesmew::Order.find_by(number: order_id)
-        authorize! :read, @order, order_token
+        @inspection = Gesmew::Inspection.find_by(number: order_id)
+        authorize! :read, @inspection, order_token
       end
     end
   end

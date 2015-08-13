@@ -1,6 +1,6 @@
 jQuery ($) ->
   # Payment model
-  order_id = $('#payments').data('order-id')
+  order_id = $('#payments').data('inspection-id')
   class Payment
     constructor: (id) ->
       @url  = Gesmew.url("#{Gesmew.routes.payments_api(order_id)}/#{id}.json" + '?token=' + Gesmew.api_key)

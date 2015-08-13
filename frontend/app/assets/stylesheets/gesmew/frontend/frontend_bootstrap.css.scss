@@ -50,7 +50,7 @@
 .alert-error, .alert-registration_error { @extend .alert-danger; }
 .alert-alert { @extend .alert-info; }
 
-.product-body {
+.establishment-body {
   height: 170px;
 }
 
@@ -75,7 +75,7 @@ table {
       > tr > td {
         vertical-align: middle;
 
-        &.order-qty {
+        &.inspection-qty {
           text-align: center;
         }
       }

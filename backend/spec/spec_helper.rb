@@ -24,10 +24,6 @@ end
 
 require 'rspec/rails'
 
-# Requires supporting files with custom matchers and macros, etc,
-# in ./support/ and its subdirectories.
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
-
 require 'database_cleaner'
 require 'ffaker'
 require 'timeout'
@@ -38,29 +34,25 @@ require 'gesmew/testing_support/preferences'
 require 'gesmew/testing_support/controller_requests'
 require 'gesmew/testing_support/flash'
 require 'gesmew/testing_support/url_helpers'
-require 'gesmew/testing_support/order_walkthrough'
+require 'gesmew/testing_support/inspection_walkthrough'
 require 'gesmew/testing_support/capybara_ext'
 
 require 'paperclip/matchers'
 
-require 'capybara/selenium/driver'
-Capybara.javascript_driver = :selenium
-
-# Set timeout to something high enough to allow CI to pass
-Capybara.default_wait_time = 10
 
 RSpec.configure do |config|
-  config.color = true
-  config.fail_fast = ENV['FAIL_FAST'] || false
+  config.filter_run focus: true
   config.infer_spec_type_from_file_location!
-  config.mock_with :rspec
   config.raise_errors_for_deprecations!
-
+  config.run_all_when_everything_filtered = true
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, comment the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
 
+  config.mock_with :rspec do |mock|
+    mock.syntax = [:should, :expect]
+  end
   config.before :suite do
     Capybara.match = :prefer_exact
     DatabaseCleaner.clean_with :truncation
@@ -110,6 +102,10 @@ RSpec.configure do |config|
 
   config.extend WithModel
 end
+
+# Requires supporting files with custom matchers and macros, etc,
+# in ./support/ and its subdirectories.
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 module Gesmew
   module TestingSupport

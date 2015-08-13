@@ -6,12 +6,12 @@
 #     include Gesmew::Core::ProductFilters
 #     @taxon = create(:taxon, name: "Ruby on Rails")
 #
-#     @product1 = create(:product, name: "RoR Mug", price: 9.00)
+#     @product1 = create(:establishment, name: "RoR Mug", price: 9.00)
 #     @product1.taxons << @taxon
-#     @product2 = create(:product, name: "RoR Shirt", price: 11.00)
+#     @product2 = create(:establishment, name: "RoR Shirt", price: 11.00)
 #   end
 # 
-#   it "returns all products by default" do
+#   it "returns all establishments by default" do
 #     params = { :per_page => "" }
 #     searcher = Gesmew::Core::Search::Base.new(params)
 #     expect(searcher.retrieve_products.count).to eq(2)
@@ -27,14 +27,14 @@
 #       @product1.reload
 #     end
 #
-#     it "returns images in correct order" do
+#     it "returns images in correct inspection" do
 #       expect(subject.first).to eq @product1
 #       expect(subject.first.images).to eq @product1.master.images
 #     end
 #   end
 #
 #   it "switches to next page according to the page parameter" do
-#     @product3 = create(:product, :name => "RoR Pants", :price => 14.00)
+#     @product3 = create(:establishment, :name => "RoR Pants", :price => 14.00)
 #
 #     params = { :per_page => "2" }
 #     searcher = Gesmew::Core::Search::Base.new(params)
@@ -76,7 +76,7 @@
 #     expect(searcher.current_user).to eql(user)
 #   end
 #
-#   it "finds products in alternate currencies" do
+#   it "finds establishments in alternate currencies" do
 #     price = create(:price, :currency => 'EUR', :variant => @product1.master)
 #     searcher = Gesmew::Core::Search::Base.new({})
 #     searcher.current_currency = 'EUR'

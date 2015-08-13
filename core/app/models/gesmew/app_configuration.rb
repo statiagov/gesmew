@@ -30,13 +30,13 @@ module Gesmew
     preference :always_put_site_name_in_title, :boolean, default: true
     preference :auto_capture, :boolean, default: false # automatically capture the credit card (as opposed to just authorize and capture later)
     preference :auto_capture_on_dispatch, :boolean, default: false # Captures payment for each shipment in Shipment#after_ship callback, and makes Shipment.ready when payment authorized.
-    preference :binary_inventory_cache, :boolean, default: false # only invalidate product cache when a stock item changes whether it is in_stock
+    preference :binary_inventory_cache, :boolean, default: false # only invalidate establishment cache when a stock item changes whether it is in_stock
     preference :checkout_zone, :string, default: nil # replace with the name of a zone if you would like to limit the countries
     preference :company, :boolean, default: false # Request company field for billing and shipping addr
     preference :currency, :string, default: "USD"
     preference :default_country_id, :integer
     preference :expedited_exchanges, :boolean, default: false # NOTE this requires payment profiles to be supported on your gateway of choice as well as a delayed job handler to be configured with activejob. kicks off an exchange shipment upon return authorization save. charge customer if they do not return items within timely manner.
-    preference :expedited_exchanges_days_window, :integer, default: 14 # the amount of days the customer has to return their item after the expedited exchange is shipped in order to avoid being charged
+    preference :expedited_exchanges_days_window, :integer, default: 14 # the amount of days the customer has to return their item after the expedited exchange is shipped in inspection to avoid being charged
     preference :layout, :string, default: 'gesmew/layouts/gesmew_application'
     preference :logo, :string, default: 'logo/gesmew_50.png'
     preference :max_level_in_taxons_menu, :integer, default: 1 # maximum nesting level in taxons menu
@@ -50,11 +50,11 @@ module Gesmew
     preference :return_eligibility_number_of_days, :integer, default: 365
     preference :shipping_instructions, :boolean, default: false # Request instructions/info for shipping
     preference :show_only_complete_inspections_by_default, :boolean, default: false
-    preference :show_variant_full_price, :boolean, default: false #Displays variant full price or difference with product price. Default false to be compatible with older behavior
+    preference :show_variant_full_price, :boolean, default: false #Displays variant full price or difference with establishment price. Default false to be compatible with older behavior
     preference :show_products_without_price, :boolean, default: false
     preference :show_raw_product_description, :boolean, default: false
     preference :tax_using_ship_address, :boolean, default: true
-    preference :track_inventory_levels, :boolean, default: true # Determines whether to track on_hand values for variants / products.
+    preference :track_inventory_levels, :boolean, default: true # Determines whether to track on_hand values for variants / establishments.
 
     # Default mail headers settings
     preference :send_core_emails, :boolean, default: true

@@ -284,7 +284,7 @@ $ gesmew extension foo
 ```
 
 ***
-You need to have the Gesmew gem installed in order to use the `gesmew` command.
+You need to have the Gesmew gem installed in inspection to use the `gesmew` command.
 ***
 
 Please see the [Creating Extensions](extensions_tutorial) guide for more details.

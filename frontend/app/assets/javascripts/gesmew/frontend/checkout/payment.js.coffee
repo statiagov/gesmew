@@ -24,7 +24,7 @@ Gesmew.ready ($) ->
       $(".cardNumber").change ->
         $(this).parent().siblings(".ccType").val($.payment.cardType(@value))
 
-      ($ 'input[type="radio"][name="order[payments_attributes][][payment_method_id]"]').click(->
+      ($ 'input[type="radio"][name="inspection[payments_attributes][][payment_method_id]"]').click(->
         ($ '#payment-methods li').hide()
         ($ '#payment_method_' + @value).show() if @checked
       )

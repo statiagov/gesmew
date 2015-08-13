@@ -5,32 +5,32 @@ module Gesmew
 
         def index
           if params[:ids]
-            @products = product_scope.where(id: params[:ids].split(",").flatten)
+            @establishments = product_scope.where(id: params[:ids].split(",").flatten)
           else
-            @products = product_scope.ransack(params[:q]).result
+            @establishments = product_scope.ransack(params[:q]).result
           end
 
-          @products = @products.distinct.page(params[:page]).per(params[:per_page])
+          @establishments = @establishments.distinct.page(params[:page]).per(params[:per_page])
           expires_in 15.minutes, :public => true
           headers['Surrogate-Control'] = "max-age=#{15.minutes}"
-          respond_with(@products)
+          respond_with(@establishments)
         end
 
         def show
-          @product = find_product(params[:id])
+          @establishment = find_product(params[:id])
           expires_in 15.minutes, :public => true
           headers['Surrogate-Control'] = "max-age=#{15.minutes}"
           headers['Surrogate-Key'] = "product_id=1"
-          respond_with(@product)
+          respond_with(@establishment)
         end
 
-        # Takes besides the products attributes either an array of variants or
+        # Takes besides the establishments attributes either an array of variants or
         # an array of option types.
         #
         # By submitting an array of variants the option types will be created
         # using the *name* key in options hash. e.g
         #
-        #   product: {
+        #   establishment: {
         #     ...
         #     variants: {
         #       price: 19.99,
@@ -44,7 +44,7 @@ module Gesmew
         #
         # Or just pass in the option types hash:
         #
-        #   product: {
+        #   establishment: {
         #     ...
         #     option_types: ['size', 'color']
         #   }
@@ -52,72 +52,72 @@ module Gesmew
         # By passing the shipping category name you can fetch or create that
         # shipping category on the fly. e.g.
         #
-        #   product: {
+        #   establishment: {
         #     ...
         #     shipping_category: "Free Shipping Items"
         #   }
         #
         def create
-          authorize! :create, Product
-          params[:product][:available_on] ||= Time.now
+          authorize! :create, Establishment
+          params[:establishment][:available_on] ||= Time.now
           set_up_shipping_category
 
           options = { variants_attrs: variants_params, options_attrs: option_types_params }
-          @product = Core::Importer::Product.new(nil, product_params, options).create
+          @establishment = Core::Importer::Establishment.new(nil, product_params, options).create
 
-          if @product.persisted?
-            respond_with(@product, :status => 201, :default_template => :show)
+          if @establishment.persisted?
+            respond_with(@establishment, :status => 201, :default_template => :show)
           else
-            invalid_resource!(@product)
+            invalid_resource!(@establishment)
           end
         end
 
         def update
-          @product = find_product(params[:id])
-          authorize! :update, @product
+          @establishment = find_product(params[:id])
+          authorize! :update, @establishment
 
           options = { variants_attrs: variants_params, options_attrs: option_types_params }
-          @product = Core::Importer::Product.new(@product, product_params, options).update
+          @establishment = Core::Importer::Establishment.new(@establishment, product_params, options).update
 
-          if @product.errors.empty?
-            respond_with(@product.reload, :status => 200, :default_template => :show)
+          if @establishment.errors.empty?
+            respond_with(@establishment.reload, :status => 200, :default_template => :show)
           else
-            invalid_resource!(@product)
+            invalid_resource!(@establishment)
           end
         end
 
         def destroy
-          @product = find_product(params[:id])
-          authorize! :destroy, @product
-          @product.destroy
-          respond_with(@product, :status => 204)
+          @establishment = find_product(params[:id])
+          authorize! :destroy, @establishment
+          @establishment.destroy
+          respond_with(@establishment, :status => 204)
         end
 
         private
           def product_params
-            params.require(:product).permit(permitted_product_attributes)
+            params.require(:establishment).permit(permitted_product_attributes)
           end
 
           def variants_params
-            variants_key = if params[:product].has_key? :variants
+            variants_key = if params[:establishment].has_key? :variants
               :variants
             else
               :variants_attributes
             end
 
-            params.require(:product).permit(
+            params.require(:establishment).permit(
               variants_key => [permitted_variant_attributes, :id],
             ).delete(variants_key) || []
           end
 
           def option_types_params
-            params[:product].fetch(:option_types, [])
+            params[:establishment].fetch(:option_types, [])
           end
 
           def set_up_shipping_category
-            if shipping_category = params[:product].delete(:shipping_category)
+            if shipping_category = params[:establishment].delete(:shipping_category)
               id = ShippingCategory.find_or_create_by(name: shipping_category).id
-              params[:product][:shipping_category_id] = id
+              params[:establishment][:shipping_category_id] = id
             end
           end
       end

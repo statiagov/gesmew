@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe "Address", type: :feature, inaccessible: true do
-  let!(:product) { create(:product, :name => "RoR Mug") }
-  let!(:order) { create(:order_with_totals, :state => 'cart') }
+  let!(:establishment) { create(:establishment, :name => "RoR Mug") }
+  let!(:inspection) { create(:order_with_totals, :state => 'cart') }
 
   stub_authorization!
 

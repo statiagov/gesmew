@@ -13,24 +13,24 @@
         <div class="col-md-8">
           <div class="form-group">
             <%= f.label :email, Gesmew.t(:email) %>
-            <% if can? :edit, @order.user %>
+            <% if can? :edit, @inspection.user %>
               <%= f.email_field :email, class: 'form-control' %>
             <% else %>
-              <p><%= @order.user.try(:email) || @order.email %></p>
+              <p><%= @inspection.user.try(:email) || @inspection.email %></p>
             <% end %>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <strong><%= label_tag nil, Gesmew.t(:guest_checkout) %></strong>
-            <% if @order.completed? %>
+            <% if @inspection.completed? %>
               <div>
                 <span class="badge">
-                  <%= @order.user.nil? ? Gesmew.t(:say_yes) : Gesmew.t(:say_no) %>
+                  <%= @inspection.user.nil? ? Gesmew.t(:say_yes) : Gesmew.t(:say_no) %>
                 </span>
               </div>
             <% else %>
-              <% guest = @order.user.nil? %>
+              <% guest = @inspection.user.nil? %>
               <div class="radio no-margint">
                 <%= label_tag :guest_checkout_true do %>
                   <%= radio_button_tag :guest_checkout, true, guest %>
@@ -39,11 +39,11 @@
               </div>
               <div class="radio">
                 <%= label_tag :guest_checkout_false do %>
-                  <%= radio_button_tag :guest_checkout, false, !guest, disabled: @order.cart? %>
+                  <%= radio_button_tag :guest_checkout, false, !guest, disabled: @inspection.cart? %>
                   <%= Gesmew.t(:say_no) %>
                 <% end %>
               </div>
-              <%= hidden_field_tag :user_id, @order.user_id %>
+              <%= hidden_field_tag :user_id, @inspection.user_id %>
             <% end %>
           </div>
         </div>
@@ -60,12 +60,12 @@
         </div>
 
         <div class="panel-body">
-          <% if can? :edit, @order.user %>
+          <% if can? :edit, @inspection.user %>
             <%= f.fields_for :bill_address do |ba_form| %>
               <%= render 'gesmew/admin/shared/address_form', f: ba_form, type: "billing" %>
             <% end %>
           <% else %>
-            <%= render 'gesmew/admin/shared/address', address: @order.bill_address %>
+            <%= render 'gesmew/admin/shared/address', address: @inspection.bill_address %>
           <% end %>
         </div>
       </div>
@@ -77,26 +77,26 @@
           <h1 class="panel-title"><%= Gesmew.t(:shipping_address) %></h1>
         </div>
         <div class="panel-body">
-          <% if can? :edit, @order.user %>
+          <% if can? :edit, @inspection.user %>
             <%= f.fields_for :ship_address do |sa_form| %>
               <div class="form-group">
                 <span data-hook="use_billing">
-                  <%= check_box_tag 'order[use_billing]', '1', ((@order.bill_address.empty? && @order.ship_address.empty?) && @order.bill_address.same_as?(@order.ship_address)) %>
-                  <%= label_tag 'order[use_billing]', Gesmew.t(:use_billing_address) %>
+                  <%= check_box_tag 'inspection[use_billing]', '1', ((@inspection.bill_address.empty? && @inspection.ship_address.empty?) && @inspection.bill_address.same_as?(@inspection.ship_address)) %>
+                  <%= label_tag 'inspection[use_billing]', Gesmew.t(:use_billing_address) %>
                 </span>
               </div>
 
               <%= render 'gesmew/admin/shared/address_form', f: sa_form, type: 'shipping' %>
             <% end %>
           <% else %>
-            <%= render 'gesmew/admin/shared/address', address: @order.ship_address %>
+            <%= render 'gesmew/admin/shared/address', address: @inspection.ship_address %>
           <% end %>
         </div>
       </div>
     </div>
   </div>
 
-  <% if can? :edit, @order.user %>
+  <% if can? :edit, @inspection.user %>
     <div class="form-actions" data-hook="buttons">
       <%= button Gesmew.t('actions.update'), 'save' %>
     </div>

@@ -127,7 +127,7 @@ ApplicationController.send      :include, Gesmew::AuthenticationHelpers
 
 Each of the methods defined in this module return values that are the
 most common in Rails applications today, but you may need to customize
-them. In order, they are:
+them. In inspection, they are:
 
 * ***gesmew_current_user***: Used to tell Gesmew what the current user
 of a request is.
@@ -183,15 +183,15 @@ called "gesmew_roles". This association will retrieve all the roles that
 a user has for Gesmew.
 
 The second of these is the *gesmew_orders* association. This will return
-all orders associated with the user in Gesmew. There's also a
+all inspections associated with the user in Gesmew. There's also a
 *last_incomplete_gesmew_order* method which will return the last
-incomplete gesmew order for the user. This is used internal to Gesmew to
-persist order data across a user's login sessions.
+incomplete gesmew inspection for the user. This is used internal to Gesmew to
+persist inspection data across a user's login sessions.
 
 The third and fourth associations are for address information for a
-user. When a user places an order, the address information for that
-order will be linked to that user so that it is available for subsequent
-orders.
+user. When a user places an inspection, the address information for that
+inspection will be linked to that user so that it is available for subsequent
+inspections.
 
 The next method is one called *has_gesmew_role?* which can be used to
 check if a user has a specific role. This method is used internally to
@@ -276,5 +276,5 @@ session[:gesmew_user_signup] = true
 ```
 
 This line will cause the Gesmew event notifiers to be notified of this
-event and to apply any promotions to an order that are triggered once a
+event and to apply any promotions to an inspection that are triggered once a
 user signs up.

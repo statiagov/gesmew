@@ -41,17 +41,17 @@ var initProductActions = function () {
     var optionValueSelectNameTemplate = Handlebars.compile($('#promo-rule-option-value-option-values-select-name-template').html());
     var optionValueTemplate = Handlebars.compile($('#promo-rule-option-value-template').html());
 
-    var addOptionValue = function(product, values) {
+    var addOptionValue = function(establishment, values) {
       $('.js-promo-rule-option-values').append(optionValueTemplate({
-        productSelect: {value: product},
+        productSelect: {value: establishment},
         optionValuesSelect: {value: values}
       }));
       var optionValue = $('.js-promo-rule-option-values .promo-rule-option-value').last();
-      optionValue.find('.js-promo-rule-option-value-product-select').productAutocomplete({multiple: false});
+      optionValue.find('.js-promo-rule-option-value-establishment-select').productAutocomplete({multiple: false});
       optionValue.find('.js-promo-rule-option-value-option-values-select').optionValueAutocomplete({
-        productSelect: '.js-promo-rule-option-value-product-select'
+        productSelect: '.js-promo-rule-option-value-establishment-select'
       });
-      if (product === null) {
+      if (establishment === null) {
         optionValue.find('.js-promo-rule-option-value-option-values-select').prop('disabled', true);
       }
     };
@@ -75,7 +75,7 @@ var initProductActions = function () {
       $(this).parents('.promo-rule-option-value').remove();
     });
 
-    $(document).on('change', '.js-promo-rule-option-value-product-select', function () {
+    $(document).on('change', '.js-promo-rule-option-value-establishment-select', function () {
       var optionValueSelect = $(this).parents('.promo-rule-option-value').find('.js-promo-rule-option-value-option-values-select');
       optionValueSelect.attr('name', optionValueSelectNameTemplate({productId: $(this).val()}).trim());
       optionValueSelect.prop('disabled', $(this).val() === '').select2('val', '');

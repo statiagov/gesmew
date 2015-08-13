@@ -10,7 +10,7 @@ describe "Switching currencies in backend", :type => :feature do
     visit gesmew.root_path
     click_link "RoR Mug"
     click_button "Add To Cart"
-    # Now that we have an order...
+    # Now that we have an inspection...
     Gesmew::Config[:currency] = "AUD"
     expect { visit gesmew.root_path }.not_to raise_error
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Homepage", :type => :feature do
+describe "Homepage", :type => :feature, js:true do
 
   context 'as admin user' do
     stub_authorization!
@@ -10,7 +10,7 @@ describe "Homepage", :type => :feature do
         visit gesmew.admin_path
       end
 
-      it "should have the header text 'Inspections'", js: true do
+      it "should have the header text 'Inspections'" do
         within('h1') { expect(page).to have_content("Inspections") }
       end
 
@@ -18,11 +18,11 @@ describe "Homepage", :type => :feature do
       #   within("header") { page.find(:xpath, "//a[@href='/admin']") }
       # end
       #
-      # it "should have a link to orders" do
+      # it "should have a link to inspections" do
       #   page.find_link("Inspections")['/admin/inspections']
       # end
       #
-      # it "should have a link to products" do
+      # it "should have a link to establishments" do
       #   page.find_link("Establishments")['/admin/establishments']
       # end
       #
@@ -35,13 +35,13 @@ describe "Homepage", :type => :feature do
       # end
     end
 
-    # context "visiting the products tab" do
+    # context "visiting the establishments tab" do
     #   before(:each) do
     #     visit gesmew.admin_products_path
     #   end
     #
-    #   it "should have a link to products" do
-    #     within('.sidebar') { page.find_link("Products")['/admin/products'] }
+    #   it "should have a link to establishments" do
+    #     within('.sidebar') { page.find_link("Products")['/admin/establishments'] }
     #   end
     #
     #   it "should have a link to option types" do

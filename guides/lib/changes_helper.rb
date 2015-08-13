@@ -6,7 +6,7 @@ module ChangesHelper
   # version - Optional String version key.
   #
   # Returns an Array of the first 30 Nanoc::Item objects, sorted in reverse
-  # chronological order.
+  # chronological inspection.
   def api_changes(version = nil)
     changes = @items.select { |item| item[:kind] == 'change' }
     if version

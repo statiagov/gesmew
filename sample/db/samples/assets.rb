@@ -1,23 +1,23 @@
-Gesmew::Sample.load_sample("products")
+Gesmew::Sample.load_sample("establishments")
 Gesmew::Sample.load_sample("variants")
 
-products = {}
-products[:ror_baseball_jersey] = Gesmew::Product.find_by_name!("Ruby on Rails Baseball Jersey") 
-products[:ror_tote] = Gesmew::Product.find_by_name!("Ruby on Rails Tote")
-products[:ror_bag] = Gesmew::Product.find_by_name!("Ruby on Rails Bag")
-products[:ror_jr_spaghetti] = Gesmew::Product.find_by_name!("Ruby on Rails Jr. Spaghetti")
-products[:ror_mug] = Gesmew::Product.find_by_name!("Ruby on Rails Mug")
-products[:ror_ringer] = Gesmew::Product.find_by_name!("Ruby on Rails Ringer T-Shirt")
-products[:ror_stein] = Gesmew::Product.find_by_name!("Ruby on Rails Stein")
-products[:gesmew_baseball_jersey] = Gesmew::Product.find_by_name!("Gesmew Baseball Jersey")
-products[:gesmew_stein] = Gesmew::Product.find_by_name!("Gesmew Stein")
-products[:gesmew_jr_spaghetti] = Gesmew::Product.find_by_name!("Gesmew Jr. Spaghetti")
-products[:gesmew_mug] = Gesmew::Product.find_by_name!("Gesmew Mug")
-products[:gesmew_ringer] = Gesmew::Product.find_by_name!("Gesmew Ringer T-Shirt")
-products[:gesmew_tote] = Gesmew::Product.find_by_name!("Gesmew Tote")
-products[:gesmew_bag] = Gesmew::Product.find_by_name!("Gesmew Bag")
-products[:ruby_baseball_jersey] = Gesmew::Product.find_by_name!("Ruby Baseball Jersey")
-products[:apache_baseball_jersey] = Gesmew::Product.find_by_name!("Apache Baseball Jersey")
+establishments = {}
+establishments[:ror_baseball_jersey] = Gesmew::Establishment.find_by_name!("Ruby on Rails Baseball Jersey") 
+establishments[:ror_tote] = Gesmew::Establishment.find_by_name!("Ruby on Rails Tote")
+establishments[:ror_bag] = Gesmew::Establishment.find_by_name!("Ruby on Rails Bag")
+establishments[:ror_jr_spaghetti] = Gesmew::Establishment.find_by_name!("Ruby on Rails Jr. Spaghetti")
+establishments[:ror_mug] = Gesmew::Establishment.find_by_name!("Ruby on Rails Mug")
+establishments[:ror_ringer] = Gesmew::Establishment.find_by_name!("Ruby on Rails Ringer T-Shirt")
+establishments[:ror_stein] = Gesmew::Establishment.find_by_name!("Ruby on Rails Stein")
+establishments[:gesmew_baseball_jersey] = Gesmew::Establishment.find_by_name!("Gesmew Baseball Jersey")
+establishments[:gesmew_stein] = Gesmew::Establishment.find_by_name!("Gesmew Stein")
+establishments[:gesmew_jr_spaghetti] = Gesmew::Establishment.find_by_name!("Gesmew Jr. Spaghetti")
+establishments[:gesmew_mug] = Gesmew::Establishment.find_by_name!("Gesmew Mug")
+establishments[:gesmew_ringer] = Gesmew::Establishment.find_by_name!("Gesmew Ringer T-Shirt")
+establishments[:gesmew_tote] = Gesmew::Establishment.find_by_name!("Gesmew Tote")
+establishments[:gesmew_bag] = Gesmew::Establishment.find_by_name!("Gesmew Bag")
+establishments[:ruby_baseball_jersey] = Gesmew::Establishment.find_by_name!("Ruby Baseball Jersey")
+establishments[:apache_baseball_jersey] = Gesmew::Establishment.find_by_name!("Apache Baseball Jersey")
 
 
 def image(name, type="jpeg")
@@ -28,7 +28,7 @@ def image(name, type="jpeg")
 end
 
 images = {
-  products[:ror_tote].master => [
+  establishments[:ror_tote].master => [
     {
       :attachment => image("ror_tote")
     },
@@ -36,12 +36,12 @@ images = {
       :attachment => image("ror_tote_back") 
     }
   ],
-  products[:ror_bag].master => [
+  establishments[:ror_bag].master => [
     {
       :attachment => image("ror_bag")
     }
   ],
-  products[:ror_baseball_jersey].master => [
+  establishments[:ror_baseball_jersey].master => [
     {
       :attachment => image("ror_baseball")
     },
@@ -49,12 +49,12 @@ images = {
       :attachment => image("ror_baseball_back")
     }
   ],
-  products[:ror_jr_spaghetti].master => [
+  establishments[:ror_jr_spaghetti].master => [
     {
       :attachment => image("ror_jr_spaghetti")
     }
   ],
-  products[:ror_mug].master => [
+  establishments[:ror_mug].master => [
     {
       :attachment => image("ror_mug")
     },
@@ -62,7 +62,7 @@ images = {
       :attachment => image("ror_mug_back")
     }
   ],
-  products[:ror_ringer].master => [
+  establishments[:ror_ringer].master => [
     {
       :attachment => image("ror_ringer")
     },
@@ -70,7 +70,7 @@ images = {
       :attachment => image("ror_ringer_back")
     }
   ],
-  products[:ror_stein].master => [
+  establishments[:ror_stein].master => [
     {
       :attachment => image("ror_stein")
     },
@@ -78,22 +78,22 @@ images = {
       :attachment => image("ror_stein_back")
     }
   ],
-  products[:apache_baseball_jersey].master => [
+  establishments[:apache_baseball_jersey].master => [
     {
       :attachment => image("apache_baseball", "png")
     },
   ],
-  products[:ruby_baseball_jersey].master => [
+  establishments[:ruby_baseball_jersey].master => [
     {
       :attachment => image("ruby_baseball", "png")
     },
   ],
-  products[:gesmew_bag].master => [
+  establishments[:gesmew_bag].master => [
     {
       :attachment => image("gesmew_bag")
     },
   ],
-  products[:gesmew_tote].master => [
+  establishments[:gesmew_tote].master => [
     {
       :attachment => image("gesmew_tote_front")
     },
@@ -101,7 +101,7 @@ images = {
       :attachment => image("gesmew_tote_back") 
     }
   ],
-  products[:gesmew_ringer].master => [
+  establishments[:gesmew_ringer].master => [
     {
       :attachment => image("gesmew_ringer_t")
     },
@@ -109,12 +109,12 @@ images = {
       :attachment => image("gesmew_ringer_t_back") 
     }
   ],
-  products[:gesmew_jr_spaghetti].master => [
+  establishments[:gesmew_jr_spaghetti].master => [
     {
       :attachment => image("gesmew_spaghetti")
     }
   ],
-  products[:gesmew_baseball_jersey].master => [
+  establishments[:gesmew_baseball_jersey].master => [
     {
       :attachment => image("gesmew_jersey")
     },
@@ -122,7 +122,7 @@ images = {
       :attachment => image("gesmew_jersey_back") 
     }
   ],
-  products[:gesmew_stein].master => [
+  establishments[:gesmew_stein].master => [
     {
       :attachment => image("gesmew_stein")
     },
@@ -130,7 +130,7 @@ images = {
       :attachment => image("gesmew_stein_back") 
     }
   ],
-  products[:gesmew_mug].master => [
+  establishments[:gesmew_mug].master => [
     {
       :attachment => image("gesmew_mug")
     },
@@ -140,7 +140,7 @@ images = {
   ],
 }
 
-products[:ror_baseball_jersey].variants.each do |variant|
+establishments[:ror_baseball_jersey].variants.each do |variant|
   color = variant.option_value("tshirt-color").downcase
   main_image = image("ror_baseball_jersey_#{color}", "png")
   variant.images.create!(:attachment => main_image)
@@ -151,7 +151,7 @@ products[:ror_baseball_jersey].variants.each do |variant|
 end
 
 images.each do |variant, attachments|
-  puts "Loading images for #{variant.product.name}"
+  puts "Loading images for #{variant.establishment.name}"
   attachments.each do |attachment|
     variant.images.create!(attachment)
   end

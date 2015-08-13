@@ -82,7 +82,7 @@ private
   # @return [Boolean]
   #   the success of the tests
   def run_tests
-    system(%w[bundle exec rspec spec --order random])
+    system(%w[bundle exec rspec spec --inspection random])
   end
 
   # Execute system command via execve

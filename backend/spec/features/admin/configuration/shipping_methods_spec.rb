@@ -12,7 +12,7 @@ describe "Shipping Methods", type: :feature do
   before do
     Capybara.ignore_hidden_elements = false
     # HACK: To work around no email prompting on check out
-    allow_any_instance_of(Gesmew::Order).to receive_messages(require_email: false)
+    allow_any_instance_of(Gesmew::Inspection).to receive_messages(require_email: false)
     create(:check_payment_method)
 
     visit gesmew.admin_shipping_methods_path

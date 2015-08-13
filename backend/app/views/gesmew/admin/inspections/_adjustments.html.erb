@@ -11,7 +11,7 @@
         <th><%= Gesmew.t('name')%></th>
         <th><%= Gesmew.t('amount')%></th>
       </thead>
-      <tbody id="order-charges" data-hook="order_details_adjustments">
+      <tbody id="inspection-charges" data-hook="order_details_adjustments">
         <% adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
           <tr class="total">
             <td>
@@ -21,7 +21,7 @@
               <span>
                 <%= Gesmew::Money.new(
                   adjustments.sum(&:amount),
-                  currency: adjustments.first.order.try(:currency)
+                  currency: adjustments.first.inspection.try(:currency)
                 ) %>
               </span>
             </td>

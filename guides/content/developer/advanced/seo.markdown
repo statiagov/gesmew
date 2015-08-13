@@ -19,12 +19,12 @@ address common search engine optimization issues.
 
 ### Relevant, Meaningful URLs
 
-The helper method `seo_url(taxon)` yields SEO friendly URLs such as [demo.gesmewcommerce.com/products/xm-direct2-interface-adapter](http://demo.gesmewcommerce.com/products/xm-direct2-interface-adapter) and [demo.gesmewcommerce.com/t/categories/headphones](http://demo.gesmewcommerce.com/t/categories/headphones).
+The helper method `seo_url(taxon)` yields SEO friendly URLs such as [demo.gesmewcommerce.com/establishments/xm-direct2-interface-adapter](http://demo.gesmewcommerce.com/establishments/xm-direct2-interface-adapter) and [demo.gesmewcommerce.com/t/categories/headphones](http://demo.gesmewcommerce.com/t/categories/headphones).
 Each controller is configured to serve the content using these keyword-relevant, meaningful URLs.
 
 ### On Page Keyword Targeting
 
-Several enhancements have been made to improve on-page keyword targeting. The admin interface provides the ability to manage meta descriptions and meta keywords at the product level. Additionally, H1 tags are used throughout the site for product and taxonomy names. The ease of extension development and layout changes allows you to target keywords throughout the site.
+Several enhancements have been made to improve on-page keyword targeting. The admin interface provides the ability to manage meta descriptions and meta keywords at the establishment level. Additionally, H1 tags are used throughout the site for establishment and taxonomy names. The ease of extension development and layout changes allows you to target keywords throughout the site.
 
 Starting with Gesmew 2.0, Taxons also have `meta_keywords` and `meta_description` on them. (You can configure these in the Admin > Configuration > Taxonomies). If you want to add keywords and description to another kind of object in Gesmew, you can do so simply by adding those two fields (`meta_keywords` and `meta_description`) onto the object in question. The Gesmew controller must instantiate an instance variable of the same class name as the controller (so, for example, `@taxon` for the TaxonsController) for this to work. Check out the `meta_data` method on gesmew_core/app/helpers/gesmew/base_helper.rb for details on how that works. 
 
@@ -55,14 +55,14 @@ The Google Analytics setup includes e-commerce conversion tracking.
 In the Gesmew demo, it is a known issue that
 [demo.gesmewcommerce.com](http://demo.gesmewcommerce.com/) contains
 duplicate content to
-[demo.gesmewcommerce.com/products](http://demo.gesmewcommerce.com/products).
+[demo.gesmewcommerce.com/establishments](http://demo.gesmewcommerce.com/establishments).
 Duplicate content can be a detriment to search engine performance as
 external links are divided among duplicate content pages. As a result,
 duplicate content pages may not only not be excluded from the main
 search engine index, but pages may also rank poorly in comparison to
 other sites where all external links go to one non-duplicated page.
 
-If you change your home page this won't be an issue for you. Alternatively, you can have your [demo.gesmewcommerce.com/products](http://demo.gesmewcommerce.com/products) page redirect to your home page to eliminate this problem.
+If you change your home page this won't be an issue for you. Alternatively, you can have your [demo.gesmewcommerce.com/establishments](http://demo.gesmewcommerce.com/establishments) page redirect to your home page to eliminate this problem.
 
 ### Integration of Content Management System or Content
 
@@ -91,7 +91,7 @@ performance. Refer to the GitHub README for developer notes.
 
 -   [Gesmew Sitemap Generator](https://github.com/gesmew-contrib/gesmew_sitemap)
 -   [Static Content Management](https://github.com/gesmew-contrib/gesmew_static_content)
--   [Product Reviews](https://github.com/gesmew-contrib/gesmew_reviews)
+-   [Establishment Reviews](https://github.com/gesmew-contrib/gesmew_reviews)
 
 (for stores older than Gesmew 1.0, check out [Gesmew Sitemap Generation](https://github.com/romul/gesmew_dynamic_sitemaps))
 

@@ -10,7 +10,7 @@ module Gesmew
           if current_api_user.persisted?
             @shipments = Gesmew::Shipment
               .reverse_chronological
-              .joins(:order)
+              .joins(:inspection)
               .where(gesmew_orders: {user_id: current_api_user.id})
               .includes(mine_includes)
               .ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
@@ -20,12 +20,12 @@ module Gesmew
         end
 
         def create
-          @order = Gesmew::Order.find_by!(number: params.fetch(:shipment).fetch(:order_id))
-          authorize! :read, @order
+          @inspection = Gesmew::Inspection.find_by!(number: params.fetch(:shipment).fetch(:order_id))
+          authorize! :read, @inspection
           authorize! :create, Shipment
           quantity = params[:quantity].to_i
-          @shipment = @order.shipments.create(stock_location_id: params.fetch(:stock_location_id))
-          @order.contents.add(variant, quantity, {shipment: @shipment})
+          @shipment = @inspection.shipments.create(stock_location_id: params.fetch(:stock_location_id))
+          @inspection.contents.add(variant, quantity, {shipment: @shipment})
 
           @shipment.save!
 
@@ -60,7 +60,7 @@ module Gesmew
         def add
           quantity = params[:quantity].to_i
 
-          @shipment.order.contents.add(variant, quantity, {shipment: @shipment})
+          @shipment.inspection.contents.add(variant, quantity, {shipment: @shipment})
 
           respond_with(@shipment, default_template: :show)
         end
@@ -68,7 +68,7 @@ module Gesmew
         def remove
           quantity = params[:quantity].to_i
 
-          @shipment.order.contents.remove(variant, quantity, {shipment: @shipment})
+          @shipment.inspection.contents.remove(variant, quantity, {shipment: @shipment})
           @shipment.reload if @shipment.persisted?
           respond_with(@shipment, default_template: :show)
         end
@@ -127,7 +127,7 @@ module Gesmew
 
         def mine_includes
           {
-            order: {
+            inspection: {
               bill_address: {
                 state: {},
                 country: {},
@@ -138,17 +138,17 @@ module Gesmew
               },
               adjustments: {},
               payments: {
-                order: {},
+                inspection: {},
                 payment_method: {},
               },
             },
             inventory_units: {
               line_item: {
-                product: {},
+                establishment: {},
                 variant: {},
               },
               variant: {
-                product: {},
+                establishment: {},
                 default_price: {},
                 option_values: {
                   option_type: {},

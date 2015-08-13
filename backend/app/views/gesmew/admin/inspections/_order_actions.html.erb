@@ -1,10 +1,10 @@
 <% content_for :page_actions do %>
-  <% if can?(:fire, order) %>
-    <%= event_links(order, events) %>
+  <% if can?(:fire, inspection) %>
+    <%= event_links(inspection, events) %>
   <% end %>
-  <% if can?(:resend, order) %>
-    <%= button_link_to Gesmew.t(:resend, scope: 'admin.order.events', default: Gesmew.t(:resend)),
-          resend_admin_order_url(order),
+  <% if can?(:resend, inspection) %>
+    <%= button_link_to Gesmew.t(:resend, scope: 'admin.inspection.events', default: Gesmew.t(:resend)),
+          resend_admin_order_url(inspection),
           method: :post,
           icon: 'envelope'
     %>

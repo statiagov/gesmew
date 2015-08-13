@@ -3,8 +3,8 @@ module Gesmew
     module StockMovementsHelper
       def pretty_originator(stock_movement)
         if stock_movement.originator.respond_to?(:number)
-          if stock_movement.originator.respond_to?(:order)
-            link_to stock_movement.originator.number, [:edit, :admin, stock_movement.originator.order]
+          if stock_movement.originator.respond_to?(:inspection)
+            link_to stock_movement.originator.number, [:edit, :admin, stock_movement.originator.inspection]
           else
             stock_movement.originator.number
           end

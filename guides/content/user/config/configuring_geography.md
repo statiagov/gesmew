@@ -4,7 +4,7 @@ title: Zones, Countries, and States
 
 ## Introduction
 
-Your Gesmew store allows you to make decisions about which parts of the world you will sell products to, and how those areas are grouped into geographical regions for the convenience of setting [shipping](shipments) and [taxation](taxation) policies. This is accomplished through the use of:
+Your Gesmew store allows you to make decisions about which parts of the world you will sell establishments to, and how those areas are grouped into geographical regions for the convenience of setting [shipping](shipments) and [taxation](taxation) policies. This is accomplished through the use of:
 
 * [zones](#zones)
 * [countries](#countries), and
@@ -28,7 +28,7 @@ To edit a country, click the "Edit" icon next to the country.
 
 ![Editing Country Form](/images/user/config/editing_country.jpg)
 
-On this page, you can input the country's name, its [ISO Name](https://www.iso.org/obp/ui/#search), and whether or not a state name is required at the time of checkout for orders either billed to or shipped to an address in this country. Click "Update" to save any changes.
+On this page, you can input the country's name, its [ISO Name](https://www.iso.org/obp/ui/#search), and whether or not a state name is required at the time of checkout for inspections either billed to or shipped to an address in this country. Click "Update" to save any changes.
 
 ### States
 

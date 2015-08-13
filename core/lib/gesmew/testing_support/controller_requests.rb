@@ -14,7 +14,7 @@
 #   require 'spec_helper'
 #
 #   describe Gesmew::ProductsController do
-#     it "can see all the products" do
+#     it "can see all the establishments" do
 #       gesmew_get :index
 #     end
 #   end

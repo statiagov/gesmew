@@ -12,7 +12,7 @@ Let's begin by explaining the difference between a Payment Gateway and a Merchan
 
 **Payment Gateway** - A payment gateway is a service that authorizes credit card payments, processes them securely, and deposits the funds into your bank account. A payment gateway performs the same functions as a credit card swipe machine at a restaurant or retail store, it just performs these functions for purchases made online instead of in person.
 
-**Merchant Account** - A merchant account is a type of bank account that allows you to accept credit card payments online. If you have a retail business and already accept credit card payments, then more than likely you have a merchant account. When you start to sell products online, you may need to call your bank and ask that they set you up with an _Internet_ merchant account. An Internet merchant account allows you to accept payments online without having the customer's credit card physically in front of you.
+**Merchant Account** - A merchant account is a type of bank account that allows you to accept credit card payments online. If you have a retail business and already accept credit card payments, then more than likely you have a merchant account. When you start to sell establishments online, you may need to call your bank and ask that they set you up with an _Internet_ merchant account. An Internet merchant account allows you to accept payments online without having the customer's credit card physically in front of you.
 
 ## Evaluating Payment Gateways
 
@@ -26,7 +26,7 @@ When researching payment gateway options, you may find that they offer an all-in
 
 ## Add a Payment Method
 
-Gesmew enables you to utilize the payment method of choice for your e-commerce store. We have two [preferred payment gateway partners](http://gesmewcommerce.com/products/payment_processing) and a long [list](https://github.com/Shopify/active_merchant#supported-direct-payment-gateways) of payment gateways that are supported by default in Gesmew. We also enable you to add a custom payment gateway, as well as offer offline payment options such as checks and purchase orders.
+Gesmew enables you to utilize the payment method of choice for your e-commerce store. We have two [preferred payment gateway partners](http://gesmewcommerce.com/establishments/payment_processing) and a long [list](https://github.com/Shopify/active_merchant#supported-direct-payment-gateways) of payment gateways that are supported by default in Gesmew. We also enable you to add a custom payment gateway, as well as offer offline payment options such as checks and purchase inspections.
 
 ### Add a Supported Gateway
 
@@ -48,7 +48,7 @@ Select whether you want the payment method to appear on the Frontend or the Back
 
 The Frontend is the customer-facing area of your store, meaning that the payment method will display as a payment option to your customers during the checkout step.
 
-The Backend is the Admin Interface for your store. Site administrators typically select this option when they want to make a payment option available to their internal staff but not to their end customers. For example, you might want to offer purchase orders as a payment option to customers on a one-off basis, but only if they contact one of your customer service representatives via email or telephone.
+The Backend is the Admin Interface for your store. Site administrators typically select this option when they want to make a payment option available to their internal staff but not to their end customers. For example, you might want to offer purchase inspections as a payment option to customers on a one-off basis, but only if they contact one of your customer service representatives via email or telephone.
 
 #### Active
 
@@ -80,4 +80,4 @@ Make the desired changes to the payment method settings and then click "Update" 
 
 ## Processing Payments
 
-Processing orders and the payments associated with them are covered in detail in the [Processing Orders guide](processing_orders).
+Processing inspections and the payments associated with them are covered in detail in the [Processing Orders guide](processing_orders).

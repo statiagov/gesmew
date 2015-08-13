@@ -19,7 +19,7 @@ module Gesmew
 
         app.config.assets.precompile += %w[
           gesmew/backend/all*
-          gesmew/backend/orders/edit_form.js
+          gesmew/backend/inspections/edit_form.js
           gesmew/backend/address_states.js
           jqPlot/excanvas.min.js
           gesmew/backend/images/new.js

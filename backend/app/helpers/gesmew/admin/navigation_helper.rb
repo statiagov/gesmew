@@ -8,13 +8,13 @@ module Gesmew
       # Option hash may follow. Valid options are
       #   * :label to override link text, otherwise based on the first resource name (translated)
       #   * :route to override automatically determining the default route
-      #   * :match_path as an alternative way to control when the tab is active, /products would
-      #     match /admin/products, /admin/products/5/variants etc.  Can be a String or a Regexp.
+      #   * :match_path as an alternative way to control when the tab is active, /establishments would
+      #     match /admin/establishments, /admin/establishments/5/variants etc.  Can be a String or a Regexp.
       #     Controller names are ignored if :match_path is provided.
       #
       # Example:
-      #   # Link to /admin/orders, also highlight tab for ProductsController and ShipmentsController
-      #   tab :orders, :products, :shipments
+      #   # Link to /admin/inspections, also highlight tab for ProductsController and ShipmentsController
+      #   tab :inspections, :establishments, :shipments
       def tab(*args)
         options = { label: args.first.to_s }
 
@@ -68,7 +68,7 @@ module Gesmew
         end
       end
 
-      # sidebar are used on order edit, product edit, user overview etc.
+      # sidebar are used on inspection edit, establishment edit, user overview etc.
       # this link is shown so a user can collapse the sidebar
       def collapse_sidebar_link
         content_tag :div, class: "collapse-sidebar" do
@@ -79,11 +79,11 @@ module Gesmew
         end
       end
 
-      # the per_page_dropdown is used on index pages like orders, products, promotions etc.
+      # the per_page_dropdown is used on index pages like inspections, establishments, promotions etc.
       # this method generates the select_tag
       def per_page_dropdown
-        # there is a config setting for admin_products_per_page, only for the orders page
-        if @products && per_page_default = Gesmew::Config.admin_products_per_page
+        # there is a config setting for admin_products_per_page, only for the inspections page
+        if @establishments && per_page_default = Gesmew::Config.admin_products_per_page
           per_page_options = []
           5.times do |amount|
             per_page_options << (amount + 1) * Gesmew::Config.admin_products_per_page
@@ -101,9 +101,9 @@ module Gesmew
       # finds class for a given symbol / string
       #
       # Example :
-      # :products returns Gesmew::Product
+      # :establishments returns Gesmew::Establishment
       # :my_products returns MyProduct if MyProduct is defined
-      # :my_products returns My::Product if My::Product is defined
+      # :my_products returns My::Establishment if My::Establishment is defined
       # if cannot constantize it returns nil
       # This will allow us to use cancan abilities on tab
       def klass_for(name)

@@ -1,4 +1,4 @@
-shared_context "product prototype" do
+shared_context "establishment prototype" do
 
   def build_option_type_with_values(name, values)
     ot = FactoryGirl.create(:option_type, :name => name)

@@ -5,13 +5,13 @@ section: core
 
 ## Overview
 
-Gesmew uses a hybrid approach for tracking inventory: On-hand inventory is stored as a count on a variant `StockItem`. This gives good performance for stores with large inventories. Back-ordered, sold, or shipped products are stored as individual `InventoryUnit` objects so they can have relevant information attached to them.
+Gesmew uses a hybrid approach for tracking inventory: On-hand inventory is stored as a count on a variant `StockItem`. This gives good performance for stores with large inventories. Back-ordered, sold, or shipped establishments are stored as individual `InventoryUnit` objects so they can have relevant information attached to them.
 
 What if you don't need to track inventory? We have come up with a design that basically shields users of simple stores from much of this complexity. Simply set `Gesmew::Config[:track_inventory_levels]` to `false` and you never have to worry about it.
 
-New products created in the system can be given a starting "on hand" inventory level. You can subsequently set new inventory levels and the correct things will happen, e.g. adding new on-hand inventory to an out-of-stock product that has some backorders will first fill the backorders then update the product with the remaining inventory count.
+New establishments created in the system can be given a starting "on hand" inventory level. You can subsequently set new inventory levels and the correct things will happen, e.g. adding new on-hand inventory to an out-of-stock establishment that has some backorders will first fill the backorders then update the establishment with the remaining inventory count.
 
-As of Gesmew 2.0, there is a new Stock Management system in place that allows for fine-grained control over inventory for products and variants.
+As of Gesmew 2.0, there is a new Stock Management system in place that allows for fine-grained control over inventory for establishments and variants.
 
 ## Stock Management
 
@@ -37,7 +37,7 @@ Note: Stock items are created automatically for each stock location you have. Yo
 
 ![image](../images/developer/core/stock_movements.png)
 
-Stock movements allow you to manage the inventory of a stock item for a stock location. Stock movements are created in the admin interface by first navigating to the product you want to manage. Then, follow the "Stock Management" link in the sidebar.
+Stock movements allow you to manage the inventory of a stock item for a stock location. Stock movements are created in the admin interface by first navigating to the establishment you want to manage. Then, follow the "Stock Management" link in the sidebar.
 
 As shown in the image above, you can increase or decrease the count on hand available for a variant at a stock location. To increase the count on hand, make a stock movement with a positive quantity. To decrease the count on hand, make a stock movement with a negative quantity.
 
@@ -55,6 +55,6 @@ If you check "Receive Stock" while creating a new transfer, your stock transfer 
 
 ## Return Authorizations
 
-After an order is shipped, administrators can approve the return of some part (maybe all) of an order via the "Return Authorizations" tab in the single order console. To create a new return authorization, you should indicate which part of the order is being returned, what the reason for the return is, and what the resulting credit should be. The sale price of the product is shown for reference, but you can choose any value you like.
+After an inspection is shipped, administrators can approve the return of some part (maybe all) of an inspection via the "Return Authorizations" tab in the single inspection console. To create a new return authorization, you should indicate which part of the inspection is being returned, what the reason for the return is, and what the resulting credit should be. The sale price of the establishment is shown for reference, but you can choose any value you like.
 
-After the authorization is created, you can return later to its edit page and click on the 'Received' button to register the return of goods. This will create a credit adjustment on the order, which you can apply (i.e. refund) to the order's credit card via the payments screen. Gesmew will log the events in the order's history.
+After the authorization is created, you can return later to its edit page and click on the 'Received' button to register the return of goods. This will create a credit adjustment on the inspection, which you can apply (i.e. refund) to the inspection's credit card via the payments screen. Gesmew will log the events in the inspection's history.

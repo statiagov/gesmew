@@ -23,11 +23,11 @@ extension is to create a file within the relevant **app/models/gesmew** or
 **app/controllers/gesmew** directory with the original class name with
 **_decorator** appended.
 
-**Adding a custom method to the Product model:**
+**Adding a custom method to the Establishment model:**
 app/models/gesmew/product_decorator.rb
 
 ```ruby
-Gesmew::Product.class_eval do
+Gesmew::Establishment.class_eval do
   def some_method
     ...
   end
@@ -49,10 +49,10 @@ end
 The exact same format can be used to redefine an existing method.
 ***
 
-### Accessing Product Data
+### Accessing Establishment Data
 
 If you extend the Products controller with a new method, you may very
-well want to access product data in that method. You can do so by using
+well want to access establishment data in that method. You can do so by using
 the :load_data before_filter.
 
 ```ruby
@@ -66,7 +66,7 @@ end
 ```
 
 ***
-:load_data will use params[:id] to lookup the product by its
+:load_data will use params[:id] to lookup the establishment by its
 permalink.
 ***
 
@@ -136,12 +136,12 @@ end
     state / logic within the lambda passed to prevent overriding all
     possible responses with the same override.
 
-## Product Images
+## Establishment Images
 
 Gesmew uses Thoughtbot's
 [paperclip](https://github.com/thoughtbot/paperclip) gem to manage
-images for products. All the normal paperclip options are available on
-the Image class. If you want to modify the default Gesmew product and
+images for establishments. All the normal paperclip options are available on
+the Image class. If you want to modify the default Gesmew establishment and
 thumbnail image sizes, simply create an image_decorator.rb file in your
 app model directory, and override the attachment sizes:
 
@@ -150,7 +150,7 @@ Gesmew::Image.class_eval do
   attachment_definitions[:attachment][:styles] = {
     :mini => '48x48>', # thumbs under image
     :small => '100x100>', # images on category view
-    :product => '240x240>', # full product image
+    :establishment => '240x240>', # full establishment image
     :large => '600x600>' # light box image
   }
 end
@@ -162,7 +162,7 @@ You may also add additional image sizes for use in your templates
 ### Image resizing option syntax
 
 Default behavior is to resize the image and maintain aspect ratio (i.e.
-the :product version of a 480x400 image will be 240x200). Some commonly
+the :establishment version of a 480x400 image will be 240x200). Some commonly
 used options are:
 
 -   trailing #, image will be centrally cropped, ensuring the requested

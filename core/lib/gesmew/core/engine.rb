@@ -78,7 +78,7 @@ module Gesmew
       # config.after_initialize do
       #   Rails.application.config.gesmew.promotions.rules.concat [
       #     Gesmew::Promotion::Rules::ItemTotal,
-      #     Gesmew::Promotion::Rules::Product,
+      #     Gesmew::Promotion::Rules::Establishment,
       #     Gesmew::Promotion::Rules::User,
       #     Gesmew::Promotion::Rules::FirstOrder,
       #     Gesmew::Promotion::Rules::UserLoggedIn,

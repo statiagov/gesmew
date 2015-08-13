@@ -70,7 +70,7 @@ module Gesmew
     @@return_authorization_attributes = [:amount, :memo, :stock_location_id, :inventory_units_attributes, :return_authorization_reason_id]
 
     @@shipment_attributes = [
-      :order, :special_instructions, :stock_location_id, :id,
+      :inspection, :special_instructions, :stock_location_id, :id,
       :tracking, :address, :inventory_units, :selected_shipping_rate_id]
 
     # month / year may be provided by some sources, or others may elect to use one field
@@ -104,7 +104,7 @@ module Gesmew
     @@variant_attributes = [
       :name, :presentation, :cost_price, :lock_version,
       :position, :track_inventory,
-      :product_id, :product, :option_values_attributes, :price,
+      :product_id, :establishment, :option_values_attributes, :price,
       :weight, :height, :width, :depth, :sku, :cost_currency,
       options: [:name, :value], option_value_ids: []
     ]

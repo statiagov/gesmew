@@ -5,12 +5,12 @@ describe Gesmew::TaxonsHelper, :type => :helper do
   it "#taxon_preview" do
     taxon = create(:taxon)
     child_taxon = create(:taxon, parent: taxon)
-    product_1 = create(:product)
-    product_2 = create(:product)
-    product_3 = create(:product)
-    taxon.products << product_1
-    taxon.products << product_2
-    child_taxon.products << product_3
+    product_1 = create(:establishment)
+    product_2 = create(:establishment)
+    product_3 = create(:establishment)
+    taxon.establishments << product_1
+    taxon.establishments << product_2
+    child_taxon.establishments << product_3
 
     expect(taxon_preview(taxon.reload)).to eql([product_1, product_2, product_3])
   end

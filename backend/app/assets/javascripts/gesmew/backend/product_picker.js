@@ -13,7 +13,7 @@ $.fn.productAutocomplete = function (options) {
         ids: element.val().split(','),
         token: Gesmew.api_key
       }, function (data) {
-        callback(multiple ? data.products : data.products[0]);
+        callback(multiple ? data.establishments : data.establishments[0]);
       });
     },
     ajax: {
@@ -30,17 +30,17 @@ $.fn.productAutocomplete = function (options) {
         };
       },
       results: function (data, page) {
-        var products = data.products ? data.products : [];
+        var establishments = data.establishments ? data.establishments : [];
         return {
-          results: products
+          results: establishments
         };
       }
     },
-    formatResult: function (product) {
-      return product.name;
+    formatResult: function (establishment) {
+      return establishment.name;
     },
-    formatSelection: function (product) {
-      return product.name;
+    formatSelection: function (establishment) {
+      return establishment.name;
     }
   });
 };

@@ -9,7 +9,7 @@ default_attrs = {
   available_on: Time.zone.now
 }
 
-products = [
+establishments = [
   {
     :name => "Ruby on Rails Tote",
     :tax_category => clothing,
@@ -121,17 +121,17 @@ products = [
   }
 ]
 
-products.each do |product_attrs|
+establishments.each do |product_attrs|
   eur_price = product_attrs.delete(:eur_price)
   Gesmew::Config[:currency] = "USD"
 
   default_shipping_category = Gesmew::ShippingCategory.find_by_name!("Default")
-  product = Gesmew::Product.create!(default_attrs.merge(product_attrs))
+  establishment = Gesmew::Establishment.create!(default_attrs.merge(product_attrs))
   Gesmew::Config[:currency] = "EUR"
-  product.reload
-  product.price = eur_price
-  product.shipping_category = default_shipping_category
-  product.save!
+  establishment.reload
+  establishment.price = eur_price
+  establishment.shipping_category = default_shipping_category
+  establishment.save!
 end
 
 Gesmew::Config[:currency] = "USD"

@@ -47,7 +47,7 @@ class window.Gesmew
   @routes:
     states_search: @pathFor('api/v1/states')
     apply_coupon_code: (order_id) ->
-      Gesmew.pathFor("api/v1/orders/#{order_id}/apply_coupon_code")
+      Gesmew.pathFor("api/v1/inspections/#{order_id}/apply_coupon_code")
 
   @url_params:
     {}

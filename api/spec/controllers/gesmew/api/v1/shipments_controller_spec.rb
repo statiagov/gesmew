@@ -9,7 +9,7 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
     stub_authentication!
   end
 
-  let!(:resource_scoping) { { id: shipment.to_param, shipment: { order_id: shipment.order.to_param } } }
+  let!(:resource_scoping) { { id: shipment.to_param, shipment: { order_id: shipment.inspection.to_param } } }
 
   context "as a non-admin" do
     it "cannot make a shipment ready" do
@@ -24,7 +24,7 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
   end
 
   context "as an admin" do
-    let!(:order) { shipment.order }
+    let!(:inspection) { shipment.inspection }
     let!(:stock_location) { create(:stock_location_with_items) }
     let!(:variant) { create(:variant) }
 
@@ -35,7 +35,7 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
       let(:params) do
         {
           variant_id: stock_location.stock_items.first.variant.to_param,
-          shipment: { order_id: order.number },
+          shipment: { order_id: inspection.number },
           stock_location_id: stock_location.to_param
         }
       end
@@ -77,23 +77,23 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
     end
 
     it "can make a shipment ready" do
-      allow_any_instance_of(Gesmew::Order).to receive_messages(:paid? => true, :complete? => true)
+      allow_any_instance_of(Gesmew::Inspection).to receive_messages(:paid? => true, :complete? => true)
       api_put :ready
       expect(json_response).to have_attributes(attributes)
       expect(json_response["state"]).to eq("ready")
       expect(shipment.reload.state).to eq("ready")
     end
 
-    it "cannot make a shipment ready if the order is unpaid" do
-      allow_any_instance_of(Gesmew::Order).to receive_messages(:paid? => false)
+    it "cannot make a shipment ready if the inspection is unpaid" do
+      allow_any_instance_of(Gesmew::Inspection).to receive_messages(:paid? => false)
       api_put :ready
       expect(json_response["error"]).to eq("Cannot ready shipment.")
       expect(response.status).to eq(422)
     end
 
     context 'for completed shipments' do
-      let(:order) { create :completed_order_with_totals }
-      let!(:resource_scoping) { { id: order.shipments.first.to_param, shipment: { order_id: order.to_param } } }
+      let(:inspection) { create :completed_order_with_totals }
+      let!(:resource_scoping) { { id: inspection.shipments.first.to_param, shipment: { order_id: inspection.to_param } } }
 
       it 'adds a variant to a shipment' do
         api_put :add, { variant_id: variant.to_param, quantity: 2 }
@@ -102,7 +102,7 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
       end
 
       it 'removes a variant from a shipment' do
-        order.contents.add(variant, 2)
+        inspection.contents.add(variant, 2)
 
         api_put :remove, { variant_id: variant.to_param, quantity: 1 }
         expect(response.status).to eq(200)
@@ -110,7 +110,7 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
       end
 
       it 'removes a destroyed variant from a shipment' do
-        order.contents.add(variant, 2)
+        inspection.contents.add(variant, 2)
         variant.destroy
 
         api_put :remove, { variant_id: variant.to_param, quantity: 1 }
@@ -121,15 +121,15 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
 
     context "can transition a shipment from ready to ship" do
       before do
-        allow_any_instance_of(Gesmew::Order).to receive_messages(:paid? => true, :complete? => true)
-        shipment.update!(shipment.order)
+        allow_any_instance_of(Gesmew::Inspection).to receive_messages(:paid? => true, :complete? => true)
+        shipment.update!(shipment.inspection)
         expect(shipment.state).to eq("ready")
         allow_any_instance_of(Gesmew::ShippingRate).to receive_messages(:cost => 5)
       end
 
       it "can transition a shipment from ready to ship" do
         shipment.reload
-        api_put :ship, id: shipment.to_param, shipment: { tracking: "123123", order_id: shipment.order.to_param }
+        api_put :ship, id: shipment.to_param, shipment: { tracking: "123123", order_id: shipment.inspection.to_param }
         expect(json_response).to have_attributes(attributes)
         expect(json_response["state"]).to eq("shipped")
       end
@@ -145,7 +145,7 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
 
       before { subject }
 
-      context "the current api user is authenticated and has orders" do
+      context "the current api user is authenticated and has inspections" do
         let(:current_api_user) { shipped_order.user }
         let(:shipped_order) { create(:shipped_order) }
 
@@ -159,17 +159,17 @@ describe Gesmew::Api::V1::ShipmentsController, :type => :controller do
           let(:rendered_shipment_ids) { json_response['shipments'].map { |s| s['id'] } }
 
           it 'contains the shipments' do
-            expect(rendered_shipment_ids).to match_array current_api_user.orders.flat_map(&:shipments).map(&:id)
+            expect(rendered_shipment_ids).to match_array current_api_user.inspections.flat_map(&:shipments).map(&:id)
           end
         end
 
         context 'with filtering' do
           let(:params) { {q: {order_completed_at_not_null: 1}} }
 
-          let!(:incomplete_order) { create(:order, user: current_api_user) }
+          let!(:incomplete_order) { create(:inspection, user: current_api_user) }
 
           it 'filters' do
-            expect(assigns(:shipments).map(&:id)).to match_array current_api_user.orders.complete.flat_map(&:shipments).map(&:id)
+            expect(assigns(:shipments).map(&:id)).to match_array current_api_user.inspections.complete.flat_map(&:shipments).map(&:id)
           end
         end
       end

@@ -7,7 +7,7 @@ describe "Cart", type: :feature, inaccessible: true do
   end
 
   it "prevents double clicking the remove button on cart", js: true do
-    @product = create(:product, name: "RoR Mug")
+    @establishment = create(:establishment, name: "RoR Mug")
 
     visit gesmew.root_path
     click_link "RoR Mug"
@@ -22,15 +22,15 @@ describe "Cart", type: :feature, inaccessible: true do
   end
 
   # Regression test for #2006
-  it "does not error out with a 404 when GET'ing to /orders/populate" do
-    visit '/orders/populate'
+  it "does not error out with a 404 when GET'ing to /inspections/populate" do
+    visit '/inspections/populate'
     within(".alert-error") do
       expect(page).to have_content(Gesmew.t(:populate_get_error))
     end
   end
 
   it 'allows you to remove an item from the cart', :js => true do
-    create(:product, name: "RoR Mug")
+    create(:establishment, name: "RoR Mug")
     visit gesmew.root_path
     click_link "RoR Mug"
     click_button "add-to-cart-button"
@@ -49,7 +49,7 @@ describe "Cart", type: :feature, inaccessible: true do
   end
 
   it 'allows you to empty the cart', js: true do
-    create(:product, name: "RoR Mug")
+    create(:establishment, name: "RoR Mug")
     visit gesmew.root_path
     click_link "RoR Mug"
     click_button "add-to-cart-button"
@@ -64,18 +64,18 @@ describe "Cart", type: :feature, inaccessible: true do
   end
 
   # regression for #2276
-  context "product contains variants but no option values" do
+  context "establishment contains variants but no option values" do
     let(:variant) { create(:variant) }
-    let(:product) { variant.product }
+    let(:establishment) { variant.establishment }
 
     before { variant.option_values.destroy_all }
 
-    it "still adds product to cart", inaccessible: true do
-      visit gesmew.product_path(product)
+    it "still adds establishment to cart", inaccessible: true do
+      visit gesmew.product_path(establishment)
       click_button "add-to-cart-button"
 
       visit gesmew.cart_path
-      expect(page).to have_content(product.name)
+      expect(page).to have_content(establishment.name)
     end
   end
 

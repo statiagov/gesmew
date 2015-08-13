@@ -1,4 +1,4 @@
-<% if order.line_items.exists? %>
+<% if inspection.line_items.exists? %>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h1 class="panel-title">
@@ -11,16 +11,16 @@
         <th class="text-center"><%= Gesmew.t(:price) %></th>
         <th class="text-center"><%= Gesmew.t(:quantity) %></th>
         <th class="text-center"><%= Gesmew.t(:total_price) %></th>
-        <th class="orders-actions text-center" data-hook="admin_order_form_line_items_header_actions"></th>
+        <th class="inspections-actions text-center" data-hook="admin_order_form_line_items_header_actions"></th>
       </thead>
       <tbody>
-        <% order.line_items.each do |item| %>
+        <% inspection.line_items.each do |item| %>
           <tr class="line-item" id="line-item-<%= item.id %>">
             <td class="line-item-image image text-center">
               <%= mini_image(item.variant) %>
             </td>
             <td class="line-item-name text-center">
-              <%= item.variant.product.name %><br><%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
+              <%= item.variant.establishment.name %><br><%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
             </td>
             <td class="line-item-price text-center"><%= item.single_money.to_html %></td>
             <td class="line-item-qty-show text-center">

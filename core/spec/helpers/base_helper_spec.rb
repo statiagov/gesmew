@@ -52,7 +52,7 @@
 #
 #   # Regression test for #1436
 #   context "defining custom image helpers" do
-#     let(:product) { mock_model(Gesmew::Product, :images => [], :variant_images => []) }
+#     let(:establishment) { mock_model(Gesmew::Establishment, :images => [], :variant_images => []) }
 #     before do
 #       Gesmew::Image.class_eval do
 #         attachment_definitions[:attachment][:styles].merge!({:very_strange => '1x1'})
@@ -60,11 +60,11 @@
 #     end
 #
 #     it "should not raise errors when style exists" do
-#       expect { very_strange_image(product) }.not_to raise_error
+#       expect { very_strange_image(establishment) }.not_to raise_error
 #     end
 #
 #     it "should raise NoMethodError when style is not exists" do
-#       expect { another_strange_image(product) }.to raise_error(NoMethodError)
+#       expect { another_strange_image(establishment) }.to raise_error(NoMethodError)
 #     end
 #   end
 #
@@ -99,12 +99,12 @@
 #
 #   # Regression test for #2396
 #   context "meta_data_tags" do
-#     it "truncates a product description to 160 characters" do
+#     it "truncates a establishment description to 160 characters" do
 #       # Because the controller_name method returns "test"
 #       # controller_name is used by this method to infer what it is supposed
 #       # to be generating meta_data_tags for
 #       text = FFaker::Lorem.paragraphs(2).join(" ")
-#       @test = Gesmew::Product.new(:description => text)
+#       @test = Gesmew::Establishment.new(:description => text)
 #       tags = Nokogiri::HTML.parse(meta_data_tags)
 #       content = tags.css("meta[name=description]").first["content"]
 #       assert content.length <= 160, "content length is not truncated to 160 characters"
@@ -113,7 +113,7 @@
 #
 #   # Regression test for #5384
 #   context "custom image helpers conflict with inproper statements" do
-#     let(:product) { mock_model(Gesmew::Product, :images => [], :variant_images => []) }
+#     let(:establishment) { mock_model(Gesmew::Establishment, :images => [], :variant_images => []) }
 #     before do
 #       Gesmew::Image.class_eval do
 #         attachment_definitions[:attachment][:styles].merge!({:foobar => '1x1'})
@@ -121,11 +121,11 @@
 #     end
 #
 #     it "should not raise errors when helper method called" do
-#       expect { foobar_image(product) }.not_to raise_error
+#       expect { foobar_image(establishment) }.not_to raise_error
 #     end
 #
 #     it "should raise NoMethodError when statement with name equal to style name called" do
-#       expect { foobar(product) }.to raise_error(NoMethodError)
+#       expect { foobar(establishment) }.to raise_error(NoMethodError)
 #     end
 #   end
 #
@@ -136,14 +136,14 @@
 #   end
 #
 #   describe "#display_price" do
-#     let!(:product) { create(:product) }
+#     let!(:establishment) { create(:establishment) }
 #     let(:current_currency) { "USD" }
 #
-#     context "when there is no current order" do
+#     context "when there is no current inspection" do
 #       let (:current_tax_zone) { nil }
 #
 #       it "returns the price including default vat" do
-#         expect(display_price(product)).to eq("$19.99")
+#         expect(display_price(establishment)).to eq("$19.99")
 #       end
 #
 #       context "with a default VAT" do
@@ -152,32 +152,32 @@
 #           create :tax_rate,
 #                  included_in_price: true,
 #                  zone: current_tax_zone,
-#                  tax_category: product.tax_category,
+#                  tax_category: establishment.tax_category,
 #                  amount: 0.2
 #         end
 #
 #         it "returns the price adding the VAT" do
-#           expect(display_price(product)).to eq("$19.99")
+#           expect(display_price(establishment)).to eq("$19.99")
 #         end
 #       end
 #     end
 #
-#     context "with an order that has a tax zone" do
+#     context "with an inspection that has a tax zone" do
 #       let(:current_tax_zone) { create(:zone_with_country) }
-#       let(:current_order) { Gesmew::Order.new }
+#       let(:current_order) { Gesmew::Inspection.new }
 #       let(:default_zone) { create(:zone_with_country, default_tax: true) }
 #
 #       let!(:default_vat) do
 #         create :tax_rate,
 #                included_in_price: true,
 #                zone: default_zone,
-#                tax_category: product.tax_category,
+#                tax_category: establishment.tax_category,
 #                amount: 0.2
 #       end
 #
 #       context "that matches no VAT" do
 #         it "returns the price excluding VAT" do
-#           expect(display_price(product)).to eq("$16.66")
+#           expect(display_price(establishment)).to eq("$16.66")
 #         end
 #       end
 #
@@ -186,12 +186,12 @@
 #           create :tax_rate,
 #                  included_in_price: true,
 #                  zone: current_tax_zone,
-#                  tax_category: product.tax_category,
+#                  tax_category: establishment.tax_category,
 #                  amount: 0.4
 #         end
 #
 #         it "returns the price adding the VAT" do
-#           expect(display_price(product)).to eq("$23.32")
+#           expect(display_price(establishment)).to eq("$23.32")
 #         end
 #       end
 #     end

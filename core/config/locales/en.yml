@@ -39,11 +39,11 @@ en:
       gesmew/option_type:
         name: Name
         presentation: Presentation
-      gesmew/order:
+      gesmew/inspection:
         checkout_complete: Checkout Complete
         completed_at: Completed At
         coupon_code: Coupon Code
-        created_at: Order Date
+        created_at: Inspection Date
         email: Customer E-Mail
         ip_address: IP Address
         item_total: Item Total
@@ -54,7 +54,7 @@ en:
         state: State
         total: Total
         considered_risky: Risky
-      gesmew/order/bill_address:
+      gesmew/inspection/bill_address:
         address1: Billing address street
         city: Billing address city
         firstname: Billing address first name
@@ -62,7 +62,7 @@ en:
         phone: Billing address phone
         state: Billing address state
         zipcode: Billing address zipcode
-      gesmew/order/ship_address:
+      gesmew/inspection/ship_address:
         address1: Shipping address street
         city: Shipping address city
         firstname: Shipping address first name
@@ -75,7 +75,7 @@ en:
         number: Number
       gesmew/payment_method:
         name: Name
-      gesmew/product:
+      gesmew/establishment:
         available_on: Available On
         cost_currency: Cost Currency
         cost_price: Cost Price
@@ -288,7 +288,7 @@ en:
         gesmew/classification:
           attributes:
             taxon_id:
-              already_linked: "is already linked to this product"
+              already_linked: "is already linked to this establishment"
         gesmew/credit_card:
           attributes:
             base:
@@ -297,7 +297,7 @@ en:
         gesmew/line_item:
           attributes:
             currency:
-              must_match_order_currency: "Must match order currency"
+              must_match_order_currency: "Must match inspection currency"
         gesmew/refund:
           attributes:
             amount:
@@ -305,7 +305,7 @@ en:
         gesmew/reimbursement:
           attributes:
             base:
-              return_items_order_id_does_not_match: One or more of the return items specified do not belong to the same order as the reimbursement.
+              return_items_order_id_does_not_match: One or more of the return items specified do not belong to the same inspection as the reimbursement.
         gesmew/return_item:
           attributes:
             reimbursement:
@@ -401,8 +401,8 @@ en:
     add_new_style: Add New Style
     add_one: Add One
     add_option_value: Add Option Value
-    add_product: Add Product
-    add_product_properties: Add Product Properties
+    add_establishment: Add Establishment
+    add_establishment_properties: Add Establishment Properties
     add_rule_of_type: Add rule of type
     add_state: Add State
     add_stock: Add Stock
@@ -438,7 +438,7 @@ en:
         taxonomies: Taxonomies
         taxons: Taxons
         users: Users
-      order:
+      inspection:
         events:
           approve: approve
           cancel: cancel
@@ -449,9 +449,9 @@ en:
         addresses: Addresses
         items: Items
         items_purchased: Items Purchased
-        order_history: Order History
-        order_num: "Order #"
-        orders: Orders
+        order_history: Inspection History
+        order_num: "Inspection #"
+        inspections: Orders
         user_information: User Information
     administration: Administration
     advertise: Advertise
@@ -485,7 +485,7 @@ en:
     authorized: Authorized
     auto_capture: Auto Capture
     available_on: Available On
-    average_order_value: Average Order Value
+    average_order_value: Average Inspection Value
     avs_response: AVS Response
     back: Back
     back_end: Backend
@@ -511,9 +511,9 @@ en:
     cancel: cancel
     canceler: Canceler
     canceled_at: Canceled at
-    cannot_create_payment_without_payment_methods: You cannot create a payment for an order without any payment methods defined.
-    cannot_create_customer_returns: Cannot create customer returns as this order has no shipped units.
-    cannot_create_returns: Cannot create returns as this order has no shipped units.
+    cannot_create_payment_without_payment_methods: You cannot create a payment for an inspection without any payment methods defined.
+    cannot_create_customer_returns: Cannot create customer returns as this inspection has no shipped units.
+    cannot_create_returns: Cannot create returns as this inspection has no shipped units.
     cannot_perform_operation: Cannot perform requested operation
     cannot_set_shipping_method_without_address: Cannot set shipping method until customer details are provided.
     capture: Capture
@@ -531,7 +531,7 @@ en:
     charged: Charged
     checkout: Checkout
     choose_a_customer: Choose a customer
-    choose_a_taxon_to_sort_products_for: "Choose a taxon to sort products for"
+    choose_a_taxon_to_sort_establishments_for: "Choose a taxon to sort establishments for"
     choose_currency: Choose Currency
     choose_dashboard_locale: Choose Dashboard Locale
     choose_location: Choose location
@@ -539,7 +539,7 @@ en:
     clear_cache: Clear Cache
     clear_cache_ok: Cache was flushed
     clear_cache_warning: Clearing cache will temporarily reduce the performance of your store.
-    click_and_drag_on_the_products_to_sort_them: Click and drag on the products to sort them.
+    click_and_drag_on_the_establishments_to_sort_them: Click and drag on the establishments to sort them.
     clone: Clone
     close: Close
     close_all_adjustments: Close All Adjustments
@@ -570,17 +570,17 @@ en:
       US: United States of America
     coupon: Coupon
     coupon_code: Coupon code
-    coupon_code_already_applied: The coupon code has already been applied to this order
-    coupon_code_applied: The coupon code was successfully applied to your order.
+    coupon_code_already_applied: The coupon code has already been applied to this inspection
+    coupon_code_applied: The coupon code was successfully applied to your inspection.
     coupon_code_better_exists: The previously applied coupon code results in a better deal
     coupon_code_expired: The coupon code is expired
     coupon_code_max_usage: Coupon code usage limit exceeded
-    coupon_code_not_eligible: This coupon code is not eligible for this order
+    coupon_code_not_eligible: This coupon code is not eligible for this inspection
     coupon_code_not_found: The coupon code you entered doesn't exist. Please try again.
     coupon_code_unknown_error: This coupon code could not be applied to the cart at this time.
     create: Create
     create_a_new_account: Create a new account
-    create_new_order: Create new order
+    create_new_order: Create new inspection
     create_reimbursement: Create reimbursement
     created_at: Created At
     credit: Credit
@@ -623,7 +623,7 @@ en:
     default_tax_zone: Default Tax Zone
     delete: Delete
     delete_from_taxon: Delete From Taxon
-    deleted_variants_present: Some line items in this order have products that are no longer available.
+    deleted_variants_present: Some line items in this inspection have establishments that are no longer available.
     delivery: Delivery
     depth: Depth
     details: Details
@@ -640,19 +640,19 @@ en:
     editing_user: Editing User
     eligibility_errors:
       messages:
-        has_excluded_product: Your cart contains a product that prevents this coupon code from being applied.
-        item_total_less_than: This coupon code can't be applied to orders less than %{amount}.
-        item_total_less_than_or_equal: This coupon code can't be applied to orders less than or equal to %{amount}.
-        item_total_more_than: This coupon code can't be applied to orders higher than %{amount}.
-        item_total_more_than_or_equal: This coupon code can't be applied to orders higher than or equal to %{amount}.
+        has_excluded_establishment: Your cart contains a establishment that prevents this coupon code from being applied.
+        item_total_less_than: This coupon code can't be applied to inspections less than %{amount}.
+        item_total_less_than_or_equal: This coupon code can't be applied to inspections less than or equal to %{amount}.
+        item_total_more_than: This coupon code can't be applied to inspections higher than %{amount}.
+        item_total_more_than_or_equal: This coupon code can't be applied to inspections higher than or equal to %{amount}.
         limit_once_per_user: This coupon code can only be used once per user.
-        missing_product: This coupon code can't be applied because you don't have all of the necessary products in your cart.
-        missing_taxon: You need to add a product from all applicable categories before applying this coupon code.
-        no_applicable_products: You need to add an applicable product before applying this coupon code.
-        no_matching_taxons: You need to add a product from an applicable category before applying this coupon code.
+        missing_establishment: This coupon code can't be applied because you don't have all of the necessary establishments in your cart.
+        missing_taxon: You need to add a establishment from all applicable categories before applying this coupon code.
+        no_applicable_establishments: You need to add an applicable establishment before applying this coupon code.
+        no_matching_taxons: You need to add a establishment from an applicable category before applying this coupon code.
         no_user_or_email_specified: You need to login or provide your email before applying this coupon code.
         no_user_specified: You need to login before applying this coupon code.
-        not_first_order: This coupon code can only be applied to your first order.
+        not_first_order: This coupon code can only be applied to your first inspection.
     email: Email
     employee_area: Employee Area
     empty: Empty
@@ -678,8 +678,8 @@ en:
           coupon_code_added: Coupon code added
         content:
           visited: Visit static content page
-        order:
-          contents_changed: Order contents changed
+        inspection:
+          contents_changed: Inspection contents changed
         page_view: Static page viewed
         user:
           signup: User signup
@@ -744,13 +744,13 @@ en:
     included_in_price: Included in Price
     included_price_validation: cannot be selected unless you have set a Default Tax Zone
     incomplete: Incomplete
-    info_product_has_multiple_skus: "This product has %{count} variants:"
+    info_establishment_has_multiple_skus: "This establishment has %{count} variants:"
     info_number_of_skus_not_shown:
       one: "and one other"
       other: "and %{count} others"
     instructions_to_reset_password: Please enter your email on the form below
     insufficient_stock: Insufficient stock available, only %{on_hand} remaining
-    insufficient_stock_lines_present: Some line items in this order have insufficient quantity.
+    insufficient_stock_lines_present: Some line items in this inspection have insufficient quantity.
     intercept_email_address: Intercept Email Address
     intercept_email_instructions: Override email recipient and replace with this address.
     internal_name: Internal Name
@@ -828,7 +828,7 @@ en:
     my_orders: My Orders
     name: Name
     name_on_card: Name on card
-    name_or_sku: Name or SKU (enter at least first 3 characters of product name)
+    name_or_sku: Name or SKU (enter at least first 3 characters of establishment name)
     new: New
     new_inspection: New Inspection
     new_customer: New Customer
@@ -836,11 +836,11 @@ en:
     new_country: New Country
     new_image: New Image
     new_option_type: New Option Type
-    new_order: New Order
-    new_order_completed: New Order Completed
+    new_order: New Inspection
+    new_order_completed: New Inspection Completed
     new_payment: New Payment
     new_payment_method: New Payment Method
-    new_product: New Product
+    new_establishment: New Establishment
     new_promotion: New Promotion
     new_promotion_category: New Promotion Category
     new_property: New Property
@@ -869,7 +869,7 @@ en:
     no_actions_added: No actions added
     no_payment_found: No payment found
     no_pending_payments: No pending payments
-    no_products_found: No products found
+    no_establishments_found: No establishments found
     no_results: No results
     no_rules_added: No rules added
     no_resource_found: 'No %{resource} found'
@@ -886,10 +886,10 @@ en:
     not_found: ! '%{resource} is not found'
     note: Note
     notice_messages:
-      product_cloned: Product has been cloned
-      product_deleted: Product has been deleted
-      product_not_cloned: Product could not be cloned
-      product_not_deleted: Product could not be deleted
+      establishment_cloned: Establishment has been cloned
+      establishment_deleted: Establishment has been deleted
+      establishment_not_cloned: Establishment could not be cloned
+      establishment_not_deleted: Establishment could not be deleted
       variant_deleted: Variant has been deleted
       variant_not_deleted: Variant could not be deleted
     num_orders: "# Orders"
@@ -905,35 +905,35 @@ en:
     options: Options
     or: or
     or_over_price: ! '%{price} or over'
-    order: Order
-    order_adjustments: Order adjustments
-    order_already_updated: The order has already been updated.
-    order_approved: Order approved
-    order_canceled: Order canceled
-    order_details: Order Details
-    order_email_resent: Order Email Resent
-    order_information: Order Information
-    order_line_items: Order Line Items
+    inspection: Inspection
+    order_adjustments: Inspection adjustments
+    order_already_updated: The inspection has already been updated.
+    order_approved: Inspection approved
+    order_canceled: Inspection canceled
+    order_details: Inspection Details
+    order_email_resent: Inspection Email Resent
+    order_information: Inspection Information
+    order_line_items: Inspection Line Items
     order_mailer:
       cancel_email:
         dear_customer: Dear Customer,
-        instructions: Your order has been CANCELED.  Please retain this cancellation information for your records.
-        order_summary_canceled: Order Summary [CANCELED]
-        subject: Cancellation of Order
+        instructions: Your inspection has been CANCELED.  Please retain this cancellation information for your records.
+        order_summary_canceled: Inspection Summary [CANCELED]
+        subject: Cancellation of Inspection
         subtotal: ! 'Subtotal:'
-        total: ! 'Order Total:'
+        total: ! 'Inspection Total:'
       confirm_email:
         dear_customer: Dear Customer,
-        instructions: Please review and retain the following order information for your records.
-        order_summary: Order Summary
-        subject: Order Confirmation
+        instructions: Please review and retain the following inspection information for your records.
+        order_summary: Inspection Summary
+        subject: Inspection Confirmation
         subtotal: ! 'Subtotal:'
         thanks: Thank you for your business.
-        total: ! 'Order Total:'
-    order_not_found: We couldn't find your order. Please try that action again.
-    order_number: Order %{number}
-    order_processed_successfully: Your order has been processed successfully
-    order_resumed: Order resumed
+        total: ! 'Inspection Total:'
+    order_not_found: We couldn't find your inspection. Please try that action again.
+    order_number: Inspection %{number}
+    order_processed_successfully: Your inspection has been processed successfully
+    order_resumed: Inspection resumed
     order_state:
       address: address
       awaiting_return: awaiting return
@@ -946,11 +946,11 @@ en:
       payment: payment
       resumed: resumed
       returned: returned
-    order_summary: Order Summary
-    order_sure_want_to: Are you sure you want to %{event} this order?
-    order_total: Order Total
-    order_updated: Order Updated
-    orders: Orders
+    order_summary: Inspection Summary
+    order_sure_want_to: Are you sure you want to %{event} this inspection?
+    order_total: Inspection Total
+    order_updated: Inspection Updated
+    inspections: Orders
     out_of_stock: Out of Stock
     overview: Overview
     package_from: package from
@@ -989,7 +989,7 @@ en:
     permalink: Permalink
     pending: Pending
     phone: Phone
-    place_order: Place Order
+    place_order: Place Inspection
     please_define_payment_methods: Please define some payment methods first.
     please_enter_reasonable_quantity: Please enter a reasonable quantity.
     populate_get_error: Something went wrong. Please try adding the item again.
@@ -1005,19 +1005,19 @@ en:
     price_range: Price Range
     price_sack: Price Sack
     process: Process
-    product: Product
-    product_details: Product Details
-    product_has_no_description: This product has no description
-    product_not_available_in_this_currency: This product is not available in the selected currency.
-    product_properties: Product Properties
-    product_rule:
-      choose_products: Choose products
-      label: Order must contain x amount of these products
+    establishment: Establishment
+    establishment_details: Establishment Details
+    establishment_has_no_description: This establishment has no description
+    establishment_not_available_in_this_currency: This establishment is not available in the selected currency.
+    establishment_properties: Establishment Properties
+    establishment_rule:
+      choose_establishments: Choose establishments
+      label: Inspection must contain x amount of these establishments
       match_all: all
       match_any: at least one
       match_none: none
-      product_source:
-        group: From product group
+      establishment_source:
+        group: From establishment group
         manual: Manually choose
     establishments: Establishments
     promotion: Promotion
@@ -1025,8 +1025,8 @@ en:
     promotion_action: Promotion Action
     promotion_action_types:
       create_adjustment:
-        description: Creates a promotion credit adjustment on the order
-        name: Create whole-order adjustment
+        description: Creates a promotion credit adjustment on the inspection
+        name: Create whole-inspection adjustment
       create_item_adjustments:
         description: Creates a promotion credit adjustment on a line item
         name: Create per-line-item adjustment
@@ -1034,7 +1034,7 @@ en:
         description: Populates the cart with the specified quantity of variant
         name: Create line items
       free_shipping:
-        description: Makes all shipments for the order free
+        description: Makes all shipments for the inspection free
         name: Free shipping
     promotion_actions: Actions
     promotion_category: Promotion Category
@@ -1046,10 +1046,10 @@ en:
     promotion_rule: Promotion Rule
     promotion_rule_types:
       first_order:
-        description: Must be the customer's first order
-        name: First order
+        description: Must be the customer's first inspection
+        name: First inspection
       item_total:
-        description: Order total meets these criteria
+        description: Inspection total meets these criteria
         name: Item total
       landing_page:
         description: Customer must have visited the specified page
@@ -1058,11 +1058,11 @@ en:
         description: Only One Use Per User
         name: One Use Per User
       option_value:
-        description: Order includes specified product(s) with matching option value(s)
+        description: Inspection includes specified establishment(s) with matching option value(s)
         name: Option Value(s)
-      product:
-        description: Order includes specified product(s)
-        name: Product(s)
+      establishment:
+        description: Inspection includes specified establishment(s)
+        name: Establishment(s)
       user:
         description: Available only to the specified users
         name: User
@@ -1070,7 +1070,7 @@ en:
         description: Available only to logged in users
         name: User Logged In
       taxon:
-        description: Order includes products with specified taxon(s)
+        description: Inspection includes establishments with specified taxon(s)
         name: Taxon(s)
     promotions: Promotions
     promotion_uses: Promotion uses
@@ -1130,11 +1130,11 @@ en:
     return_authorizations: Return Authorizations
     return_item_inventory_unit_ineligible: Return item's inventory unit must be shipped
     return_item_inventory_unit_reimbursed: Return item's inventory unit is already reimbursed
-    return_item_order_not_completed: Return item's order must be completed
+    return_item_order_not_completed: Return item's inspection must be completed
     return_item_rma_ineligible: Return item requires an RMA
     return_item_time_period_ineligible: Return item is outside the eligible time period
     return_items: Return Items
-    return_items_cannot_be_associated_with_multiple_orders: Return items cannot be associated with multiple orders.
+    return_items_cannot_be_associated_with_multiple_orders: Return items cannot be associated with multiple inspections.
     reimbursement_mailer:
       reimbursement_email:
         days_to_send: ! 'You have %{days} days to send back any items awaiting exchange.'
@@ -1192,7 +1192,7 @@ en:
     shipment_mailer:
       shipped_email:
         dear_customer: Dear Customer,
-        instructions: Your order has been shipped
+        instructions: Your inspection has been shipped
         shipment_summary: Shipment Summary
         subject: Shipment Notification
         thanks: Thank you for your business.
@@ -1232,7 +1232,7 @@ en:
     show_active: Show Active
     show_deleted: Show Deleted
     show_only_complete_inspections: Only show complete inspections
-    show_only_considered_risky: Only show risky orders
+    show_only_considered_risky: Only show risky inspections
     show_rate_in_label: Show rate in label
     sku: SKU
     skus: SKUs
@@ -1268,7 +1268,7 @@ en:
       invalid: Invalid
       manual_intervention_required: Manual intervention required
       open: Open
-      order: Order
+      inspection: Inspection
       on_hand: On hand
       payment: Payment
       pending: Pending
@@ -1287,7 +1287,7 @@ en:
     stock_locations: Stock Locations
     stock_locations_need_a_default_country: You must create a default country before creating a stock location.
     stock_management: Stock Management
-    stock_management_requires_a_stock_location: Please create a stock location in order to manage stock.
+    stock_management_requires_a_stock_location: Please create a stock location in inspection to manage stock.
     stock_movements: Stock Movements
     stock_movements_for_stock_location: Stock Movements for %{stock_location_name}
     stock_successfully_transferred: Stock was successfully transferred between locations.
@@ -1318,7 +1318,7 @@ en:
     taxon_placeholder: Add a Taxon
     taxon_rule:
       choose_taxons: Choose taxons
-      label: Order must contain x amount of these taxons
+      label: Inspection must contain x amount of these taxons
       match_all: all
       match_any: at least one
     taxonomies: Taxonomies
@@ -1335,9 +1335,9 @@ en:
         subject: Test Mail
     test_mode: Test Mode
     thank_you_for_your_order: Thank you for your business.  Please print out a copy of this confirmation page for your records.
-    there_are_no_items_for_this_order: There are no items for this order. Please add an item to the order to continue.
+    there_are_no_items_for_this_order: There are no items for this inspection. Please add an item to the inspection to continue.
     there_were_problems_with_the_following_fields: There were problems with the following fields
-    this_order_has_already_received_a_refund: This order has already received a refund
+    this_order_has_already_received_a_refund: This inspection has already received a refund
     thumbnail: Thumbnail
     tiers: Tiers
     tiered_flat_rate: Tiered Flat Rate
@@ -1400,9 +1400,9 @@ en:
     what_is_this: What's This?
     width: Width
     year: Year
-    you_have_no_orders_yet: You have no orders yet
+    you_have_no_orders_yet: You have no inspections yet
     your_cart_is_empty: Your cart is empty
-    your_order_is_empty_add_product: Your order is empty, please search for and add a product above
+    your_order_is_empty_add_establishment: Your inspection is empty, please search for and add a establishment above
     zip: Zip
     zipcode: Zip Code
     zone: Zone

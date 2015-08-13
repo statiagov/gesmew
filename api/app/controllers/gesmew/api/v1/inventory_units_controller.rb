@@ -10,7 +10,7 @@ module Gesmew
         end
 
         def update
-          authorize! :update, inventory_unit.order
+          authorize! :update, inventory_unit.inspection
 
           inventory_unit.transaction do
             if inventory_unit.update_attributes(inventory_unit_params)

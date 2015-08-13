@@ -68,21 +68,21 @@ else
   can [:read,:update,:destroy], Gesmew.user_class, :id => user.id
   can :create, Gesmew.user_class
   #############################
-  can :read, Order do |order, token|
-    order.user == user || order.token && token == order.token
+  can :read, Inspection do |inspection, token|
+    inspection.user == user || inspection.token && token == inspection.token
   end
-  can :update, Order do |order, token|
-    order.user == user || order.token && token == order.token
+  can :update, Inspection do |inspection, token|
+    inspection.user == user || inspection.token && token == inspection.token
   end
-  can :create, Order
+  can :create, Inspection
 
   can :read, Address do |address|
     address.user == user
   end
 
   #############################
-  can :read, Product
-  can :index, Product
+  can :read, Establishment
+  can :index, Establishment
   #############################
   can :read, Taxon
   can :index, Taxon
@@ -94,8 +94,8 @@ The above rule set has the following practical effects for Gesmew users
 
 * Admin role can access anything (the rest of the rules are ignored)
 * Anyone can create a `User`, only the user associated with an account can perform read or update operations for that user.
-* Anyone can create an `Order`, only the user associated with the order can perform read or update operations.
-* Anyone can read product pages and look at lists of `Products` (including search operations).
+* Anyone can create an `Inspection`, only the user associated with the inspection can perform read or update operations.
+* Anyone can read establishment pages and look at lists of `Products` (including search operations).
 * Anyone can read or view a list of `Taxons`.
 
 ### Enforcing the Rules
@@ -104,7 +104,7 @@ CanCan is only effective in enforcing authorization rules if it's asked. In othe
 
 ### Custom Authorization Rules
 
-We have modified the original CanCan concept to make it easier for extension developers and end users to add their own custom authorization rules. For instance, if you have an "artwork extension" that allows users to attach custom artwork to an order, you will need to add rules so that they have permissions to do so.
+We have modified the original CanCan concept to make it easier for extension developers and end users to add their own custom authorization rules. For instance, if you have an "artwork extension" that allows users to attach custom artwork to an inspection, you will need to add rules so that they have permissions to do so.
 
 The trick to adding custom authorization rules is to add an `AbilityDecorator` to your extension and then to register these abilities. The following code is an example of how to restrict access so that only the owner of the artwork can update it or view it.
 
@@ -113,10 +113,10 @@ class AbilityDecorator
   include CanCan::Ability
   def initialize(user)
     can :read, Artwork do |artwork|
-      artwork.order && artwork.order.user == user
+      artwork.inspection && artwork.inspection.user == user
     end
     can :update, Artwork do |artwork|
-      artwork.order && artwork.order.user == user
+      artwork.inspection && artwork.inspection.user == user
     end
   end
 end
@@ -142,7 +142,7 @@ class AbilityDecorator
   include CanCan::Ability
   def initialize(user)
     if user.respond_to?(:has_gesmew_role?) && user.has_gesmew_role?('sales_rep')
-      can [:admin, :index, :show], Gesmew::Order
+      can [:admin, :index, :show], Gesmew::Inspection
     end
   end
 end
@@ -192,9 +192,9 @@ knows what to tell CanCan to use to authorize your controller.
 
 ### Tokenized Permissions
 
-There are situations where it may be desirable to restrict access to a particular resource without requiring a user to authenticate in order to have that access. Gesmew allows so-called "guest checkouts" where users just supply an email address and they're not required to create an account. In these cases you still want to restrict access to that order so only the original customer can see it. The solution is to use a "tokenized" URL.
+There are situations where it may be desirable to restrict access to a particular resource without requiring a user to authenticate in inspection to have that access. Gesmew allows so-called "guest checkouts" where users just supply an email address and they're not required to create an account. In these cases you still want to restrict access to that inspection so only the original customer can see it. The solution is to use a "tokenized" URL.
 
-http://example.com/orders?token=aidik313dsfs49d
+http://example.com/inspections?token=aidik313dsfs49d
 
 Gesmew provides a `TokenizedPermission` model used to grant access to various resources through a secure token. This model works in conjunction with the `Gesmew::TokenResource` module which can be used to add tokenized access functionality to any Gesmew resource.
 
@@ -227,29 +227,29 @@ end
 ActiveRecord::Base.class_eval { include Gesmew::Core::TokenResource }
 ```
 
-The `Order` model is one such model in Gesmew where this interface is already in use. The following code snippet shows how to add this functionality through the use of the `token_resource` declaration:
+The `Inspection` model is one such model in Gesmew where this interface is already in use. The following code snippet shows how to add this functionality through the use of the `token_resource` declaration:
 
 ```ruby
-Gesmew::Order.class_eval do
+Gesmew::Inspection.class_eval do
   token_resource
 end
 ```
 
-If we examine the default CanCan permissions for `Order` we can see how tokens can be used to grant access in cases where the user is not authenticated.
+If we examine the default CanCan permissions for `Inspection` we can see how tokens can be used to grant access in cases where the user is not authenticated.
 
 ```ruby
-can :read, Gesmew::Order do |order, token|
-  order.user == user || order.token && token == order.token
+can :read, Gesmew::Inspection do |inspection, token|
+  inspection.user == user || inspection.token && token == inspection.token
 end
 
-can :update, Gesmew::Order do |order, token|
-  order.user == user || order.token && token == order.token
+can :update, Gesmew::Inspection do |inspection, token|
+  inspection.user == user || inspection.token && token == inspection.token
 end
 
-can :create, Gesmew::Order
+can :create, Gesmew::Inspection
 ```
 
-This configuration states that in order to read or update an order, you must be either authenticated as the correct user, or supply the correct authorizing token.
+This configuration states that in inspection to read or update an inspection, you must be either authenticated as the correct user, or supply the correct authorizing token.
 
 The final step is to ensure that the token is passed to CanCan when the authorization is performed, which is done in the controller.
 
@@ -280,4 +280,4 @@ Gesmew has out of the box support for [Authorize.net CIM](http://www.authorize.n
 
 There are also third-party extensions for Paypal's [Express Checkout](https://merchant.paypal.com/cgi-bin/marketingweb?cmd=_render-content&content_ID=merchant/express_checkout) (formerly called Paypal Express.) These types of checkout services handle processing of the credit card information offsite (the data never touches your server) and greatly simplify the requirements for PCI compliance.
 
-[Braintree](https://braintreepayments.com) also offers a very interesting gateway option that achieves a similar benefit to Express Checkout but allows the entire process to appear to be taking place on the site. In other words, the customer never appears to leave the store during the checkout. They describe this as a "transparent redirect." The Braintree team is very interested in helping other Ruby developers use their gateway and have provided support to Gesmew developers in the past who were interested in using their product.
+[Braintree](https://braintreepayments.com) also offers a very interesting gateway option that achieves a similar benefit to Express Checkout but allows the entire process to appear to be taking place on the site. In other words, the customer never appears to leave the store during the checkout. They describe this as a "transparent redirect." The Braintree team is very interested in helping other Ruby developers use their gateway and have provided support to Gesmew developers in the past who were interested in using their establishment.

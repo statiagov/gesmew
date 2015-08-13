@@ -9,7 +9,7 @@ module Gesmew
             if params[:ids]
               @taxons = Gesmew::Taxon.includes(:children).accessible_by(current_ability, :read).where(id: params[:ids].split(','))
             else
-              @taxons = Gesmew::Taxon.includes(:children).accessible_by(current_ability, :read).order(:taxonomy_id, :lft).ransack(params[:q]).result
+              @taxons = Gesmew::Taxon.includes(:children).accessible_by(current_ability, :read).inspection(:taxonomy_id, :lft).ransack(params[:q]).result
             end
           end
 
@@ -61,13 +61,13 @@ module Gesmew
           respond_with(taxon, status: 204)
         end
 
-        def products
-          # Returns the products sorted by their position with the classification
+        def establishments
+          # Returns the establishments sorted by their position with the classification
           # Products#index does not do the sorting.
           taxon = Gesmew::Taxon.find(params[:id])
-          @products = taxon.products.ransack(params[:q]).result
-          @products = @products.page(params[:page]).per(params[:per_page] || 500)
-          render "gesmew/api/v1/products/index"
+          @establishments = taxon.establishments.ransack(params[:q]).result
+          @establishments = @establishments.page(params[:page]).per(params[:per_page] || 500)
+          render "gesmew/api/v1/establishments/index"
         end
 
         private

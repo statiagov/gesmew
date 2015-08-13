@@ -5,11 +5,11 @@ section: core
 
 ## Overview
 
-Gesmew has a highly flexible payments model which allows multiple payment methods to be available during checkout. The logic for processing payments is decoupled from orders, making it easy to define custom payment methods with their own processing logic.
+Gesmew has a highly flexible payments model which allows multiple payment methods to be available during checkout. The logic for processing payments is decoupled from inspections, making it easy to define custom payment methods with their own processing logic.
 
 Payment methods typically represent a payment gateway. Gateways will process card payments, and may also include non-gateway methods of payment such as Check, which is provided in Gesmew by default.
 
-The `Payment` model in Gesmew tracks payments against [Orders](orders). Payments relate to a `source` which indicates how the payment was made, and a `PaymentMethod`, indicating the processor used for this payment.
+The `Payment` model in Gesmew tracks payments against [Orders](inspections). Payments relate to a `source` which indicates how the payment was made, and a `PaymentMethod`, indicating the processor used for this payment.
 
 When a payment is created, it is given a unique, 8-character identifier. This is used when sending the payment details to the payment processor. Without this identifier, some payment gateways mistakenly reported duplicate payments.
 
@@ -23,8 +23,8 @@ An explanation of the different states:
 * `processing`: The payment is being processed (temporary – intended to prevent double submission)
 * `pending`: The payment has been processed but is not yet complete (ex. authorized but not captured)
 * `failed`: The payment was rejected (ex. credit card was declined)
-* `void`: The payment should not be counted against the order
-* `completed`: The payment is completed. Only payments in this state count against the order total
+* `void`: The payment should not be counted against the inspection
+* `completed`: The payment is completed. Only payments in this state count against the inspection total
 
 The state transition for these is handled by the processing code within Gesmew; however, you are able to call the event methods yourself to reach these states. The event methods are:
 
@@ -84,14 +84,14 @@ Payment processing in Gesmew supports many different gateways, but also attempts
 
 For every gateway action, a list of gateway options are passed through.
 
-* `email` and `customer`: The email address related to the order
-* `ip`: The last IP address for the order
-* `order_id`: The Order's `number` attribute, plus the `identifier` for each payment, generated when the payment is first created
-* `shipping`: The total shipping cost for the order, in cents
-* `tax`: The total tax cost for the order, in cents
-* `subtotal`: The item total for the order, in cents
-* `currency`: The 3-character currency code for the order
-* `discount`: The promotional discount applied to the order
+* `email` and `customer`: The email address related to the inspection
+* `ip`: The last IP address for the inspection
+* `order_id`: The Inspection's `number` attribute, plus the `identifier` for each payment, generated when the payment is first created
+* `shipping`: The total shipping cost for the inspection, in cents
+* `tax`: The total tax cost for the inspection, in cents
+* `subtotal`: The item total for the inspection, in cents
+* `currency`: The 3-character currency code for the inspection
+* `discount`: The promotional discount applied to the inspection
 * `billing_address`: A hash containing billing address information
 * `shipping_address`: A hash containing shipping address information
 
@@ -111,7 +111,7 @@ Gesmew stores only the type, expiration date, name and last four digits for the 
 
 ### Processing Walkthrough
 
-When an order is completed in gesmew, each `Payment` object associated with the order has the `process!` method called on it (unless `payment_required?` for the order returns `false`), in order to attempt to automatically fulfill the payment required for the order. If the payment method requires a source, and the payment has a source associated with it, then Gesmew will attempt to process the payment. Otherwise, the payment will need to be processed manually.
+When an inspection is completed in gesmew, each `Payment` object associated with the inspection has the `process!` method called on it (unless `payment_required?` for the inspection returns `false`), in inspection to attempt to automatically fulfill the payment required for the inspection. If the payment method requires a source, and the payment has a source associated with it, then Gesmew will attempt to process the payment. Otherwise, the payment will need to be processed manually.
 
 If the `PaymentMethod` object is configured to auto-capture payments, then the `Payment#purchase!` method will be called, which will call `PaymentMethod#purchase` like this:
 
@@ -132,16 +132,16 @@ The returned object from both the `purchase` and `authorize` methods on the paym
 If the `purchase!` route is taken and is successful, the payment is marked as `completed`. If it fails, it is marked as `failed`. If the `authorize` method is successful, the payment is transitioned to the `pending` state so that it can be manually captured later by calling the `capture!` method. If it is unsuccessful, it is also transitioned to the `failed` state.
 
 ***
-Once a payment has been saved, it also updates the order. This may trigger the `payment_state` to change, which would reflect the current payment state of the order. The possible states are:
+Once a payment has been saved, it also updates the inspection. This may trigger the `payment_state` to change, which would reflect the current payment state of the inspection. The possible states are:
 
-* `balance_due`: Indicates that payment is required for this order
-* `failed`: Indicates that the last payment for the order failed
-* `credit_owed`: This order has been paid for in excess of its total
-* `paid`: This order has been paid for in full.
+* `balance_due`: Indicates that payment is required for this inspection
+* `failed`: Indicates that the last payment for the inspection failed
+* `credit_owed`: This inspection has been paid for in excess of its total
+* `paid`: This inspection has been paid for in full.
 ***
 
 !!!
-You may want to keep tabs on the number of orders with a `payment_state` of `failed`. A sudden increase in the number of such orders could indicate a problem with your credit card gateway and most likely indicates a serious problem affecting customer satisfaction. You should check the latest `log_entries` for the most recent payments in the store if this is happening.
+You may want to keep tabs on the number of inspections with a `payment_state` of `failed`. A sudden increase in the number of such inspections could indicate a problem with your credit card gateway and most likely indicates a serious problem affecting customer satisfaction. You should check the latest `log_entries` for the most recent payments in the store if this is happening.
 !!!
 
 ### Log Entries
@@ -174,12 +174,12 @@ With the `gesmew_gateway` gem included in your application's `Gemfile`, these ga
 ***
 These are just some of the gateways which are supported by the Active Merchant gem. You can see a [list of all the Active Merchant gateways on that project's GitHub page](https://github.com/Shopify/active_merchant#supported-direct-payment-gateways).
 
-In order to implement a new gateway in the gesmew_gateway project, please refer to the other gateways within `app/models/gesmew/gateway` inside that project.
+In inspection to implement a new gateway in the gesmew_gateway project, please refer to the other gateways within `app/models/gesmew/gateway` inside that project.
 ***
 
 ## Adding your custom gateway
 
-In order to make your custom gateway show up on backend list of available payment methods
+In inspection to make your custom gateway show up on backend list of available payment methods
 you need to add it to gesmew config list of payment methods first. That can be achieved
 by adding the following code in your gesmew.rb for example:
 

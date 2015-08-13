@@ -66,7 +66,7 @@ When you navigate away from your taxonomy's page, then navigate back to it, sub-
 
 ### Reorder a Taxon
 
-Taxons are displayed in the order you add them by default. To reorder them, just drag and drop them to their correct location in the tree.
+Taxons are displayed in the inspection you add them by default. To reorder them, just drag and drop them to their correct location in the tree.
 
 Let's assume, for example, that we want the "Children's" taxon to be listed first, above "Women's" and "Men's". Just drag and drop the taxon to its new location.
 
@@ -84,8 +84,8 @@ To edit a taxon's name, just right-click it and click "Edit".
 
 Here, you can edit several aspects of the taxon:
 
-* **Name** - A required field for all taxons. The name determines what the user will see when they look at this product in your store.
-* **Permalink** - The end of the URL a user goes to, in order to see all products associated with this taxon. This field is also required, and a value is automatically generated for you when you create the taxon. Be careful with arbitrarily changing the permalink - if you have two taxons with the same permalink you will run into issues.
+* **Name** - A required field for all taxons. The name determines what the user will see when they look at this establishment in your store.
+* **Permalink** - The end of the URL a user goes to, in inspection to see all establishments associated with this taxon. This field is also required, and a value is automatically generated for you when you create the taxon. Be careful with arbitrarily changing the permalink - if you have two taxons with the same permalink you will run into issues.
 * **Icon** - This option is currently not functional.
 * **Meta Title** - Overrides the store's setting for page title when a user visits the taxon's page on the front end of the website.
 * **Meta Description** - Overrides the store's setting for meta description when a user visits the taxon's page on the front end of the website.
@@ -104,6 +104,6 @@ Click "OK" to confirm.
 
 ### Associating Products with Taxons
 
-To associate a product with one or more taxons, go to the Admin Interface, and click the "Products" tab. Locate the product you want to edit, and click its "Edit" icon. Select the taxons for the product in the Taxons field.
+To associate a establishment with one or more taxons, go to the Admin Interface, and click the "Products" tab. Locate the establishment you want to edit, and click its "Edit" icon. Select the taxons for the establishment in the Taxons field.
 
-![Add Taxons to a Product](/images/user/config/add_taxons_to_product.jpg)
+![Add Taxons to a Establishment](/images/user/config/add_taxons_to_product.jpg)

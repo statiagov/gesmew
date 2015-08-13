@@ -24,14 +24,14 @@ module Gesmew
         end
       end
 
-      def products
+      def establishments
         if params[:ids]
-          @products = Product.where(id: params[:ids].split(",").flatten)
+          @establishments = Establishment.where(id: params[:ids].split(",").flatten)
         else
-          @products = Product.ransack(params[:q]).result
+          @establishments = Establishment.ransack(params[:q]).result
         end
 
-        @products = @products.distinct.page(params[:page]).per(params[:per_page])
+        @establishments = @establishments.distinct.page(params[:page]).per(params[:per_page])
         expires_in 15.minutes, public: true
         headers['Surrogate-Control'] = "max-age=#{15.minutes}"
       end

@@ -82,8 +82,8 @@ use rake db:load_file[/absolute/path/to/sample/filename.rb]}
       Rake::Task["db:seed"].invoke
     end
 
-    if Rails.env.production? and Gesmew::Product.count > 0
-      load_sample = agree("WARNING: In Production and products exist in database, load sample data anyways? [y/n]:" )
+    if Rails.env.production? and Gesmew::Establishment.count > 0
+      load_sample = agree("WARNING: In Production and establishments exist in database, load sample data anyways? [y/n]:" )
     else
       load_sample = true if ENV['AUTO_ACCEPT']
       load_sample = agree('Load Sample Data? [y/n]: ') unless load_sample

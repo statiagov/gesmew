@@ -68,17 +68,17 @@ Alternatively, you can use `Gesmew::Money.new(amount)` to get a `Gesmew::Money` 
 Along with these changes, the `Gesmew::Variant.active` scope now takes an argument for the currency. Whatever currency is specified will return variants in that currency. Previously it may have been enough to just do this:
 
 ```ruby
-@product.variants.active```
+@establishment.variants.active```
 
 But now you must specify a currency:
 
 ```ruby
-@product.variants.active("USD")```
+@establishment.variants.active("USD")```
 
 Or you can rely on the current currency within views:
 
 ```ruby
-@product.variants.active(current_currency)```
+@establishment.variants.active(current_currency)```
 
 ## Read the release notes
 

@@ -16,7 +16,7 @@ describe Gesmew::Admin::NavigationHelper, type: :helper do
     end
 
     it "should accept options with label and capitalize each word of it" do
-      admin_tab = helper.tab(:inspection, label: "delivered orders")
+      admin_tab = helper.tab(:inspection, label: "delivered inspections")
       expect(admin_tab).to include("Delivered Orders")
     end
 
@@ -49,25 +49,25 @@ describe Gesmew::Admin::NavigationHelper, type: :helper do
 
         it "should be selected if the fullpath matches" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:inspection, label: "delivered orders", match_path: '/inspections')
+          tab = helper.tab(:inspection, label: "delivered inspections", match_path: '/inspections')
           expect(tab).to include('selected')
         end
 
         it "should be selected if the fullpath matches a regular expression" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:inspection, label: "delivered orders", match_path: /inspections$|inspections\//)
+          tab = helper.tab(:inspection, label: "delivered inspections", match_path: /inspections$|inspections\//)
           expect(tab).to include('selected')
         end
 
         it "should not be selected if the fullpath does not match" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:inspection, label: "delivered orders", match_path: '/shady')
+          tab = helper.tab(:inspection, label: "delivered inspections", match_path: '/shady')
           expect(tab).not_to include('selected')
         end
 
         it "should not be selected if the fullpath does not match a regular expression" do
           allow(controller).to receive(:controller_name).and_return("bonobos")
-          tab = helper.tab(:inspection, label: "delivered orders", match_path: /shady$|shady\//)
+          tab = helper.tab(:inspection, label: "delivered inspections", match_path: /shady$|shady\//)
           expect(tab).not_to include('selected')
         end
       end

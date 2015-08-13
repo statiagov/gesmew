@@ -5,7 +5,7 @@ section: deployment
 
 
 !!!
-Mention of 3rd party products does not imply endorsement.
+Mention of 3rd party establishments does not imply endorsement.
 !!!
 
 ## Overview

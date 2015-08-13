@@ -42,7 +42,7 @@ Developers of all degrees of experience are the audience for these documents.
 
 ### User
 
-Admins and store owners are the ones most likely to be using this documentation. These guides are where developers can send their clients to teach them how to maintain their store and process orders.
+Admins and store owners are the ones most likely to be using this documentation. These guides are where developers can send their clients to teach them how to maintain their store and process inspections.
 
 ## Styleguide
 
@@ -85,7 +85,7 @@ Having the namespace for the class is optional, but should be included when omit
 
 An instance of a class should be lowercase, normal font:
 
-    You can view all of the orders for a particular user.
+    You can view all of the inspections for a particular user.
 
 ####Buttons, Links, Section Names, Form Elements####
 
@@ -97,7 +97,7 @@ These should always reference the correct label and can have their names quoted.
 * If you check "Receive Stock" while creating a new transfer...
 
 ####States, Attributes, Methods, Events, and Parameters####
-When referring to the state of an object - an order, for example - the state name should be lowercase and set off with tick (`) marks. For example:
+When referring to the state of an object - an inspection, for example - the state name should be lowercase and set off with tick (`) marks. For example:
 
     Orders that are in the `address` state do not have valid shipping and billing addresses assigned to them yet.
 
@@ -140,7 +140,7 @@ Certain blocks of text can be wrapped in sets of three characters, which will pl
 We specify the JSON responses in ruby so that we don't have to write
 them by hand all over the docs. You can render the JSON for a resource like this:
 
-    <%= json :product %>
+    <%= json :establishment %>
 
 This looks up `Gesmew::Resources::PRODUCT` in `lib/resources.rb`.
 
@@ -164,9 +164,9 @@ smart enough not to try to compile unchanged files:
       create  [0.01s]  output/changelog/index.html
       create  [0.02s]  output/countries/index.html
       create  [0.03s]  output/index.html
-      create  [0.08s]  output/order/line_items/index.html
-      create  [0.15s]  output/order/payments/index.html
-      create  [0.02s]  output/order/shipments/index.html
+      create  [0.08s]  output/inspection/line_items/index.html
+      create  [0.15s]  output/inspection/payments/index.html
+      create  [0.02s]  output/inspection/shipments/index.html
 
     Site compiled in 5.81s.
 
@@ -185,7 +185,7 @@ One thing: remember to add trailing slashes to all nanoc links!
 
 ## Edge guides
 
-Set `EDGE_GUIDES=true` in an environment variable in order to generate the "edge" badge. You may need to remove any previously generated output for the change to take effect
+Set `EDGE_GUIDES=true` in an environment variable in inspection to generate the "edge" badge. You may need to remove any previously generated output for the change to take effect
 
     $ EDGE_GUIDES=true nanoc autocompile
 

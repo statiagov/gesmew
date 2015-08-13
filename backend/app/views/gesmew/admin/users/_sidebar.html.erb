@@ -7,7 +7,7 @@
       <%= link_to_with_icon 'user', Gesmew.t(:"admin.user.addresses"), gesmew.addresses_admin_user_path(@user) %>
     </li>
     <li<%== ' class="active"' if current == :inspection %>>
-      <%= link_to_with_icon 'shopping-cart', Gesmew.t(:"admin.user.orders"), gesmew.orders_admin_user_path(@user) %>
+      <%= link_to_with_icon 'shopping-cart', Gesmew.t(:"admin.user.inspections"), gesmew.orders_admin_user_path(@user) %>
     </li>
     <li<%== ' class="active"' if current == :items %>>
       <%= link_to_with_icon 'edit', Gesmew.t(:"admin.user.items"), gesmew.items_admin_user_path(@user) %>

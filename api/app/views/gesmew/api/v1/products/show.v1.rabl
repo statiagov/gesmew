@@ -1,4 +1,4 @@
-object @product
+object @establishment
 cache [I18n.locale, @current_user_roles.include?('admin'), current_currency, root_object]
 
 attributes *product_attributes

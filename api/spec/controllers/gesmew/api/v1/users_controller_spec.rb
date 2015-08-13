@@ -135,13 +135,13 @@ module Gesmew
         expect(response.status).to eq(201)
       end
 
-      it "can destroy user without orders" do
-        user.orders.destroy_all
+      it "can destroy user without inspections" do
+        user.inspections.destroy_all
         api_delete :destroy, :id => user.id
         expect(response.status).to eq(204)
       end
 
-      it "cannot destroy user with orders" do
+      it "cannot destroy user with inspections" do
         create(:completed_order_with_totals, :user => user)
         api_delete :destroy, :id => user.id
         expect(json_response["exception"]).to eq "Gesmew::Core::DestroyWithOrdersError"

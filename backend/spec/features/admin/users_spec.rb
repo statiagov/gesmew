@@ -3,11 +3,10 @@ require 'spec_helper'
 describe 'Users', type: :feature do
   stub_authorization!
 
-  let!(:country) { create(:country) }
-  let!(:user_a) { create(:user_with_addresses, email: 'a@example.com') }
-  let!(:user_b) { create(:user_with_addresses, email: 'b@example.com') }
+  let!(:user_a) { create(:user_with_contact_info, email: 'a@example.com') }
+  let!(:user_b) { create(:user_with_contact_info, email: 'b@example.com') }
 
-  let(:order) { create(:completed_order_with_totals, user: user_a, number: "R123") }
+  let(:inspection) { create(:completed_order_with_totals, user: user_a, number: "R123") }
 
   let(:order_2) do
     create(:completed_order_with_totals, user: user_a, number: "R456").tap do |o|
@@ -16,7 +15,7 @@ describe 'Users', type: :feature do
     end
   end
 
-  let(:inspection) { [order, order_2] }
+  let(:inspection) { [inspection, order_2] }
 
   before do
     stub_const('Gesmew::User', create(:user, email: 'example@example.com').class)
@@ -24,15 +23,15 @@ describe 'Users', type: :feature do
 
   shared_examples_for 'a user page' do
     it 'has lifetime stats' do
-      orders
-      visit current_url # need to refresh after creating the orders for specs that did not require orders
+      inspections
+      visit current_url # need to refresh after creating the inspections for specs that did not require inspections
       within("#user-lifetime-stats") do
         [:total_sales, :num_orders, :average_order_value, :member_since].each do |stat_name|
           expect(page).to have_content Gesmew.t(stat_name)
         end
-        expect(page).to have_content (order.total + order_2.total)
-        expect(page).to have_content orders.count
-        expect(page).to have_content (orders.sum(&:total) / orders.count)
+        expect(page).to have_content (inspection.total + order_2.total)
+        expect(page).to have_content inspections.count
+        expect(page).to have_content (inspections.sum(&:total) / inspections.count)
         expect(page).to have_content I18n.l(user_a.created_at.to_date)
       end
     end
@@ -45,8 +44,8 @@ describe 'Users', type: :feature do
       expect(page).to have_link Gesmew.t(:"admin.user.account"), href: gesmew.edit_admin_user_path(user_a)
     end
 
-    it 'can navigate to the order history' do
-      expect(page).to have_link Gesmew.t(:"admin.user.orders"), href: gesmew.orders_admin_user_path(user_a)
+    it 'can navigate to the inspection history' do
+      expect(page).to have_link Gesmew.t(:"admin.user.inspections"), href: gesmew.orders_admin_user_path(user_a)
     end
 
     it 'can navigate to the items purchased' do
@@ -207,19 +206,19 @@ describe 'Users', type: :feature do
     end
   end
 
-  context 'order history with sorting' do
+  context 'inspection history with sorting' do
 
     before do
-      orders
+      inspections
       click_link user_a.email
-      within("#sidebar") { click_link Gesmew.t(:"admin.user.orders") }
+      within("#sidebar") { click_link Gesmew.t(:"admin.user.inspections") }
     end
 
     it_behaves_like 'a user page'
 
     context "completed_at" do
       it_behaves_like "a sortable attribute" do
-        let(:text_match_1) { I18n.l(order.completed_at.to_date) }
+        let(:text_match_1) { I18n.l(inspection.completed_at.to_date) }
         let(:text_match_2) { I18n.l(order_2.completed_at.to_date) }
         let(:table_id) { "listing_orders" }
         let(:sort_link) { "orders_completed_at_title" }
@@ -229,7 +228,7 @@ describe 'Users', type: :feature do
     [:number, :state, :total].each do |attr|
       context attr do
         it_behaves_like "a sortable attribute" do
-          let(:text_match_1) { order.send(attr).to_s }
+          let(:text_match_1) { inspection.send(attr).to_s }
           let(:text_match_2) { order_2.send(attr).to_s }
           let(:table_id) { "listing_orders" }
           let(:sort_link) { "orders_#{attr}_title" }
@@ -241,7 +240,7 @@ describe 'Users', type: :feature do
   context 'items purchased with sorting' do
 
     before do
-      orders
+      inspections
       click_link user_a.email
       within("#sidebar") { click_link Gesmew.t(:"admin.user.items") }
     end
@@ -250,7 +249,7 @@ describe 'Users', type: :feature do
 
     context "completed_at" do
       it_behaves_like "a sortable attribute" do
-        let(:text_match_1) { I18n.l(order.completed_at.to_date) }
+        let(:text_match_1) { I18n.l(inspection.completed_at.to_date) }
         let(:text_match_2) { I18n.l(order_2.completed_at.to_date) }
         let(:table_id) { "listing_items" }
         let(:sort_link) { "orders_completed_at_title" }
@@ -260,7 +259,7 @@ describe 'Users', type: :feature do
     [:number, :state].each do |attr|
       context attr do
         it_behaves_like "a sortable attribute" do
-          let(:text_match_1) { order.send(attr).to_s }
+          let(:text_match_1) { inspection.send(attr).to_s }
           let(:text_match_2) { order_2.send(attr).to_s }
           let(:table_id) { "listing_items" }
           let(:sort_link) { "orders_#{attr}_title" }
@@ -269,11 +268,11 @@ describe 'Users', type: :feature do
     end
 
     it "has item attributes" do
-      items = order.line_items | order_2.line_items
+      items = inspection.line_items | order_2.line_items
       expect(page).to have_table 'listing_items'
       within_table('listing_items') do
         items.each do |item|
-          expect(page).to have_selector(".item-name", text: item.product.name)
+          expect(page).to have_selector(".item-name", text: item.establishment.name)
           expect(page).to have_selector(".item-price", text: item.single_money.to_html)
           expect(page).to have_selector(".item-quantity", text: item.quantity)
           expect(page).to have_selector(".item-total", text: item.money.to_html)

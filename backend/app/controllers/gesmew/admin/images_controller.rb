@@ -10,23 +10,23 @@ module Gesmew
       private
 
       def location_after_destroy
-        admin_product_images_url(@product)
+        admin_product_images_url(@establishment)
       end
 
       def location_after_save
-        admin_product_images_url(@product)
+        admin_product_images_url(@establishment)
       end
 
       def load_index_data
-        @product = Product.friendly.includes(*variant_index_includes).find(params[:product_id])
+        @establishment = Establishment.friendly.includes(*variant_index_includes).find(params[:product_id])
       end
 
       def load_edit_data
-        @product = Product.friendly.includes(*variant_edit_includes).find(params[:product_id])
-        @variants = @product.variants.map do |variant|
+        @establishment = Establishment.friendly.includes(*variant_edit_includes).find(params[:product_id])
+        @variants = @establishment.variants.map do |variant|
           [variant.sku_and_options_text, variant.id]
         end
-        @variants.insert(0, [Gesmew.t(:all), @product.master.id])
+        @variants.insert(0, [Gesmew.t(:all), @establishment.master.id])
       end
 
       def set_viewable

@@ -22,11 +22,11 @@
       <th width="15%" class="text-center"><%= Gesmew.t(:price) %></th>
       <th width="15%" class="text-center"><%= Gesmew.t(:quantity) %></th>
       <th width="15%" class="text-center"><%= Gesmew.t(:total) %></th>
-      <th class="orders-actions actions text-center" data-hook="admin_order_form_line_items_header_actions"></th>
+      <th class="inspections-actions actions text-center" data-hook="admin_order_form_line_items_header_actions"></th>
     </thead>
 
-    <tbody data-shipment-number="<%= shipment.number %>" data-order-number="<%= order.number %>">
-      <%= render 'gesmew/admin/orders/shipment_manifest', shipment: shipment %>
+    <tbody data-shipment-number="<%= shipment.number %>" data-inspection-number="<%= inspection.number %>">
+      <%= render 'gesmew/admin/inspections/shipment_manifest', shipment: shipment %>
 
       <% unless shipment.shipped? %>
         <tr class="edit-method is-hidden total">
@@ -80,10 +80,10 @@
         </td>
       </tr>
 
-      <% if order.special_instructions.present? %>
+      <% if inspection.special_instructions.present? %>
         <tr class='special_instructions'>
           <td colspan="5">
-            <strong><%= Gesmew.t(:special_instructions) %>:&nbsp;</strong><%= order.special_instructions %>
+            <strong><%= Gesmew.t(:special_instructions) %>:&nbsp;</strong><%= inspection.special_instructions %>
           </td>
         </tr>
       <% end %>

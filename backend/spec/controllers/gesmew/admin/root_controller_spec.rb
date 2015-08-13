@@ -8,7 +8,7 @@ describe Gesmew::Admin::RootController do
       allow(controller).to receive(:gesmew_current_user).and_return(nil)
     end
 
-    it "redirects to orders path by default" do
+    it "redirects to inspections path by default" do
       get :index
 
       expect(response).to redirect_to '/admin/inspections'
@@ -18,7 +18,7 @@ describe Gesmew::Admin::RootController do
   context "authorized request" do
     stub_authorization!
 
-    it "redirects to orders path by default" do
+    it "redirects to inspections path by default" do
       get :index
 
       expect(response).to redirect_to '/admin/inspections'

@@ -11,24 +11,24 @@ module Gesmew
 
         def edit
           country_id = Address.default.country.id
-          @order.build_bill_address(country_id: country_id) if @order.bill_address.nil?
-          @order.build_ship_address(country_id: country_id) if @order.ship_address.nil?
+          @inspection.build_bill_address(country_id: country_id) if @inspection.bill_address.nil?
+          @inspection.build_ship_address(country_id: country_id) if @inspection.ship_address.nil?
 
-          @order.bill_address.country_id = country_id if @order.bill_address.country.nil?
-          @order.ship_address.country_id = country_id if @order.ship_address.country.nil?
+          @inspection.bill_address.country_id = country_id if @inspection.bill_address.country.nil?
+          @inspection.ship_address.country_id = country_id if @inspection.ship_address.country.nil?
         end
 
         def update
-          if @order.update_attributes(order_params)
+          if @inspection.update_attributes(order_params)
             if params[:guest_checkout] == "false"
-              @order.associate_user!(Gesmew.user_class.find(params[:user_id]), @order.email.blank?)
+              @inspection.associate_user!(Gesmew.user_class.find(params[:user_id]), @inspection.email.blank?)
             end
-            @order.next unless @order.complete?
-            @order.refresh_shipment_rates(Gesmew::ShippingMethod::DISPLAY_ON_FRONT_AND_BACK_END)
+            @inspection.next unless @inspection.complete?
+            @inspection.refresh_shipment_rates(Gesmew::ShippingMethod::DISPLAY_ON_FRONT_AND_BACK_END)
 
-            if @order.errors.empty?
+            if @inspection.errors.empty?
               flash[:success] = Gesmew.t('customer_details_updated')
-              redirect_to edit_admin_order_url(@order)
+              redirect_to edit_admin_order_url(@inspection)
             else
               render action: :edit
             end
@@ -40,7 +40,7 @@ module Gesmew
         private
 
         def order_params
-          params.require(:order).permit(
+          params.require(:inspection).permit(
             :email,
             :use_billing,
             bill_address_attributes: permitted_address_attributes,
@@ -49,11 +49,11 @@ module Gesmew
         end
 
         def load_order
-          @order = Order.includes(:adjustments).friendly.find(params[:order_id])
+          @inspection = Inspection.includes(:adjustments).friendly.find(params[:order_id])
         end
 
         def model_class
-          Gesmew::Order
+          Gesmew::Inspection
         end
       end
     end

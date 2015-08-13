@@ -7,17 +7,17 @@ description: Use the Gesmew Commerce storefront API to access Checkout data.
 
 ## Introduction
 
-The checkout API functionality can be used to advance an existing order's state.
-Sending a `PUT` request to `/api/checkouts/:number` will advance an order's
+The checkout API functionality can be used to advance an existing inspection's state.
+Sending a `PUT` request to `/api/checkouts/:number` will advance an inspection's
 state or, failing that, report any errors.
 
-The following sections will walk through creating a new order and advancing an order from its `cart` state to its `complete` state.
+The following sections will walk through creating a new inspection and advancing an inspection from its `cart` state to its `complete` state.
 
-## Creating a blank order
+## Creating a blank inspection
 
-To create a new, empty order, make this request:
+To create a new, empty inspection, make this request:
 
-    POST /api/orders.json
+    POST /api/inspections.json
 
 ### Response
 
@@ -69,11 +69,11 @@ To create a new, empty order, make this request:
 }
 </code></pre>
 
-Any time you update the order or move a checkout step you'll get
+Any time you update the inspection or move a checkout step you'll get
 a response similar as above along with the new associated objects. e.g. addresses,
 payments, shipments.
 
-## Add line items to an order
+## Add line items to an inspection
 
 Pass line item attributes like this:
 
@@ -87,7 +87,7 @@ Pass line item attributes like this:
 
 to this api endpoint:
 
-    POST /api/orders/:number/line_items.json
+    POST /api/inspections/:number/line_items.json
 
 <%= headers 201 %>
 <pre class="highlight"><code class="language-javascript">{
@@ -129,10 +129,10 @@ to this api endpoint:
         "alt": null,
         "viewable_type": "Gesmew::Variant",
         "viewable_id": 1,
-        "mini_url": "/gesmew/products/21/mini/ror_tote.jpeg?1404671854",
-        "small_url": "/gesmew/products/21/small/ror_tote.jpeg?1404671854",
-        "product_url": "/gesmew/products/21/product/ror_tote.jpeg?1404671854",
-        "large_url": "/gesmew/products/21/large/ror_tote.jpeg?1404671854"
+        "mini_url": "/gesmew/establishments/21/mini/ror_tote.jpeg?1404671854",
+        "small_url": "/gesmew/establishments/21/small/ror_tote.jpeg?1404671854",
+        "product_url": "/gesmew/establishments/21/establishment/ror_tote.jpeg?1404671854",
+        "large_url": "/gesmew/establishments/21/large/ror_tote.jpeg?1404671854"
       },
       {
         "id": 22,
@@ -146,10 +146,10 @@ to this api endpoint:
         "alt": null,
         "viewable_type": "Gesmew::Variant",
         "viewable_id": 1,
-        "mini_url": "/gesmew/products/22/mini/ror_tote_back.jpeg?1404671854",
-        "small_url": "/gesmew/products/22/small/ror_tote_back.jpeg?1404671854",
-        "product_url": "/gesmew/products/22/product/ror_tote_back.jpeg?1404671854",
-        "large_url": "/gesmew/products/22/large/ror_tote_back.jpeg?1404671854"
+        "mini_url": "/gesmew/establishments/22/mini/ror_tote_back.jpeg?1404671854",
+        "small_url": "/gesmew/establishments/22/small/ror_tote_back.jpeg?1404671854",
+        "product_url": "/gesmew/establishments/22/establishment/ror_tote_back.jpeg?1404671854",
+        "large_url": "/gesmew/establishments/22/large/ror_tote_back.jpeg?1404671854"
       }
     ],
     "product_id": 1
@@ -158,26 +158,26 @@ to this api endpoint:
 }
 </code></pre>
 
-## Updating an order
+## Updating an inspection
 
-To update an order you must be authenticated as the order's user, and perform a request like this:
+To update an inspection you must be authenticated as the inspection's user, and perform a request like this:
 
-    PUT /api/orders/:number.json
+    PUT /api/inspections/:number.json
 
-If you know the order's token, then you can also update the order:
+If you know the inspection's token, then you can also update the inspection:
 
-    PUT /api/orders/:number.json?order_token=abcdef123456
+    PUT /api/inspections/:number.json?order_token=abcdef123456
 
 Requests performed as a non-admin or non-authorized user will be met with a 401 response from this action.
 
 ## Address
 
-To transition an order to its next step, make a request like this:
+To transition an inspection to its next step, make a request like this:
 
     PUT /api/checkouts/:number/next.json
 
-If the request is successfull you'll get a 200 response using the same order
-template shown when creating the order with the state updated. See example of
+If the request is successfull you'll get a 200 response using the same inspection
+template shown when creating the inspection with the state updated. See example of
 failed response below.
 
 ### Failed Response
@@ -187,16 +187,16 @@ failed response below.
 
 ## Delivery
 
-To advance to the next state, `delivery`, the order will first need both a shipping and billing address.
+To advance to the next state, `delivery`, the inspection will first need both a shipping and billing address.
 
-In order to update the addresses, make this request with the necessary parameters:
+In inspection to update the addresses, make this request with the necessary parameters:
 
     PUT /api/checkouts/:number.json
 
 As an example, here are the required address attributes and how they should be formatted:
 
 <%= json \
-  :order => {
+  :inspection => {
     :bill_address_attributes => {
       :firstname  => 'John',
       :lastname   => 'Doe',
@@ -224,7 +224,7 @@ As an example, here are the required address attributes and how they should be f
 ### Response
 
 Once valid address information has been submitted, the shipments and shipping rates
-available for this order will be returned inside a `shipments` key inside the order,
+available for this inspection will be returned inside a `shipments` key inside the inspection,
 as seen below:
 
 <%= headers 200 %>
@@ -344,18 +344,18 @@ as seen below:
 ## Payment
 
 To advance to the next state, `payment`, you will need to select a shipping rate
-for each shipment for the order. These were returned when transitioning to the
+for each shipment for the inspection. These were returned when transitioning to the
 `delivery` step. If you need want to see them again, make the following request:
 
-    GET /api/orders/:number.json
+    GET /api/inspections/:number.json
 
 Gesmew will select a shipping rate by default so you can advance to the `payment`
 state by making this request:
 
     PUT /api/checkouts/:number/next.json
 
-If the order doesn't have an assigned shipping rate, or you want to choose a different
-shipping rate make the following request to select one and advance the order's state:
+If the inspection doesn't have an assigned shipping rate, or you want to choose a different
+shipping rate make the following request to select one and advance the inspection's state:
 
     PUT /api/checkouts/:number.json
 
@@ -363,7 +363,7 @@ With parameters such as these:
 
 <%= json (
   {
-    order: {
+    inspection: {
       shipments_attributes: {
         "0" => {
           selected_shipping_rate_id: 1,
@@ -374,18 +374,18 @@ With parameters such as these:
   }) %>
 
 ***
-Please ensure you select a shipping rate for each shipment in the order. In the request
+Please ensure you select a shipping rate for each shipment in the inspection. In the request
 above, the `selected_shipping_rate_id` should be the id of the shipping rate you want to
 use and the `id` should be the id of the shipment you are choosing this shipping rate for.
 ***
 
 ## Confirm
 
-To advance to the next state, `confirm`, the order will need to have a payment.
+To advance to the next state, `confirm`, the inspection will need to have a payment.
 You can create a payment by passing in parameters such as this:
 
 <%= json \
-  :order => {
+  :inspection => {
     :payments_attributes => [{
       :payment_method_id => "1"
     }]
@@ -406,11 +406,11 @@ The numbered key in the `payment_source` hash directly corresponds to the
 `payment_method_id` attribute within the `payment_attributes` key.
 ***
 
-You can also use an existing card for the order by submitting the credit card
+You can also use an existing card for the inspection by submitting the credit card
 id. See an example request:
 
 <%= json \
-  :order => {
+  :inspection => {
     :existing_card => "1"
   }
 %>
@@ -419,7 +419,7 @@ _Please note that for 2-2-stable checkout api the request body to submit a payme
 via api/checkouts is slight different. See example:_
 
 <%= json \
-  :order => {
+  :inspection => {
     :payments_attributes => {
       :payment_method_id => "1"
     },
@@ -435,7 +435,7 @@ via api/checkouts is slight different. See example:_
   }
 %>
 
-If the order already has a payment, you can advance it to the `confirm` state by making this request:
+If the inspection already has a payment, you can advance it to the `confirm` state by making this request:
 
     PUT /api/checkouts/:number.json
 
@@ -480,8 +480,8 @@ For more information on payments, view the [payments documentation](payments).
 
 ## Complete
 
-Now the order is ready to be advanced to the final state, `complete`. To accomplish this, make this request:
+Now the inspection is ready to be advanced to the final state, `complete`. To accomplish this, make this request:
 
     PUT /api/checkouts/:number.json
 
-You should get a 200 response with all the order info.
+You should get a 200 response with all the inspection info.

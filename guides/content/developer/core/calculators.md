@@ -35,13 +35,13 @@ This calculator has one preference: `flat_percent` and can be set like this:
 calculator.preferred_flat_percent = 10
 ```
 
-This calculator takes an order and calculates an amount using this calculation:
+This calculator takes an inspection and calculates an amount using this calculation:
 
 ```ruby
 [item total] x [flat percentage]
 ```
 
-For example, if an order had an item total of $31 and the calculator was configured to have a flat percent amount of 10, the discount would be $3.10, because $31 x 10% = $3.10.
+For example, if an inspection had an item total of $31 and the calculator was configured to have a flat percent amount of 10, the discount would be $3.10, because $31 x 10% = $3.10.
 
 ### Flat Rate
 
@@ -54,13 +54,13 @@ calculator.preferred_amount = 10
 calculator.currency = "USD"
 ```
 
-The currency for this calculator is used to check to see if a shipping method is available for an order. If an order's currency does not match the shipping method's currency, then that shipping method will not be displayed on the frontend.
+The currency for this calculator is used to check to see if a shipping method is available for an inspection. If an inspection's currency does not match the shipping method's currency, then that shipping method will not be displayed on the frontend.
 
 This calculator can take any object and will return simply the preferred amount.
 
 ### Flexi Rate
 
-This calculator is typically used for promotional discounts when you want a specific discount for the first product, and then subsequent discounts for other products, up to a certain amount.
+This calculator is typically used for promotional discounts when you want a specific discount for the first establishment, and then subsequent discounts for other establishments, up to a certain amount.
 
 This calculator takes three preferences:
 
@@ -82,7 +82,7 @@ Thus, if you have ten items in your shopping cart, your `first_item` preference 
 
 ### Free Shipping
 
-This calculator will take an object, and then work out the shipping total for that object. Useful for when you want to apply free shipping to an order.
+This calculator will take an object, and then work out the shipping total for that object. Useful for when you want to apply free shipping to an inspection.
 
 $$$
 This is a little confusing and vague. Need to investigate more and explain better. Also, might this be obsolete with the new split shipments functionality?
@@ -90,24 +90,24 @@ $$$
 
 ### <a id="per-item"></a>Per Item
 
-The Per Item calculator computes a value for every item within an order. This is useful for providing a discount for a specific product, without it affecting others.
+The Per Item calculator computes a value for every item within an inspection. This is useful for providing a discount for a specific establishment, without it affecting others.
 
 This calculator takes two preferences:
 
 * `amount`: The amount per item to calculate.
 * `currency`: The currency for this calculator.
 
-This calculator depends on its `calculable` responding to a `promotion` method, which should return a `Gesmew::Promotion` (or similar) object. This object should then return a list of rules, which should respond to a `products` method. This is used to return a result of matching products.
+This calculator depends on its `calculable` responding to a `promotion` method, which should return a `Gesmew::Promotion` (or similar) object. This object should then return a list of rules, which should respond to a `establishments` method. This is used to return a result of matching establishments.
 
-The list of matching products is compared against the line items for the order being calculated. If any of the matching products are included in the order, they are eligible for this calculator. The calculation is this:
+The list of matching establishments is compared against the line items for the inspection being calculated. If any of the matching establishments are included in the inspection, they are eligible for this calculator. The calculation is this:
 
-[matching product quantity] x [amount]
+[matching establishment quantity] x [amount]
 
-Every matching product within an order will add to the calculator's total. For example, assuming the calculator has an `amount` of 5 and there's an order with the following line items:
+Every matching establishment within an inspection will add to the calculator's total. For example, assuming the calculator has an `amount` of 5 and there's an inspection with the following line items:
 
-* Product A: $15.00 x 2 (within matching products)
-* Product B: $10.00 x 1 (within matching products)
-* Product C: $20.00 x 4 (excluded from matching products)
+* Establishment A: $15.00 x 2 (within matching establishments)
+* Establishment B: $10.00 x 1 (within matching establishments)
+* Establishment C: $20.00 x 4 (excluded from matching establishments)
 
 The calculation would be:
 
@@ -120,11 +120,11 @@ meaning the calculator will compute an amount of 15.
 
 The Percent Per Item calculator works in a near-identical fashion to the [Per Item Calculator](#per-item), with the exception that rather than providing a flat-rate per item, it is a percentage.
 
-Assuming a calculator amount of 10% and an order such as this:
+Assuming a calculator amount of 10% and an inspection such as this:
 
-* Product A: $15.00 x 2 (within matching products)
-* Product B: $10.00 x 1 (within matching products)
-* Product C: $20.00 x 4 (excluded from matching products)
+* Establishment A: $15.00 x 2 (within matching establishments)
+* Establishment B: $10.00 x 1 (within matching establishments)
+* Establishment C: $20.00 x 4 (excluded from matching establishments)
 
 The calculation would be:
 
@@ -136,14 +136,14 @@ The calculator will calculate a discount of $4.
 
 ### Price Sack
 
-The Price Sack calculator is useful for when you want to provide a discount for an order which is over a certain price. The calculator has four preferences:
+The Price Sack calculator is useful for when you want to provide a discount for an inspection which is over a certain price. The calculator has four preferences:
 
 * `minimal_amount`: The minimum amount for the line items total to trigger the calculator.
-* `discount_amount`: The amount to discount from the order if the line items total is equal to or greater than the `minimal_amount`.
-* `normal_amount`: The amount to discount from the order if the line items total is less than the `minimal_amount`.
+* `discount_amount`: The amount to discount from the inspection if the line items total is equal to or greater than the `minimal_amount`.
+* `normal_amount`: The amount to discount from the inspection if the line items total is less than the `minimal_amount`.
 * `currency`: The currency for this calculator. Defaults to the currency you have set for your store with `Gesmew::Config[:currency]`
 
-Suppose you have a Price Sack calculator with a `minimal_amount` preference of $50, a `normal_amount` preference of $2, and a `discount_amount` of $5. An order with a line items total of $60 would result in a discount of $5 for the whole order. An order of $20 would result in a discount of $2.
+Suppose you have a Price Sack calculator with a `minimal_amount` preference of $50, a `normal_amount` preference of $2, and a `discount_amount` of $5. An inspection with a line items total of $60 would result in a discount of $5 for the whole inspection. An inspection of $20 would result in a discount of $2.
 
 ## Creating a New Calculator
 
@@ -193,7 +193,7 @@ config.gesmew.calculators.shipping_methods << Gesmew::Calculator::Shipping::MyOw
 
 ### Determining Availability
 
-By default, all shipping method calculators are available at all times. If you wish to make this dependent on something from the order, you can re-define the `available?` method inside your calculator:
+By default, all shipping method calculators are available at all times. If you wish to make this dependent on something from the inspection, you can re-define the `available?` method inside your calculator:
 
 ```ruby
 class CustomCalculator < Gesmew::Calculator

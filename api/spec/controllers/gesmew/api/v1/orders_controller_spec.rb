@@ -5,7 +5,7 @@ module Gesmew
   describe Api::V1::OrdersController, :type => :controller do
     render_views
 
-    let!(:order) { create(:order) }
+    let!(:inspection) { create(:inspection) }
     let(:variant) { create(:variant) }
     let(:line_item) { create(:line_item) }
 
@@ -27,7 +27,7 @@ module Gesmew
       stub_authentication!
     end
 
-    it "cannot view all orders" do
+    it "cannot view all inspections" do
       api_get :index
       assert_unauthorized!
     end
@@ -42,81 +42,81 @@ module Gesmew
     end
 
     context "the current api user is authenticated" do
-      let(:current_api_user) { order.user }
-      let(:order) { create(:order, line_items: [line_item]) }
+      let(:current_api_user) { inspection.user }
+      let(:inspection) { create(:inspection, line_items: [line_item]) }
 
-      it "can view all of their own orders" do
+      it "can view all of their own inspections" do
         api_get :mine
 
         expect(response.status).to eq(200)
         expect(json_response["pages"]).to eq(1)
         expect(json_response["current_page"]).to eq(1)
-        expect(json_response["orders"].length).to eq(1)
-        expect(json_response["orders"].first["number"]).to eq(order.number)
-        expect(json_response["orders"].first["line_items"].length).to eq(1)
-        expect(json_response["orders"].first["line_items"].first["id"]).to eq(line_item.id)
+        expect(json_response["inspections"].length).to eq(1)
+        expect(json_response["inspections"].first["number"]).to eq(inspection.number)
+        expect(json_response["inspections"].first["line_items"].length).to eq(1)
+        expect(json_response["inspections"].first["line_items"].first["id"]).to eq(line_item.id)
       end
 
       it "can filter the returned results" do
         api_get :mine, q: {completed_at_not_null: 1}
 
         expect(response.status).to eq(200)
-        expect(json_response["orders"].length).to eq(0)
+        expect(json_response["inspections"].length).to eq(0)
       end
 
-      it "returns orders in reverse chronological order by completed_at" do
-        order.update_columns completed_at: Time.now
+      it "returns inspections in reverse chronological inspection by completed_at" do
+        inspection.update_columns completed_at: Time.now
 
-        order2 = Order.create user: order.user, completed_at: Time.now - 1.day
-        expect(order2.created_at).to be > order.created_at
-        order3 = Order.create user: order.user, completed_at: nil
+        order2 = Inspection.create user: inspection.user, completed_at: Time.now - 1.day
+        expect(order2.created_at).to be > inspection.created_at
+        order3 = Inspection.create user: inspection.user, completed_at: nil
         expect(order3.created_at).to be > order2.created_at
-        order4 = Order.create user: order.user, completed_at: nil
+        order4 = Inspection.create user: inspection.user, completed_at: nil
         expect(order4.created_at).to be > order3.created_at
 
         api_get :mine
         expect(response.status).to eq(200)
         expect(json_response["pages"]).to eq(1)
-        expect(json_response["orders"].length).to eq(4)
-        expect(json_response["orders"][0]["number"]).to eq(order.number)
-        expect(json_response["orders"][1]["number"]).to eq(order2.number)
-        expect(json_response["orders"][2]["number"]).to eq(order4.number)
-        expect(json_response["orders"][3]["number"]).to eq(order3.number)
+        expect(json_response["inspections"].length).to eq(4)
+        expect(json_response["inspections"][0]["number"]).to eq(inspection.number)
+        expect(json_response["inspections"][1]["number"]).to eq(order2.number)
+        expect(json_response["inspections"][2]["number"]).to eq(order4.number)
+        expect(json_response["inspections"][3]["number"]).to eq(order3.number)
       end
     end
 
     describe 'current' do
-      let(:current_api_user) { order.user }
-      let!(:order) { create(:order, line_items: [line_item]) }
+      let(:current_api_user) { inspection.user }
+      let!(:inspection) { create(:inspection, line_items: [line_item]) }
 
       subject do
         api_get :current, format: 'json'
       end
 
-      context "an incomplete order exists" do
-        it "returns that order" do
-          expect(JSON.parse(subject.body)['id']).to eq order.id
+      context "an incomplete inspection exists" do
+        it "returns that inspection" do
+          expect(JSON.parse(subject.body)['id']).to eq inspection.id
           expect(subject).to be_success
         end
       end
 
-      context "multiple incomplete orders exist" do
-        it "returns the latest incomplete order" do
-          new_order = Gesmew::Order.create! user: order.user
-          expect(new_order.created_at).to be > order.created_at
+      context "multiple incomplete inspections exist" do
+        it "returns the latest incomplete inspection" do
+          new_order = Gesmew::Inspection.create! user: inspection.user
+          expect(new_order.created_at).to be > inspection.created_at
           expect(JSON.parse(subject.body)['id']).to eq new_order.id
         end
       end
 
-      context "an incomplete order does not exist" do
+      context "an incomplete inspection does not exist" do
 
         before do
-          order.update_attribute(:state, order_state)
-          order.update_attribute(:completed_at, 5.minutes.ago)
+          inspection.update_attribute(:state, order_state)
+          inspection.update_attribute(:completed_at, 5.minutes.ago)
         end
 
         ["complete", "returned", "awaiting_return"].each do |order_state|
-          context "order is in the #{order_state} state" do
+          context "inspection is in the #{order_state} state" do
             let(:order_state) { order_state }
 
             it "returns no content" do
@@ -128,22 +128,22 @@ module Gesmew
       end
     end
 
-    it "can view their own order" do
-      allow_any_instance_of(Order).to receive_messages :user => current_api_user
-      api_get :show, :id => order.to_param
+    it "can view their own inspection" do
+      allow_any_instance_of(Inspection).to receive_messages :user => current_api_user
+      api_get :show, :id => inspection.to_param
       expect(response.status).to eq(200)
       expect(json_response).to have_attributes(attributes)
       expect(json_response["adjustments"]).to be_empty
     end
 
     describe 'GET #show' do
-      let(:order) { create :order_with_line_items }
-      let(:adjustment) { FactoryGirl.create(:adjustment, order: order) }
+      let(:inspection) { create :order_with_line_items }
+      let(:adjustment) { FactoryGirl.create(:adjustment, inspection: inspection) }
 
-      subject { api_get :show, id: order.to_param }
+      subject { api_get :show, id: inspection.to_param }
 
       before do
-        allow_any_instance_of(Order).to receive_messages :user => current_api_user
+        allow_any_instance_of(Inspection).to receive_messages :user => current_api_user
       end
 
       context 'when inventory information is present' do
@@ -160,7 +160,7 @@ module Gesmew
 
       context 'when shipment adjustments are present' do
         before do
-          order.shipments.first.adjustments << adjustment
+          inspection.shipments.first.adjustments << adjustment
         end
 
         it 'contains adjustments on shipment' do
@@ -175,34 +175,34 @@ module Gesmew
       end
     end
 
-    it "orders contain the basic checkout steps" do
-      allow_any_instance_of(Order).to receive_messages :user => current_api_user
-      api_get :show, :id => order.to_param
+    it "inspections contain the basic checkout steps" do
+      allow_any_instance_of(Inspection).to receive_messages :user => current_api_user
+      api_get :show, :id => inspection.to_param
       expect(response.status).to eq(200)
       expect(json_response["checkout_steps"]).to eq(["address", "delivery", "complete"])
     end
 
     # Regression test for #1992
-    it "can view an order not in a standard state" do
-      allow_any_instance_of(Order).to receive_messages :user => current_api_user
-      order.update_column(:state, 'shipped')
-      api_get :show, :id => order.to_param
+    it "can view an inspection not in a standard state" do
+      allow_any_instance_of(Inspection).to receive_messages :user => current_api_user
+      inspection.update_column(:state, 'shipped')
+      api_get :show, :id => inspection.to_param
     end
 
-    it "can not view someone else's order" do
-      allow_any_instance_of(Order).to receive_messages :user => stub_model(Gesmew::LegacyUser)
-      api_get :show, :id => order.to_param
+    it "can not view someone else's inspection" do
+      allow_any_instance_of(Inspection).to receive_messages :user => stub_model(Gesmew::LegacyUser)
+      api_get :show, :id => inspection.to_param
       assert_unauthorized!
     end
 
-    it "can view an order if the token is known" do
-      api_get :show, :id => order.to_param, :order_token => order.guest_token
+    it "can view an inspection if the token is known" do
+      api_get :show, :id => inspection.to_param, :order_token => inspection.guest_token
       expect(response.status).to eq(200)
     end
 
-    it "can view an order if the token is passed in header" do
-      request.headers["X-Gesmew-Order-Token"] = order.guest_token
-      api_get :show, :id => order.to_param
+    it "can view an inspection if the token is passed in header" do
+      request.headers["X-Gesmew-Inspection-Token"] = inspection.guest_token
+      api_get :show, :id => inspection.to_param
       expect(response.status).to eq(200)
     end
 
@@ -210,78 +210,78 @@ module Gesmew
       before { Gesmew::Ability.register_ability(::BarAbility) }
       after { Gesmew::Ability.remove_ability(::BarAbility) }
 
-      it "can view an order" do
+      it "can view an inspection" do
         user = mock_model(Gesmew::LegacyUser)
         allow(user).to receive_message_chain(:gesmew_roles, :pluck).and_return(["bar"])
         allow(user).to receive(:has_gesmew_role?).with('bar').and_return(true)
         allow(user).to receive(:has_gesmew_role?).with('admin').and_return(false)
         allow(Gesmew.user_class).to receive_messages find_by: user
-        api_get :show, :id => order.to_param
+        api_get :show, :id => inspection.to_param
         expect(response.status).to eq(200)
       end
     end
 
-    it "cannot cancel an order that doesn't belong to them" do
-      order.update_attribute(:completed_at, Time.now)
-      order.update_attribute(:shipment_state, "ready")
-      api_put :cancel, :id => order.to_param
+    it "cannot cancel an inspection that doesn't belong to them" do
+      inspection.update_attribute(:completed_at, Time.now)
+      inspection.update_attribute(:shipment_state, "ready")
+      api_put :cancel, :id => inspection.to_param
       assert_unauthorized!
     end
 
-    it "can create an order" do
-      api_post :create, order: { line_items: [{ variant_id: variant.to_param, quantity: 5 }] }
+    it "can create an inspection" do
+      api_post :create, inspection: { line_items: [{ variant_id: variant.to_param, quantity: 5 }] }
       expect(response.status).to eq(201)
 
-      order = Order.last
-      expect(order.line_items.count).to eq(1)
-      expect(order.line_items.first.variant).to eq(variant)
-      expect(order.line_items.first.quantity).to eq(5)
+      inspection = Inspection.last
+      expect(inspection.line_items.count).to eq(1)
+      expect(inspection.line_items.first.variant).to eq(variant)
+      expect(inspection.line_items.first.quantity).to eq(5)
 
       expect(json_response['number']).to be_present
       expect(json_response["token"]).not_to be_blank
       expect(json_response["state"]).to eq("cart")
-      expect(order.user).to eq(current_api_user)
-      expect(order.email).to eq(current_api_user.email)
+      expect(inspection.user).to eq(current_api_user)
+      expect(inspection.email).to eq(current_api_user.email)
       expect(json_response["user_id"]).to eq(current_api_user.id)
     end
 
-    it "assigns email when creating a new order" do
-      api_post :create, :order => { :email => "guest@gesmewcommerce.com" }
+    it "assigns email when creating a new inspection" do
+      api_post :create, :inspection => { :email => "guest@gesmewcommerce.com" }
       expect(json_response['email']).not_to eq controller.current_api_user
       expect(json_response['email']).to eq "guest@gesmewcommerce.com"
     end
 
     # Regression test for #3404
     it "can specify additional parameters for a line item" do
-      expect(Order).to receive(:create!).and_return(order = Gesmew::Order.new)
-      allow(order).to receive(:associate_user!)
-      allow(order).to receive_message_chain(:contents, :add).and_return(line_item = double('LineItem'))
+      expect(Inspection).to receive(:create!).and_return(inspection = Gesmew::Inspection.new)
+      allow(inspection).to receive(:associate_user!)
+      allow(inspection).to receive_message_chain(:contents, :add).and_return(line_item = double('LineItem'))
       expect(line_item).to receive(:update_attributes!).with("special" => true)
 
       allow(controller).to receive_messages(permitted_line_item_attributes: [:id, :variant_id, :quantity, :special])
-      api_post :create, order: {
+      api_post :create, inspection: {
         line_items: [{ variant_id: variant.to_param, quantity: 5, special: true }]
       }
       expect(response.status).to eq(201)
     end
 
     it "cannot arbitrarily set the line items price" do
-      api_post :create, order: {
+      api_post :create, inspection: {
         line_items: [{ price: 33.0, variant_id: variant.to_param, quantity: 5 }]
       }
 
       expect(response.status).to eq 201
-      expect(Order.last.line_items.first.price.to_f).to eq(variant.price)
+      expect(Inspection.last.line_items.first.price.to_f).to eq(variant.price)
     end
 
-    context "admin user imports order" do
+    context "admin user imports inspection" do
       before do
         allow(current_api_user).to receive_messages has_gesmew_role?: true
         allow(current_api_user).to receive_message_chain :gesmew_roles, pluck: ["admin"]
       end
 
       it "is able to set any default unpermitted attribute" do
-        api_post :create, :order => { number: "WOW" }
+        api_post :create, :inspection => { number: "WOW" }
         expect(response.status).to eq 201
         expect(json_response['number']).to eq "WOW"
       end
@@ -289,26 +289,26 @@ module Gesmew
 
     # Regression test for #3404
     it "does not update line item needlessly" do
-      expect(Order).to receive(:create!).and_return(order = Gesmew::Order.new)
-      allow(order).to receive(:associate_user!)
+      expect(Inspection).to receive(:create!).and_return(inspection = Gesmew::Inspection.new)
+      allow(inspection).to receive(:associate_user!)
       line_item = double('LineItem')
       allow(line_item).to receive_messages(save!: line_item)
-      allow(order).to receive_message_chain(:contents, :add).and_return(line_item)
+      allow(inspection).to receive_message_chain(:contents, :add).and_return(line_item)
       expect(line_item).not_to receive(:update_attributes)
-      api_post :create, order: { line_items: [{ variant_id: variant.to_param, quantity: 5 }] }
+      api_post :create, inspection: { line_items: [{ variant_id: variant.to_param, quantity: 5 }] }
     end
 
-    it "can create an order without any parameters" do
+    it "can create an inspection without any parameters" do
       expect { api_post :create }.not_to raise_error
       expect(response.status).to eq(201)
-      order = Order.last
+      inspection = Inspection.last
       expect(json_response["state"]).to eq("cart")
     end
 
-    context "working with an order" do
+    context "working with an inspection" do
 
       let(:variant) { create(:variant) }
-      let!(:line_item) { order.contents.add(variant, 1) }
+      let!(:line_item) { inspection.contents.add(variant, 1) }
       let!(:payment_method) { create(:check_payment_method) }
 
       let(:address_params) { { :country_id => country.id } }
@@ -321,12 +321,12 @@ module Gesmew
       let(:country) { create(:country, {name: "Brazil", iso_name: "BRAZIL", iso: "BR", iso3: "BRA", numcode: 76 })}
 
       before do
-        allow_any_instance_of(Order).to receive_messages user: current_api_user
-        order.next # Switch from cart to address
-        order.bill_address = nil
-        order.ship_address = nil
-        order.save
-        expect(order.state).to eq("address")
+        allow_any_instance_of(Inspection).to receive_messages user: current_api_user
+        inspection.next # Switch from cart to address
+        inspection.bill_address = nil
+        inspection.ship_address = nil
+        inspection.save
+        expect(inspection.state).to eq("address")
       end
 
       def clean_address(address)
@@ -337,7 +337,7 @@ module Gesmew
 
       context "line_items hash not present in request" do
         it "responds successfully" do
-          api_put :update, :id => order.to_param, :order => {
+          api_put :update, :id => inspection.to_param, :inspection => {
             :email => "hublock@gesmewcommerce.com"
           }
 
@@ -346,7 +346,7 @@ module Gesmew
       end
 
       it "updates quantities of existing line items" do
-        api_put :update, :id => order.to_param, :order => {
+        api_put :update, :id => inspection.to_param, :inspection => {
           :line_items => {
             "0" => { :id => line_item.id, :quantity => 10 }
           }
@@ -359,7 +359,7 @@ module Gesmew
 
       it "adds an extra line item" do
         variant2 = create(:variant)
-        api_put :update, :id => order.to_param, :order => {
+        api_put :update, :id => inspection.to_param, :inspection => {
           :line_items => {
             "0" => { :id => line_item.id, :quantity => 10 },
             "1" => { :variant_id => variant2.id, :quantity => 1}
@@ -374,7 +374,7 @@ module Gesmew
       end
 
       it "cannot change the price of an existing line item" do
-        api_put :update, :id => order.to_param, :order => {
+        api_put :update, :id => inspection.to_param, :inspection => {
           :line_items => {
             0 => { :id => line_item.id, :price => 0 }
           }
@@ -387,15 +387,15 @@ module Gesmew
       end
 
       it "can add billing address" do
-        api_put :update, :id => order.to_param, :order => { :bill_address_attributes => billing_address }
+        api_put :update, :id => inspection.to_param, :inspection => { :bill_address_attributes => billing_address }
 
-        expect(order.reload.bill_address).to_not be_nil
+        expect(inspection.reload.bill_address).to_not be_nil
       end
 
       it "receives error message if trying to add billing address with errors" do
         billing_address[:firstname] = ""
 
-        api_put :update, :id => order.to_param, :order => { :bill_address_attributes => billing_address }
+        api_put :update, :id => inspection.to_param, :inspection => { :bill_address_attributes => billing_address }
 
         expect(json_response['error']).not_to be_nil
         expect(json_response['errors']).not_to be_nil
@@ -403,54 +403,54 @@ module Gesmew
       end
 
       it "can add shipping address" do
-        expect(order.ship_address).to be_nil
+        expect(inspection.ship_address).to be_nil
 
-        api_put :update, :id => order.to_param, :order => { :ship_address_attributes => shipping_address }
+        api_put :update, :id => inspection.to_param, :inspection => { :ship_address_attributes => shipping_address }
 
-        expect(order.reload.ship_address).not_to be_nil
+        expect(inspection.reload.ship_address).not_to be_nil
       end
 
       it "receives error message if trying to add shipping address with errors" do
-        expect(order.ship_address).to be_nil
+        expect(inspection.ship_address).to be_nil
         shipping_address[:firstname] = ""
 
-        api_put :update, :id => order.to_param, :order => { :ship_address_attributes => shipping_address }
+        api_put :update, :id => inspection.to_param, :inspection => { :ship_address_attributes => shipping_address }
 
         expect(json_response['error']).not_to be_nil
         expect(json_response['errors']).not_to be_nil
         expect(json_response['errors']['ship_address.firstname'].first).to eq "can't be blank"
       end
 
-      it "cannot set the user_id for the order" do
+      it "cannot set the user_id for the inspection" do
         user = Gesmew.user_class.create
-        original_id = order.user_id
-        api_post :update, :id => order.to_param, :order => { user_id: user.id }
+        original_id = inspection.user_id
+        api_post :update, :id => inspection.to_param, :inspection => { user_id: user.id }
         expect(response.status).to eq 200
         expect(json_response["user_id"]).to eq(original_id)
       end
 
-      context "order has shipments" do
-        before { order.create_proposed_shipments }
+      context "inspection has shipments" do
+        before { inspection.create_proposed_shipments }
 
         it "clears out all existing shipments on line item udpate" do
-          previous_shipments = order.shipments
-          api_put :update, :id => order.to_param, :order => {
+          previous_shipments = inspection.shipments
+          api_put :update, :id => inspection.to_param, :inspection => {
             :line_items => {
               0 => { :id => line_item.id, :quantity => 10 }
             }
           }
-          expect(order.reload.shipments).to be_empty
+          expect(inspection.reload.shipments).to be_empty
         end
       end
 
       context "with a line item" do
         let(:order_with_line_items) do
-          order = create(:order_with_line_items)
-          create(:adjustment, order: order, adjustable: order)
-          order
+          inspection = create(:order_with_line_items)
+          create(:adjustment, inspection: inspection, adjustable: inspection)
+          inspection
         end
 
-        it "can empty an order" do
+        it "can empty an inspection" do
           expect(order_with_line_items.adjustments.count).to eq(1)
           api_put :empty, :id => order_with_line_items.to_param
           expect(response.status).to eq(204)
@@ -460,21 +460,21 @@ module Gesmew
         end
 
         it "can list its line items with images" do
-          order.line_items.first.variant.images.create!(:attachment => image("thinking-cat.jpg"))
+          inspection.line_items.first.variant.images.create!(:attachment => image("thinking-cat.jpg"))
 
-          api_get :show, :id => order.to_param
+          api_get :show, :id => inspection.to_param
 
           expect(json_response['line_items'].first['variant']).to have_attributes([:images])
         end
 
-        it "lists variants product id" do
-          api_get :show, :id => order.to_param
+        it "lists variants establishment id" do
+          api_get :show, :id => inspection.to_param
 
           expect(json_response['line_items'].first['variant']).to have_attributes([:product_id])
         end
 
         it "includes the tax_total in the response" do
-          api_get :show, :id => order.to_param
+          api_get :show, :id => inspection.to_param
 
           expect(json_response['included_tax_total']).to eq('0.0')
           expect(json_response['additional_tax_total']).to eq('0.0')
@@ -485,10 +485,10 @@ module Gesmew
         it "lists line item adjustments" do
           adjustment = create(:adjustment,
             :label => "10% off!",
-            :order => order,
-            :adjustable => order.line_items.first)
+            :inspection => inspection,
+            :adjustable => inspection.line_items.first)
           adjustment.update_column(:amount, 5)
-          api_get :show, :id => order.to_param
+          api_get :show, :id => inspection.to_param
 
           adjustment = json_response['line_items'].first['adjustments'].first
           expect(adjustment['label']).to eq("10% off!")
@@ -496,8 +496,8 @@ module Gesmew
         end
 
         it "lists payments source without gateway info" do
-          order.payments.push payment = create(:payment)
-          api_get :show, :id => order.to_param
+          inspection.payments.push payment = create(:payment)
+          api_get :show, :id => inspection.to_param
 
           source = json_response[:payments].first[:source]
           expect(source[:name]).to eq payment.source.name
@@ -518,21 +518,21 @@ module Gesmew
           end
 
           before do
-            order.bill_address = FactoryGirl.create(:address)
-            order.ship_address = FactoryGirl.create(:address)
-            order.next!
-            order.save
+            inspection.bill_address = FactoryGirl.create(:address)
+            inspection.ship_address = FactoryGirl.create(:address)
+            inspection.next!
+            inspection.save
           end
 
           it "includes the ship_total in the response" do
-            api_get :show, id: order.to_param
+            api_get :show, id: inspection.to_param
 
             expect(json_response['ship_total']).to eq '10.0'
             expect(json_response['display_ship_total']).to eq '$10.00'
           end
 
-          it "returns available shipments for an order" do
-            api_get :show, :id => order.to_param
+          it "returns available shipments for an inspection" do
+            api_get :show, :id => inspection.to_param
             expect(response.status).to eq(200)
             expect(json_response["shipments"]).not_to be_empty
             shipment = json_response["shipments"][0]
@@ -559,7 +559,7 @@ module Gesmew
             expect(shipment["stock_location_name"]).not_to be_blank
             manifest_item = shipment["manifest"][0]
             expect(manifest_item["quantity"]).to eq(1)
-            expect(manifest_item["variant_id"]).to eq(order.line_items.first.variant_id)
+            expect(manifest_item["variant_id"]).to eq(inspection.line_items.first.variant_id)
           end
         end
       end
@@ -568,15 +568,15 @@ module Gesmew
     context "as an admin" do
       sign_in_as_admin!
 
-      context "with no orders" do
-        before { Gesmew::Order.delete_all }
-        it "still returns a root :orders key" do
+      context "with no inspections" do
+        before { Gesmew::Inspection.delete_all }
+        it "still returns a root :inspections key" do
           api_get :index
-          expect(json_response["orders"]).to eq([])
+          expect(json_response["inspections"]).to eq([])
         end
       end
 
-      it "responds with orders updated_at with miliseconds precision" do
+      it "responds with inspections updated_at with miliseconds precision" do
         if ActiveRecord::Base.connection.adapter_name == "Mysql2"
           skip "MySQL does not support millisecond timestamps."
         else
@@ -584,31 +584,31 @@ module Gesmew
         end
 
         api_get :index
-        milisecond = order.updated_at.strftime("%L")
-        updated_at = json_response["orders"].first["updated_at"]
+        milisecond = inspection.updated_at.strftime("%L")
+        updated_at = json_response["inspections"].first["updated_at"]
         expect(updated_at.split("T").last).to have_content(milisecond)
       end
 
       context "caching enabled" do
         before do
           ActionController::Base.perform_caching = true
-          3.times { Order.create }
+          3.times { Inspection.create }
         end
 
-        it "returns unique orders" do
+        it "returns unique inspections" do
           api_get :index
 
-          orders = json_response[:inspection]
-          expect(orders.count).to be >= 3
-          expect(orders.map { |o| o[:id] }).to match_array Order.pluck(:id)
+          inspections = json_response[:inspection]
+          expect(inspections.count).to be >= 3
+          expect(inspections.map { |o| o[:id] }).to match_array Inspection.pluck(:id)
         end
 
         after { ActionController::Base.perform_caching = false }
       end
 
       it "lists payments source with gateway info" do
-        order.payments.push payment = create(:payment)
-        api_get :show, :id => order.to_param
+        inspection.payments.push payment = create(:payment)
+        api_get :show, :id => inspection.to_param
 
         source = json_response[:payments].first[:source]
         expect(source[:name]).to eq payment.source.name
@@ -620,12 +620,12 @@ module Gesmew
         expect(source[:gateway_payment_profile_id]).to eq payment.source.gateway_payment_profile_id
       end
 
-      context "with two orders" do
-        before { create(:order) }
+      context "with two inspections" do
+        before { create(:inspection) }
 
-        it "can view all orders" do
+        it "can view all inspections" do
           api_get :index
-          expect(json_response["orders"].first).to have_attributes(attributes)
+          expect(json_response["inspections"].first).to have_attributes(attributes)
           expect(json_response["count"]).to eq(2)
           expect(json_response["current_page"]).to eq(1)
           expect(json_response["pages"]).to eq(1)
@@ -634,8 +634,8 @@ module Gesmew
         # Test for #1763
         it "can control the page size through a parameter" do
           api_get :index, :per_page => 1
-          expect(json_response["orders"].count).to eq(1)
-          expect(json_response["orders"].first).to have_attributes(attributes)
+          expect(json_response["inspections"].count).to eq(1)
+          expect(json_response["inspections"].first).to have_attributes(attributes)
           expect(json_response["count"]).to eq(1)
           expect(json_response["current_page"]).to eq(1)
           expect(json_response["pages"]).to eq(2)
@@ -644,17 +644,17 @@ module Gesmew
 
       context "search" do
         before do
-          create(:order)
-          Gesmew::Order.last.update_attribute(:email, 'gesmew@gesmewcommerce.com')
+          create(:inspection)
+          Gesmew::Inspection.last.update_attribute(:email, 'gesmew@gesmewcommerce.com')
         end
 
-        let(:expected_result) { Gesmew::Order.last }
+        let(:expected_result) { Gesmew::Inspection.last }
 
         it "can query the results through a parameter" do
           api_get :index, :q => { :email_cont => 'gesmew' }
-          expect(json_response["orders"].count).to eq(1)
-          expect(json_response["orders"].first).to have_attributes(attributes)
-          expect(json_response["orders"].first["email"]).to eq(expected_result.email)
+          expect(json_response["inspections"].count).to eq(1)
+          expect(json_response["inspections"].first).to have_attributes(attributes)
+          expect(json_response["inspections"].first["email"]).to eq(expected_result.email)
           expect(json_response["count"]).to eq(1)
           expect(json_response["current_page"]).to eq(1)
           expect(json_response["pages"]).to eq(1)
@@ -662,48 +662,48 @@ module Gesmew
       end
 
       context "creation" do
-        it "can create an order without any parameters" do
+        it "can create an inspection without any parameters" do
           expect { api_post :create }.not_to raise_error
           expect(response.status).to eq(201)
-          order = Order.last
+          inspection = Inspection.last
           expect(json_response["state"]).to eq("cart")
         end
 
         it "can arbitrarily set the line items price" do
-          api_post :create, order: {
+          api_post :create, inspection: {
             line_items: [{ price: 33.0, variant_id: variant.to_param, quantity: 5 }]
           }
           expect(response.status).to eq 201
-          expect(Order.last.line_items.first.price.to_f).to eq(33.0)
+          expect(Inspection.last.line_items.first.price.to_f).to eq(33.0)
         end
 
-        it "can set the user_id for the order" do
+        it "can set the user_id for the inspection" do
           user = Gesmew.user_class.create
-          api_post :create, :order => { user_id: user.id }
+          api_post :create, :inspection => { user_id: user.id }
           expect(response.status).to eq 201
           expect(json_response["user_id"]).to eq(user.id)
         end
       end
 
       context "updating" do
-        it "can set the user_id for the order" do
+        it "can set the user_id for the inspection" do
           user = Gesmew.user_class.create
-          api_post :update, :id => order.number, :order => { user_id: user.id }
+          api_post :update, :id => inspection.number, :inspection => { user_id: user.id }
           expect(response.status).to eq 200
           expect(json_response["user_id"]).to eq(user.id)
         end
       end
 
-      context "can cancel an order" do
+      context "can cancel an inspection" do
         before do
-          order.completed_at = Time.now
-          order.state = 'complete'
-          order.shipment_state = 'ready'
-          order.save!
+          inspection.completed_at = Time.now
+          inspection.state = 'complete'
+          inspection.shipment_state = 'ready'
+          inspection.save!
         end
 
         specify do
-          api_put :cancel, :id => order.to_param
+          api_put :cancel, :id => inspection.to_param
           expect(json_response["state"]).to eq("canceled")
         end
       end

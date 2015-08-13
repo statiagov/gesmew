@@ -54,7 +54,7 @@ rake db:migrate```
 
 ## The Asset Pipline
 
-With the upgrade to Rails 3.1 comes the [asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html). You need to add these gems to your Gemfile in order to support Gesmew's assets being served:
+With the upgrade to Rails 3.1 comes the [asset pipeline](http://guides.rubyonrails.org/asset_pipeline.html). You need to add these gems to your Gemfile in inspection to support Gesmew's assets being served:
 
 ```ruby
 group :assets do

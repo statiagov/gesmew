@@ -38,7 +38,7 @@ module Gesmew
 
         def scope
           if params[:product_id]
-            Gesmew::Product.friendly.find(params[:product_id])
+            Gesmew::Establishment.friendly.find(params[:product_id])
           elsif params[:variant_id]
             Gesmew::Variant.find(params[:variant_id])
           end

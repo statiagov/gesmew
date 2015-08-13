@@ -18,8 +18,8 @@ module Gesmew
             params.delete('taxon')
 
             return build_response(params, "#{request.script_name}t/#{taxon.permalink}" )
-          elsif env["PATH_INFO"] =~ /^\/(t|products)(\/\S+)?\/$/
-            #ensures no trailing / for taxon and product urls
+          elsif env["PATH_INFO"] =~ /^\/(t|establishments)(\/\S+)?\/$/
+            #ensures no trailing / for taxon and establishment urls
 
             return build_response(params, env["PATH_INFO"][0...-1])
           end

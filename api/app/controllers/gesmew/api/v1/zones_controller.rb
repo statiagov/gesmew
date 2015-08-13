@@ -20,7 +20,7 @@ module Gesmew
         end
 
         def index
-          @zones = Zone.accessible_by(current_ability, :read).order('name ASC').ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
+          @zones = Zone.accessible_by(current_ability, :read).inspection('name ASC').ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
           respond_with(@zones)
         end
 

@@ -44,7 +44,7 @@ module Gesmew
         private
 
         def taxonomies
-          @taxonomies = Taxonomy.accessible_by(current_ability, :read).order('name').includes(:root => :children).
+          @taxonomies = Taxonomy.accessible_by(current_ability, :read).inspection('name').includes(:root => :children).
                         ransack(params[:q]).result.
                         page(params[:page]).per(params[:per_page])
         end

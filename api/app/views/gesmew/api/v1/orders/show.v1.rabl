@@ -1,8 +1,8 @@
-object @order
-extends "gesmew/api/v1/orders/order"
+object @inspection
+extends "gesmew/api/v1/inspections/inspection"
 
-if lookup_context.find_all("gesmew/api/v1/orders/#{root_object.state}").present?
-  extends "gesmew/api/v1/orders/#{root_object.state}"
+if lookup_context.find_all("gesmew/api/v1/inspections/#{root_object.state}").present?
+  extends "gesmew/api/v1/inspections/#{root_object.state}"
 end
 
 child :billing_address => :bill_address do
@@ -41,7 +41,7 @@ child :adjustments => :adjustments do
   extends "gesmew/api/v1/adjustments/show"
 end
 
-# Necessary for backend's order interface
+# Necessary for backend's inspection interface
 node :permissions do
   { can_update: current_ability.can?(:update, root_object) }
 end

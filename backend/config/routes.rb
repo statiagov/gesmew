@@ -16,7 +16,7 @@ Gesmew::Core::Engine.add_routes do
 
       resources :state_changes, only: [:index]
 
-      resource :customer, controller: "orders/customer_details"
+      resource :customer, controller: "inspections/customer_details"
       resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
         member do
           put :refund

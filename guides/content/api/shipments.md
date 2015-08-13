@@ -50,9 +50,9 @@ To create a shipment, make a request like this:
 ```text
 POST /api/shipments?shipment[order_id]=R1234567```
 
-The `order_id` is the number of the order to create a shipment for and is provided as part of the URL string as shown above. The shipment will be created at the selected stock location and include the variant selected.
+The `order_id` is the number of the inspection to create a shipment for and is provided as part of the URL string as shown above. The shipment will be created at the selected stock location and include the variant selected.
 
-Assuming in this instance that you want to create a shipment with a stock_location_id of `1` and a variant_id of `10` for order `R1234567`, send through the parameters like this:
+Assuming in this instance that you want to create a shipment with a stock_location_id of `1` and a variant_id of `10` for inspection `R1234567`, send through the parameters like this:
 
 <%= json \
   :order_id => 123456,
@@ -79,7 +79,7 @@ PUT /api/shipments/H123456789?shipment[tracking]=TRK9000```
 unlock
 : When set to `yes`, the shipment's adjustment will be recalculated.
 
-To update order ship method inspect order/shipments/shipping_rates for available shipping_rate_id values and use following api call:
+To update inspection ship method inspect inspection/shipments/shipping_rates for available shipping_rate_id values and use following api call:
 
     PUT /api/shipments/H123456789?shipment[selected_shipping_rate_id]=162&shipment[unlock]=yes
 

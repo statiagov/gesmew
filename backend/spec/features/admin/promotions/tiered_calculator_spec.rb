@@ -10,7 +10,7 @@ feature "Tiered Calculator Promotions" do
   end
 
   scenario "adding a tiered percent calculator", js: true do
-    select2 "Create whole-order adjustment", from: "Add action of type"
+    select2 "Create whole-inspection adjustment", from: "Add action of type"
     within('#action_fields') { click_button "Add" }
 
     select2 "Tiered Percent", from: "Calculator"

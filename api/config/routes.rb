@@ -3,7 +3,7 @@ Gesmew::Core::Engine.add_routes do
     namespace :v1 do
       resources :promotions, only: [:show]
 
-      resources :products do
+      resources :establishments do
         resources :images
         resources :variants
         resources :product_properties
@@ -56,8 +56,8 @@ Gesmew::Core::Engine.add_routes do
 
       resources :option_values, only: :index
 
-      get '/orders/mine', to: 'orders#mine', as: 'my_orders'
-      get "/orders/current", to: "orders#current", as: "current_order"
+      get '/inspections/mine', to: 'inspections#mine', as: 'my_orders'
+      get "/inspections/current", to: "inspections#current", as: "current_order"
 
       resources :inspection, concerns: :order_routes
 
@@ -111,7 +111,7 @@ Gesmew::Core::Engine.add_routes do
       resources :stores
 
       put '/classifications', to: 'classifications#update', as: :classifications
-      get '/taxons/products', to: 'taxons#products', as: :taxon_products
+      get '/taxons/establishments', to: 'taxons#establishments', as: :taxon_products
     end
 
     match 'v:api/*path', to: redirect("/api/v1/%{path}"), via: [:get, :post, :put, :patch, :delete]

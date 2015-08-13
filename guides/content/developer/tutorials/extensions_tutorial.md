@@ -17,7 +17,7 @@ The [Gesmew Extension Registry](http://gesmewcommerce.com/extensions) is a searc
 
 ## Installing an Extension
 
-We are going to be adding the [gesmew_i18n](https://github.com/gesmew-contrib/gesmew_i18n) extension to our store. GesmewI18n is a extension containing community contributed translations of Gesmew & ability to supply different attribute values per language such as product names and descriptions. Extensions can also add models, controllers, and views to create new functionality.
+We are going to be adding the [gesmew_i18n](https://github.com/gesmew-contrib/gesmew_i18n) extension to our store. GesmewI18n is a extension containing community contributed translations of Gesmew & ability to supply different attribute values per language such as establishment names and descriptions. Extensions can also add models, controllers, and views to create new functionality.
 
 There are three steps we need to take to install gesmew_i18n.
 
@@ -52,7 +52,7 @@ Answer **yes** when prompted to run migrations.
 
 ### Getting Started
 
-Let's build a simple extension. Suppose we want the ability to mark certain products as being on sale. We'd like to be able to set a sale price on a product and show products that are on sale on a separate products page. This is a great example of how an extension can be used to build on the solid Gesmew foundation.
+Let's build a simple extension. Suppose we want the ability to mark certain establishments as being on sale. We'd like to be able to set a sale price on a establishment and show establishments that are on sale on a separate establishments page. This is a great example of how an extension can be used to build on the solid Gesmew foundation.
 
 So let's start by generating the extension. Run the following command from a directory of your choice outside of our Gesmew application:
 
@@ -113,7 +113,7 @@ $ rails g gesmew_simple_sales:install
 
 ### Adding a Controller Action to HomeController
 
-Now we need to extend `Gesmew::HomeController` and add an action that selects "on sale" products.
+Now we need to extend `Gesmew::HomeController` and add an action that selects "on sale" establishments.
 
 ***
 Note for the sake of this example that `Gesmew::HomeController` is only included
@@ -132,13 +132,13 @@ Next, create a new file in the directory we just created called `home_controller
 module Gesmew
   HomeController.class_eval do
     def sale
-      @products = Product.joins(:variants_including_master).where('gesmew_variants.sale_price is not null').uniq
+      @establishments = Establishment.joins(:variants_including_master).where('gesmew_variants.sale_price is not null').uniq
     end
   end
 end
 ```
 
-This will select just the products that have a variant with a `sale_price` set.
+This will select just the establishments that have a variant with a `sale_price` set.
 
 We also need to add a route to this action in our `config/routes.rb` file. Let's do this now. Update the routes file to contain the following:
 
@@ -152,21 +152,21 @@ end
 
 #### Setting the Sale Price for a Variant
 
-Now that our variants have the attribute `sale_price` available to them, let's update the sample data so we have at least one product that is on sale in our application. We will need to do this in the rails console for the time being, as we have no admin interface to set sale prices for variants. We will be adding this functionality in the [next tutorial]() in this series, Deface overrides.
+Now that our variants have the attribute `sale_price` available to them, let's update the sample data so we have at least one establishment that is on sale in our application. We will need to do this in the rails console for the time being, as we have no admin interface to set sale prices for variants. We will be adding this functionality in the [next tutorial]() in this series, Deface overrides.
 
-So, in order to do this, first open up the rails console:
+So, in inspection to do this, first open up the rails console:
 
 ```bash
 $ rails console
 ```
 
-Now, follow the steps I take in selecting a product and updating its master variant to have a sale price. Note, you may not be editing the exact same product as I am, but this is not important. We just need one "on sale" product to display on the sales page.
+Now, follow the steps I take in selecting a establishment and updating its master variant to have a sale price. Note, you may not be editing the exact same establishment as I am, but this is not important. We just need one "on sale" establishment to display on the sales page.
 
 ```irb
-> product = Gesmew::Product.first
-=> #<Gesmew::Product id: 107377505, name: "Gesmew Bag", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing...", available_on: "2013-02-13 18:30:16", deleted_at: nil, permalink: "gesmew-bag", meta_description: nil, meta_keywords: nil, tax_category_id: 25484906, shipping_category_id: nil, count_on_hand: 10, created_at: "2013-02-13 18:30:16", updated_at: "2013-02-13 18:30:16", on_demand: false>
+> establishment = Gesmew::Establishment.first
+=> #<Gesmew::Establishment id: 107377505, name: "Gesmew Bag", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing...", available_on: "2013-02-13 18:30:16", deleted_at: nil, permalink: "gesmew-bag", meta_description: nil, meta_keywords: nil, tax_category_id: 25484906, shipping_category_id: nil, count_on_hand: 10, created_at: "2013-02-13 18:30:16", updated_at: "2013-02-13 18:30:16", on_demand: false>
 
-> variant = product.master
+> variant = establishment.master
 => #<Gesmew::Variant id: 833839126, sku: "SPR-00012", weight: nil, height: nil, width: nil, depth: nil, deleted_at: nil, is_master: true, product_id: 107377505, count_on_hand: 10, cost_price: #<BigDecimal:7f8dda5eebf0,'0.21E2',9(36)>, position: nil, lock_version: 0, on_demand: false, cost_currency: nil, sale_price: nil>
 
 > variant.sale_price = 8.00
@@ -178,7 +178,7 @@ Now, follow the steps I take in selecting a product and updating its master vari
 
 ### Creating a View
 
-Now we have at least one product in our database that is on sale. Let's create a view to display these products.
+Now we have at least one establishment in our database that is on sale. Let's create a view to display these establishments.
 
 First, create the required views directory with the following command:
 
@@ -190,11 +190,11 @@ Next, create the file `app/views/gesmew/home/sale.html.erb` and add the followin
 
 ```erb
 <div data-hook="homepage_products">
-  <%%= render 'gesmew/shared/products', :products => @products %>
+  <%%= render 'gesmew/shared/establishments', :establishments => @establishments %>
 </div>
 ```
 
-If you navigate to `http://localhost:3000/sale` you should now see the product(s) listed that we set a `sale_price` on earlier in the tutorial. However, if you look at the price, you'll notice that it's not actually displaying the correct price. This is easy enough to fix and we will cover that in the next section.
+If you navigate to `http://localhost:3000/sale` you should now see the establishment(s) listed that we set a `sale_price` on earlier in the tutorial. However, if you look at the price, you'll notice that it's not actually displaying the correct price. This is easy enough to fix and we will cover that in the next section.
 
 ### Decorating Variants
 
@@ -220,7 +220,7 @@ module Gesmew
 end
 ```
 
-Here we alias the original method `price_in` to `orig_price_in` and override it. If there is a `sale_price` present on the product's master variant, we return that price. Otherwise, we call the original implementation of `price_in`.
+Here we alias the original method `price_in` to `orig_price_in` and override it. If there is a `sale_price` present on the establishment's master variant, we return that price. Otherwise, we call the original implementation of `price_in`.
 
 ### Testing Our Decorator
 

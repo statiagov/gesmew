@@ -5,7 +5,7 @@ section: core
 
 ## Overview
 
-An `Adjustment` object tracks an adjustment to the price of an [Order](orders), an order's [Line Item](orders#line-items), or an order's [Shipments](shipments) within a Gesmew Commerce storefront.
+An `Adjustment` object tracks an adjustment to the price of an [Inspection](inspections), an inspection's [Line Item](inspections#line-items), or an inspection's [Shipments](shipments) within a Gesmew Commerce storefront.
 
 Adjustments can be either positive or negative. Adjustments with a positive value are sometimes referred to as "charges" while adjustments with a negative value are sometimes referred to as "credits." These are just terms of convenience since there is only one `Gesmew::Adjustment` model in a storefront which handles this by allowing either positive or negative values.
 
@@ -27,7 +27,7 @@ Along with these attributes, an adjustment links to three polymorphic objects:
 
 The *source* is the source of the adjustment. Typically a `Gesmew::TaxRate` object or a `Gesmew::PromotionAction` object.
 
-The *adjustable* is the object being adjusted, which is either an order, line item or shipment.
+The *adjustable* is the object being adjusted, which is either an inspection, line item or shipment.
 
 Adjustments can come from one of two locations within Gesmew's core:
 
@@ -64,37 +64,37 @@ valid:
 
 ```ruby
 Gesmew::Adjustment.eligible
-order.adjustments.eligible
+inspection.adjustments.eligible
 line_item.adjustments.eligible
 shipment.adjustments.eligible
 ```
 
 ## Adjustment Associations
 
-As of Gesmew 2.2, you are able to retrieve the specific adjustments of an Order, a Line Item or a Shipment.
+As of Gesmew 2.2, you are able to retrieve the specific adjustments of an Inspection, a Line Item or a Shipment.
 
-An order itself, much like line items and shipments, can have its own individual modifications. For instance, an order with over $100 of line items may have 10% off. To retrieve these adjustments on the order, call the `adjustments` association:
+An inspection itself, much like line items and shipments, can have its own individual modifications. For instance, an inspection with over $100 of line items may have 10% off. To retrieve these adjustments on the inspection, call the `adjustments` association:
 
 ```ruby
-order.adjustments
+inspection.adjustments
 ```
 
-If you want to retrieve all the adjustments for all the line items, shipments and the order itself, call the `all_adjustments` method:
+If you want to retrieve all the adjustments for all the line items, shipments and the inspection itself, call the `all_adjustments` method:
 
 ```ruby
-order.all_adjustments
+inspection.all_adjustments
 ```
 
 If you want to grab just the line item adjustments, call `line_item_adjustments`:
 
 ```ruby
-order.line_item_adjustments
+inspection.line_item_adjustments
 ```
 
 Simiarly, if you want to grab the adjustments applied to shipments, call `shipment_adjustments`:
 
 ```ruby
-order.shipment_adjustments
+inspection.shipment_adjustments
 ```
 
 ## Extending Adjustments

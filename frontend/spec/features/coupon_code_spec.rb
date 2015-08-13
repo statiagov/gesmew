@@ -6,7 +6,7 @@ describe "Coupon code promotions", type: :feature, js: true do
   let!(:zone) { create(:zone) }
   let!(:shipping_method) { create(:shipping_method) }
   let!(:payment_method) { create(:check_payment_method) }
-  let!(:product) { create(:product, name: "RoR Mug", price: 20) }
+  let!(:establishment) { create(:establishment, name: "RoR Mug", price: 20) }
   let!(:store) { create(:store) }
 
   context "visitor makes checkout as guest without registration" do
@@ -43,7 +43,7 @@ describe "Coupon code promotions", type: :feature, js: true do
         fill_in "City", with: "City of John"
         fill_in "Zip", with: "01337"
         select country.name, from: "Country"
-        select state.name, from: "order[bill_address_attributes][state_id]"
+        select state.name, from: "inspection[bill_address_attributes][state_id]"
         fill_in "Phone", with: "555-555-5555"
 
         # To shipping method screen
@@ -77,7 +77,7 @@ describe "Coupon code promotions", type: :feature, js: true do
       end
 
       context "with a promotion" do
-        it "applies a promotion to an order" do
+        it "applies a promotion to an inspection" do
           fill_in "order_coupon_code", with: "onetwo"
           click_button "Save and Continue"
           expect(page).to have_content("Promotion (Onetwo)   -$10.00")

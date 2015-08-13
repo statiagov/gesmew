@@ -1,5 +1,5 @@
 <fieldset id="risk_analysis">
-  <legend><%= "#{Gesmew.t(:risk_analysis)}: #{Gesmew.t(:not) unless @order.is_risky?} #{Gesmew.t(:risky)}" %></legend>
+  <legend><%= "#{Gesmew.t(:risk_analysis)}: #{Gesmew.t(:not) unless @inspection.is_risky?} #{Gesmew.t(:risky)}" %></legend>
   <table class="table table-condensed table-bordered">
     <thead>
       <th><%= Gesmew.t('risk')%></th>
@@ -11,8 +11,8 @@
           <strong><%= Gesmew.t(:failed_payment_attempts) %>:</strong>
         </td>
         <td>
-          <span class="label label-<%= @order.payments.failed.count > 0 ? 'void' : 'complete' %>">
-            <%= link_to "#{Gesmew.t 'payments_count', count: @order.payments.failed.count, default: pluralize(@order.payments.failed.count, Gesmew.t(:payment))}", gesmew.admin_order_payments_path(@order) %>
+          <span class="label label-<%= @inspection.payments.failed.count > 0 ? 'void' : 'complete' %>">
+            <%= link_to "#{Gesmew.t 'payments_count', count: @inspection.payments.failed.count, default: pluralize(@inspection.payments.failed.count, Gesmew.t(:payment))}", gesmew.admin_order_payments_path(@inspection) %>
           </span>
         </td>
       </tr>

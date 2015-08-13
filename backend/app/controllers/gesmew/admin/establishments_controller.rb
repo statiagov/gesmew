@@ -87,10 +87,10 @@ module Gesmew
       end
 
       def load_data
-        @taxons = Taxon.order(:name)
-        @option_types = OptionType.order(:name)
-        @tax_categories = TaxCategory.order(:name)
-        @shipping_categories = ShippingCategory.order(:name)
+        @taxons = Taxon.inspection(:name)
+        @option_types = OptionType.inspection(:name)
+        @tax_categories = TaxCategory.inspection(:name)
+        @shipping_categories = ShippingCategory.inspection(:name)
       end
 
       def collection

@@ -24,7 +24,7 @@ The Site Name is what is set in the `<title>` tag of your website. It renders in
 
 ### Default Meta Keywords
 
-Meta keywords give search engines more information about your store. Use them to supply a list of the words and phrases that are most relevant to the products you offer. These keywords show up in the header of your site. The header is not visible to the casual site visitor, but it does inform your rankings with web browsers.
+Meta keywords give search engines more information about your store. Use them to supply a list of the words and phrases that are most relevant to the establishments you offer. These keywords show up in the header of your site. The header is not visible to the casual site visitor, but it does inform your rankings with web browsers.
 
 ***
 For more information about Search Engine Optimization, try reading the [Google Webmaster Tools topic](https://support.google.com/webmasters/answer/35291?hl=en) on the subject.
@@ -32,7 +32,7 @@ For more information about Search Engine Optimization, try reading the [Google W
 
 ### Default Meta Description
 
-Whereas meta keywords constitutes a comma-separated list of words and phrases, the meta description is a fuller, prose description of what your store is and does. The phrasing you use can help distinguish you from any other e-commerce websites offering products similar to yours.
+Whereas meta keywords constitutes a comma-separated list of words and phrases, the meta description is a fuller, prose description of what your store is and does. The phrasing you use can help distinguish you from any other e-commerce websites offering establishments similar to yours.
 
 ### Site URL
 

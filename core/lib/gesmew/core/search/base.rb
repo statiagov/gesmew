@@ -13,13 +13,13 @@
 #         end
 #
 #         def retrieve_products
-#           @products = get_base_scope
+#           @establishments = get_base_scope
 #           curr_page = page || 1
 #
 #           unless Gesmew::Config.show_products_without_price
-#             @products = @products.where("gesmew_prices.amount IS NOT NULL").where("gesmew_prices.currency" => current_currency)
+#             @establishments = @establishments.where("gesmew_prices.amount IS NOT NULL").where("gesmew_prices.currency" => current_currency)
 #           end
-#           @products = @products.page(curr_page).per(per_page)
+#           @establishments = @establishments.page(curr_page).per(per_page)
 #         end
 #
 #         def method_missing(name)
@@ -32,7 +32,7 @@
 #
 #         protected
 #           def get_base_scope
-#             base_scope = Gesmew::Product.active
+#             base_scope = Gesmew::Establishment.active
 #             base_scope = base_scope.in_taxon(taxon) unless taxon.blank?
 #             base_scope = get_products_conditions_for(base_scope, keywords)
 #             base_scope = add_search_scopes(base_scope)
@@ -42,13 +42,13 @@
 #
 #           def add_eagerload_scopes scope
 #             # TL;DR Switch from `preload` to `includes` as soon as Rails starts honoring
-#             # `order` clauses on `has_many` associations when a `where` constraint
+#             # `inspection` clauses on `has_many` associations when a `where` constraint
 #             # affecting a joined table is present (see
 #             # https://github.com/rails/rails/issues/6769).
 #             #
 #             # Ideally this would use `includes` instead of `preload` calls, leaving it
 #             # up to Rails whether associated objects should be fetched in one big join
-#             # or multiple independent queries. However as of Rails 4.1.8 any `order`
+#             # or multiple independent queries. However as of Rails 4.1.8 any `inspection`
 #             # defined on `has_many` associations are ignored when Rails builds a join
 #             # query.
 #             #
@@ -67,7 +67,7 @@
 #               if base_scope.respond_to?(:search_scopes) && base_scope.search_scopes.include?(scope_name.to_sym)
 #                 base_scope = base_scope.send(scope_name, *scope_attribute)
 #               else
-#                 base_scope = base_scope.merge(Gesmew::Product.ransack({scope_name => scope_attribute}).result)
+#                 base_scope = base_scope.merge(Gesmew::Establishment.ransack({scope_name => scope_attribute}).result)
 #               end
 #             end if search
 #             base_scope

@@ -24,8 +24,8 @@ child inventory_units: :inventory_units do
   end
 end
 
-child order: :order do
-  extends "gesmew/api/v1/orders/order"
+child inspection: :inspection do
+  extends "gesmew/api/v1/inspections/inspection"
 
   child billing_address: :bill_address do
     extends "gesmew/api/v1/addresses/show"

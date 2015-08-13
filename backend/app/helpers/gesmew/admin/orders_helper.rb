@@ -2,14 +2,14 @@ module Gesmew
   module Admin
     module OrdersHelper
       # Renders all the extension partials that may have been specified in the extensions
-      def event_links(order, events)
+      def event_links(inspection, events)
         links = []
         events.sort.each do |event|
-          if order.send("can_#{event}?")
-            label = Gesmew.t(event, scope: 'admin.order.events', default: Gesmew.t(event))
+          if inspection.send("can_#{event}?")
+            label = Gesmew.t(event, scope: 'admin.inspection.events', default: Gesmew.t(event))
             links << button_link_to(
               label.capitalize,
-              [event, :admin, order],
+              [event, :admin, inspection],
               method: :put,
               icon: "#{event}",
               data: { confirm: Gesmew.t(:order_sure_want_to, event: label) }

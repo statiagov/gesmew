@@ -15,13 +15,13 @@ en:
       generate_key: "Generate API key"
       key_generated: "Key generated"
       key_cleared: "Key cleared"
-      order:
-        could_not_transition: "The order could not be transitioned. Please fix the errors and try again."
+      inspection:
+        could_not_transition: "The inspection could not be transitioned. Please fix the errors and try again."
         invalid_shipping_method: "Invalid shipping method specified."
       payment:
         credit_over_limit: "This payment can only be credited up to %{limit}. Please specify an amount less than or equal to this number."
         update_forbidden: "This payment cannot be updated because it is %{state}."
       shipment:
         cannot_ready: "Cannot ready shipment."
-      stock_location_required: "A stock_location_id parameter must be provided in order to retrieve stock movements."
+      stock_location_required: "A stock_location_id parameter must be provided in inspection to retrieve stock movements."
       invalid_taxonomy_id: "Invalid taxonomy id."

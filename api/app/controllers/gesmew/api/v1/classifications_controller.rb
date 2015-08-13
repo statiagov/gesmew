@@ -3,7 +3,7 @@ module Gesmew
     module V1
       class ClassificationsController < Gesmew::Api::BaseController
         def update
-          authorize! :update, Product
+          authorize! :update, Establishment
           authorize! :update, Taxon
           classification = Gesmew::Classification.find_by(
             product_id: params[:product_id],

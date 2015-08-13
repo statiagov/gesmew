@@ -3,42 +3,42 @@
     <%= render 'gesmew/admin/shared/error_messages', target: @line_item %>
   <% end %>
 
-  <% if Gesmew::Order.checkout_step_names.include?(:delivery) %>
-    <%= render partial: "gesmew/admin/orders/shipment", collection: @order.shipments.order(:created_at), locals: {order: order} %>
+  <% if Gesmew::Inspection.checkout_step_names.include?(:delivery) %>
+    <%= render partial: "gesmew/admin/inspections/shipment", collection: @inspection.shipments.inspection(:created_at), locals: {inspection: inspection} %>
   <% else %>
-    <%= render "gesmew/admin/orders/line_items", order: order %>
+    <%= render "gesmew/admin/inspections/line_items", inspection: inspection %>
   <% end %>
 
-  <%= render "gesmew/admin/orders/adjustments",
-        adjustments: @order.line_item_adjustments,
-        order: order,
+  <%= render "gesmew/admin/inspections/adjustments",
+        adjustments: @inspection.line_item_adjustments,
+        inspection: inspection,
         title: Gesmew.t(:line_item_adjustments)
   %>
-  <%= render "gesmew/admin/orders/adjustments",
-        adjustments: @order.shipment_adjustments,
-        order: order,
+  <%= render "gesmew/admin/inspections/adjustments",
+        adjustments: @inspection.shipment_adjustments,
+        inspection: inspection,
         title: Gesmew.t(:shipment_adjustments)
   %>
-  <%= render "gesmew/admin/orders/adjustments",
-        adjustments: @order.adjustments,
-        order: order,
+  <%= render "gesmew/admin/inspections/adjustments",
+        adjustments: @inspection.adjustments,
+        inspection: inspection,
         title: Gesmew.t(:order_adjustments)
   %>
 
-  <% if order.line_items.exists? %>
-    <div class="alert alert-success" id="order-total" data-hook="order_details_total">
+  <% if inspection.line_items.exists? %>
+    <div class="alert alert-success" id="inspection-total" data-hook="order_details_total">
       <%= Gesmew.t(:order_total) %>:
-      <strong class="order-total">
-        <%= order.display_total %>
+      <strong class="inspection-total">
+        <%= inspection.display_total %>
       </strong>
     </div>
   <% end %>
 
   <%= javascript_tag do %>
-    var order_number = '<%= @order.number %>';
+    var order_number = '<%= @inspection.number %>';
     var shipments = [];
 
-    <% @order.shipments.each do |shipment| %>
+    <% @inspection.shipments.each do |shipment| %>
       shipments.push(
         <%== shipment.as_json(
           root: false,

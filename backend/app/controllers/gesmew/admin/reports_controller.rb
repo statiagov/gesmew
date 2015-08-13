@@ -40,15 +40,15 @@ module Gesmew
 
         params[:q][:s] ||= "completed_at desc"
 
-        @search = Order.complete.ransack(params[:q])
-        @orders = @search.result
+        @search = Inspection.complete.ransack(params[:q])
+        @inspections = @search.result
 
         @totals = {}
-        @orders.each do |order|
-          @totals[order.currency] = { :item_total => ::Money.new(0, order.currency), :adjustment_total => ::Money.new(0, order.currency), :sales_total => ::Money.new(0, order.currency) } unless @totals[order.currency]
-          @totals[order.currency][:item_total] += order.display_item_total.money
-          @totals[order.currency][:adjustment_total] += order.display_adjustment_total.money
-          @totals[order.currency][:sales_total] += order.display_total.money
+        @inspections.each do |inspection|
+          @totals[inspection.currency] = { :item_total => ::Money.new(0, inspection.currency), :adjustment_total => ::Money.new(0, inspection.currency), :sales_total => ::Money.new(0, inspection.currency) } unless @totals[inspection.currency]
+          @totals[inspection.currency][:item_total] += inspection.display_item_total.money
+          @totals[inspection.currency][:adjustment_total] += inspection.display_adjustment_total.money
+          @totals[inspection.currency][:sales_total] += inspection.display_total.money
         end
       end
 

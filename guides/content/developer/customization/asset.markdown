@@ -176,7 +176,7 @@ A similar approach can be used for JavaScript functions. For example, if
 you wanted to override the `show_variant_images` method:
 
 ```javascript
- // gesmew/app/assets/javascripts/gesmew/frontend/product.js
+ // gesmew/app/assets/javascripts/gesmew/frontend/establishment.js
 
 var show_variant_images = function(variant_id) {
   $('li.vtmb').hide();

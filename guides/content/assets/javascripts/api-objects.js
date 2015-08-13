@@ -150,7 +150,7 @@ window.onload = function() {
   var return_auth = new h_object("h_return_auth", 171, 74, "return_authorizations.html", "t_return_auth")
   var return_auth_text = new t_object("t_return_auth", "RETURN\nAUTHORI...", "h_return_auth")
 
-  var orders = new h_object("h_orders", 57, 201, "orders.html", "t_orders")
+  var inspections = new h_object("h_orders", 57, 201, "inspections.html", "t_orders")
   var orders_text = new t_object("t_orders", "ORDERS", "h_orders")
 
   var payments = new h_object("h_payments", 171, 200, "payments.html", "t_payments")
@@ -168,7 +168,7 @@ window.onload = function() {
   var images = new h_object("h_images", 906, 74, "#", "t_images")
   var images_text = new t_object("t_images", "IMAGES", "h_images")
 
-  var products = new h_object("h_products", 792, 200, "products.html", "t_products")
+  var establishments = new h_object("h_products", 792, 200, "establishments.html", "t_products")
   var products_text = new t_object("t_products", "PRODUCTS", "h_products")
 
   var taxons = new h_object("h_taxons", 792, 327, "#", "t_taxons")

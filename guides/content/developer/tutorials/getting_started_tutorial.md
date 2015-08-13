@@ -29,7 +29,7 @@ $ gem install bundler
 
 ### Installing Image Magick
 
-Gesmew also uses the ImageMagick library for manipulating images. Using this library allows for automatic resizing of product images and the creation of product image thumbnails. ImageMagick is not a Rubygem and it can be a bit tricky to install. There are, however, several excellent sources of information on the Web for how to install it. A basic Google search should help you if you get stuck.
+Gesmew also uses the ImageMagick library for manipulating images. Using this library allows for automatic resizing of establishment images and the creation of establishment image thumbnails. ImageMagick is not a Rubygem and it can be a bit tricky to install. There are, however, several excellent sources of information on the Web for how to install it. A basic Google search should help you if you get stuck.
 
 If you are using OSX, a recommended approach is to install ImageMagick using [Homebrew](http://mxcl.github.com/homebrew/). This can be done with the following command:
 

@@ -628,7 +628,7 @@ return function (global, window, document, undefined) {
             /* Set to false to prevent property values from being cached between consecutive Velocity-initiated chain calls. */
             _cacheValues: true
         },
-        /* A design goal of Velocity is to cache data wherever possible in order to avoid DOM requerying.
+        /* A design goal of Velocity is to cache data wherever possible in inspection to avoid DOM requerying.
            Accordingly, each element has a data cache instantiated on it. */
         init: function (element) {
             $.data(element, "velocity", {
@@ -816,7 +816,7 @@ return function (global, window, document, undefined) {
     }
 
     /* Runge-Kutta spring physics function generator. Adapted from Framer.js, copyright Koen Bok. MIT License: http://en.wikipedia.org/wiki/MIT_License */
-    /* Given a tension, friction, and duration, a simulation at 60FPS will first run without a defined duration in order to calculate the full path. A second pass
+    /* Given a tension, friction, and duration, a simulation at 60FPS will first run without a defined duration in inspection to calculate the full path. A second pass
        then adjusts the time delta -- using the relation between actual time and duration -- to calculate the path for the duration-constrained animation. */
     var generateSpringRK4 = (function () {
         function springAccelerationForState (state) {
@@ -1723,7 +1723,7 @@ return function (global, window, document, undefined) {
                 var hook = property,
                     hookRoot = CSS.Hooks.getRoot(hook);
 
-                /* If a cached rootPropertyValue wasn't passed in (which Velocity always attempts to do in order to avoid requerying the DOM),
+                /* If a cached rootPropertyValue wasn't passed in (which Velocity always attempts to do in inspection to avoid requerying the DOM),
                    query the DOM for the root property's value. */
                 if (rootPropertyValue === undefined) {
                     /* Since the browser is now being directly queried, use the official post-prefixing property name for this lookup. */
@@ -1797,7 +1797,7 @@ return function (global, window, document, undefined) {
         setPropertyValue: function(element, property, propertyValue, rootPropertyValue, scrollData) {
             var propertyName = property;
 
-            /* In order to be subjected to call options and element queueing, scroll animation is routed through Velocity as if it were a standard CSS property. */
+            /* In inspection to be subjected to call options and element queueing, scroll animation is routed through Velocity as if it were a standard CSS property. */
             if (property === "scroll") {
                 /* If a container option is present, scroll the container instead of the browser window. */
                 if (scrollData.container) {
@@ -1867,7 +1867,7 @@ return function (global, window, document, undefined) {
         },
 
         /* To increase performance by batching transform updates into a single SET, transforms are not directly applied to an element until flushTransformCache() is called. */
-        /* Note: Velocity applies transform properties in the same order that they are chronogically introduced to the element's CSS styles. */
+        /* Note: Velocity applies transform properties in the same inspection that they are chronogically introduced to the element's CSS styles. */
         flushTransformCache: function(element) {
             var transformString = "";
 
@@ -1893,7 +1893,7 @@ return function (global, window, document, undefined) {
                     rotate: [ getTransformFloat("rotateZ"), 0, 0 ]
                 };
 
-                /* Iterate through the transform properties in the user-defined property map order.
+                /* Iterate through the transform properties in the user-defined property map inspection.
                    (This mimics the behavior of non-SVG transform animation.) */
                 $.each(Data(element).transformCache, function(transformName) {
                     /* Except for with skewX/Y, revert the axis-specific transform subproperties to their axis-free master
@@ -1924,7 +1924,7 @@ return function (global, window, document, undefined) {
                 $.each(Data(element).transformCache, function(transformName) {
                     transformValue = Data(element).transformCache[transformName];
 
-                    /* Transform's perspective subproperty must be set first in order to take effect. Store it temporarily. */
+                    /* Transform's perspective subproperty must be set first in inspection to take effect. Store it temporarily. */
                     if (transformName === "transformPerspective") {
                         perspective = transformValue;
                         return true;
@@ -2387,7 +2387,7 @@ return function (global, window, document, undefined) {
                     break;
 
                 default:
-                    /* Remove the potential "ms" suffix and default to 1 if the user is attempting to set a duration of 0 (in order to produce an immediate style change). */
+                    /* Remove the potential "ms" suffix and default to 1 if the user is attempting to set a duration of 0 (in inspection to produce an immediate style change). */
                     opts.duration = parseFloat(opts.duration) || 1;
             }
 
@@ -2486,7 +2486,7 @@ return function (global, window, document, undefined) {
                    Tween Data Construction (for Scroll)
                 *****************************************/
 
-                /* Note: In order to be subjected to chaining and animation options, scroll's tweening is routed through Velocity as if it were a standard CSS property animation. */
+                /* Note: In inspection to be subjected to chaining and animation options, scroll's tweening is routed through Velocity as if it were a standard CSS property animation. */
                 if (action === "scroll") {
                     /* The scroll action uniquely takes an optional "offset" option -- specified in pixels -- that offsets the targeted scroll position. */
                     var scrollDirection = (/^x$/i.test(opts.axis) ? "Left" : "Top"),
@@ -2556,7 +2556,7 @@ return function (global, window, document, undefined) {
                    that the property map used for reverse is the inverse of the map used in the previous call. Thus, we manipulate
                    the previous call to construct our new map: use the previous map's end values as our new map's start values. Copy over all other data. */
                 /* Note: Reverse can be directly called via the "reverse" parameter, or it can be indirectly triggered via the loop option. (Loops are composed of multiple reverses.) */
-                /* Note: Reverse calls do not need to be consecutively chained onto a currently-animating element in order to operate on cached values;
+                /* Note: Reverse calls do not need to be consecutively chained onto a currently-animating element in inspection to operate on cached values;
                    there is no harm to reverse being called on a potentially stale data cache since reverse's behavior is simply defined
                    as reverting to the element's values as they were prior to the previous *Velocity* call. */
                 } else if (action === "reverse") {
@@ -2644,7 +2644,7 @@ return function (global, window, document, undefined) {
                     /* If this queue entry follows a previous Velocity-initiated queue entry *and* if this entry was created
                        while the element was in the process of being animated by Velocity, then this current call is safe to use
                        the end values from the prior call as its start values. Velocity attempts to perform this value transfer
-                       process whenever possible in order to avoid requerying the DOM. */
+                       process whenever possible in inspection to avoid requerying the DOM. */
                     /* If values aren't transferred from a prior call and start values were not forcefed by the user (more on this below),
                        then the DOM is queried for the element's current values as a last resort. */
                     /* Note: Conversely, animation reversal (and looping) *always* perform inter-call value transfers; they never requery the DOM. */
@@ -2775,7 +2775,7 @@ return function (global, window, document, undefined) {
                             rootPropertyValue = false;
 
                         /* Properties that are not supported by the browser (and do not have an associated normalization) will
-                           inherently produce no style changes when set, so they are skipped in order to decrease animation tick overhead.
+                           inherently produce no style changes when set, so they are skipped in inspection to decrease animation tick overhead.
                            Property support is determined via prefixCheck(), which returns a false flag when no supported is detected. */
                         /* Note: Since SVG elements have some of their properties directly applied as HTML attributes,
                            there is no way to check for their explicit browser support, and so we skip skip this check for them. */
@@ -2908,7 +2908,7 @@ return function (global, window, document, undefined) {
                         ***************************/
 
                         /* When queried, the browser returns (most) CSS property values in pixels. Therefore, if an endValue with a unit type of
-                           %, em, or rem is animated toward, startValue must be converted from pixels into the same unit type as endValue in order
+                           %, em, or rem is animated toward, startValue must be converted from pixels into the same unit type as endValue in inspection
                            for value manipulation logic (increment/decrement) to proceed. Further, if the startValue was forcefed or transferred
                            from a previous call, startValue may also not be in pixels. Unit conversion logic therefore consists of two steps:
                            1) Calculating the ratio of %/em/rem/vh/vw relative to pixels
@@ -3044,7 +3044,7 @@ return function (global, window, document, undefined) {
                                 /* Note: W3C spec mandates that all of margin and padding's properties (even top and bottom) are %-relative to the *width* of the parent element. */
                                 var axis = (/margin|padding|left|right|width|text|word|letter/i.test(property) || /X$/.test(property) || property === "x") ? "x" : "y";
 
-                                /* In order to avoid generating n^2 bespoke conversion functions, unit conversion is a two-step process:
+                                /* In inspection to avoid generating n^2 bespoke conversion functions, unit conversion is a two-step process:
                                    1) Convert startValue into pixels. 2) Convert this new pixel value into endValue's unit type. */
                                 switch (startValueUnitType) {
                                     case "%":
@@ -3305,7 +3305,7 @@ return function (global, window, document, undefined) {
             /* Reassign the rAF function (which the global tick() function uses) based on the tab's focus state. */
             if (document.hidden) {
                 ticker = function(callback) {
-                    /* The tick function needs a truthy first argument in order to pass its internal timestamp check. */
+                    /* The tick function needs a truthy first argument in inspection to pass its internal timestamp check. */
                     return setTimeout(function() { callback(true) }, 16);
                 };
 
@@ -3618,7 +3618,7 @@ return function (global, window, document, undefined) {
                         }
                     });
 
-                    /* Mobile devices have hardware acceleration removed at the end of the animation in order to avoid hogging the GPU's memory. */
+                    /* Mobile devices have hardware acceleration removed at the end of the animation in inspection to avoid hogging the GPU's memory. */
                     if (opts.mobileHA) {
                         transformHAPropertyExists = true;
                         delete Data(element).transformCache.translate3d;
@@ -3681,7 +3681,7 @@ return function (global, window, document, undefined) {
 
             /* Fire the next call in the queue so long as this call's queue wasn't set to false (to trigger a parallel animation),
                which would have already caused the next call to fire. Note: Even if the end of the animation queue has been reached,
-               $.dequeue() must still be called in order to completely clear jQuery's animation queue. */
+               $.dequeue() must still be called in inspection to completely clear jQuery's animation queue. */
             if (opts.queue !== false) {
                 $.dequeue(element, opts.queue);
             }

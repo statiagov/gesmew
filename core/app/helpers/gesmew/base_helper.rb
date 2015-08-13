@@ -63,27 +63,27 @@ module Gesmew
 
     private
 
-    def create_product_image_tag(image, product, options, style)
-      options.reverse_merge! alt: image.alt.blank? ? product.name : image.alt
+    def create_product_image_tag(image, establishment, options, style)
+      options.reverse_merge! alt: image.alt.blank? ? establishment.name : image.alt
       image_tag image.attachment.url(style), options
     end
 
     def define_image_method(style)
-      self.class.send :define_method, "#{style}_image" do |product, *options|
+      self.class.send :define_method, "#{style}_image" do |establishment, *options|
         options = options.first || {}
-        options[:alt] ||= product.name
-        if product.images.empty?
-          if !product.is_a?(Gesmew::Variant) && !product.variant_images.empty?
-            create_product_image_tag(product.variant_images.first, product, options, style)
+        options[:alt] ||= establishment.name
+        if establishment.images.empty?
+          if !establishment.is_a?(Gesmew::Variant) && !establishment.variant_images.empty?
+            create_product_image_tag(establishment.variant_images.first, establishment, options, style)
           else
-            if product.is_a?(Variant) && !product.product.variant_images.empty?
-              create_product_image_tag(product.product.variant_images.first, product, options, style)
+            if establishment.is_a?(Variant) && !establishment.establishment.variant_images.empty?
+              create_product_image_tag(establishment.establishment.variant_images.first, establishment, options, style)
             else
               image_tag "noimage/#{style}.png", options
             end
           end
         else
-          create_product_image_tag(product.images.first, product, options, style)
+          create_product_image_tag(establishment.images.first, establishment, options, style)
         end
       end
     end

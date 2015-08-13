@@ -4,7 +4,7 @@
   / <%= Gesmew.t(:customer_details) %>
 <% end %>
 
-<% if can? :edit, @order.user %>
+<% if can? :edit, @inspection.user %>
   <div id="select-customer" class="panel panel-default" data-hook>
     <div class="panel-heading">
       <h1 class="panel-title">
@@ -13,14 +13,14 @@
     </div>
     <div class="panel-body">
       <%= hidden_field_tag :customer_search,  nil, class: 'error-message' %>
-      <%= render partial: "gesmew/admin/orders/customer_details/autocomplete", formats: :js %>
+      <%= render partial: "gesmew/admin/inspections/customer_details/autocomplete", formats: :js %>
     </div>
   </div>
 <% end %>
 
-<%= render 'gesmew/admin/shared/error_messages', target: @order %>
+<%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
 
-<%= form_for @order, url: gesmew.admin_order_customer_url(@order) do |f| %>
+<%= form_for @inspection, url: gesmew.admin_order_customer_url(@inspection) do |f| %>
   <%= render 'form', f: f %>
 <% end %>
 

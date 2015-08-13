@@ -13,7 +13,7 @@ module GesmewSample
       Gesmew::Sample.load_sample("tax_categories")
       Gesmew::Sample.load_sample("tax_rates")
 
-      Gesmew::Sample.load_sample("products")
+      Gesmew::Sample.load_sample("establishments")
       Gesmew::Sample.load_sample("taxons")
       Gesmew::Sample.load_sample("option_values")
       Gesmew::Sample.load_sample("product_option_types")
@@ -23,7 +23,7 @@ module GesmewSample
       Gesmew::Sample.load_sample("stock")
       Gesmew::Sample.load_sample("assets")
 
-      Gesmew::Sample.load_sample("orders")
+      Gesmew::Sample.load_sample("inspections")
       Gesmew::Sample.load_sample("adjustments")
       Gesmew::Sample.load_sample("payments")
     end

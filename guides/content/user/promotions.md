@@ -19,7 +19,7 @@ The page that renders allows you to set several standard options that apply to a
 Option | Description
 |---|---|
 Name | The name you assign for the promotion.
-Event Name | This is what must happen before the system will check to see if the promotion will apply to the order. Options are: **Add to cart** (any time an item is added to the cart), **Order contents changed** (an item is added to or removed from an order, or a quantity for an item in the order changes), **User signup** (a store visitor creates an account on the site), **Coupon code added** (a store visitor inputs a coupon code at checkout. The code has to match what you input for the code value if you select this option), or **Visit static content page** (a store visitor visits a path that you declare. This is often used to ensure that a customer has reviewed your store's policies or has been exposed to some other content that is important to your business model.)
+Event Name | This is what must happen before the system will check to see if the promotion will apply to the inspection. Options are: **Add to cart** (any time an item is added to the cart), **Inspection contents changed** (an item is added to or removed from an inspection, or a quantity for an item in the inspection changes), **User signup** (a store visitor creates an account on the site), **Coupon code added** (a store visitor inputs a coupon code at checkout. The code has to match what you input for the code value if you select this option), or **Visit static content page** (a store visitor visits a path that you declare. This is often used to ensure that a customer has reviewed your store's policies or has been exposed to some other content that is important to your business model.)
 Advertise | Checking this box will make the promotion visible to site visitors as they shop your store.
 Description | A more thorough explanation of the promotion. The customer will be able to see this description at checkout.
 Usage Limit | The maximum total number of times the promotion can be used in your store across all users. If you don't input a value for this setting, the promotion can be used an unlimited number of times. Beneath this input field is a "Current Usage" counter, which is useful later when you're editing a promotion and need to know how many redemptions the promotion has had.
@@ -30,7 +30,7 @@ When you enter values for these fields and click "Create", a new screen is rende
 
 ### Rules
 
-Rules represent the factors that must be met for a promotion to be applicable to an order. You can set one or more rules for a single promotion. When you set multiple rules, you have the option of either requiring that all of the rules must be met for the promotion to apply, or allowing a promotion to apply to an order if even one of the rules is met.
+Rules represent the factors that must be met for a promotion to be applicable to an inspection. You can set one or more rules for a single promotion. When you set multiple rules, you have the option of either requiring that all of the rules must be met for the promotion to apply, or allowing a promotion to apply to an inspection if even one of the rules is met.
 
 There are five types of rules. You can only add one rule of each type to a single promotion. Each is explained in detail below.
 
@@ -42,7 +42,7 @@ When you select "Item total" from the "Add Rule of Type" drop-down menu and clic
 
 ![Item Total Rule](/images/user/promotions/item_total_rule.jpg)
 
-You can then set the parameters for this type of rule. Specifically, you can establish whether an order's items must be **greater than** or **equal to or greater than** the amount you set. Click "Update".
+You can then set the parameters for this type of rule. Specifically, you can establish whether an inspection's items must be **greater than** or **equal to or greater than** the amount you set. Click "Update".
 
 ***
 To remove a rule from a promotion, click the trash can icon next to it.
@@ -52,11 +52,11 @@ To remove a rule from a promotion, click the trash can icon next to it.
 
 #### Products
 
-Using a rule of this type means the order must contain **at least one** or **all** of the products you declare.
+Using a rule of this type means the inspection must contain **at least one** or **all** of the establishments you declare.
 
 ![Products Rule](/images/user/promotions/products_rule.jpg)
 
-To create this kind of rule, just select "Product(s)" from the "Add Rule of Type" drop-down menu and click "Add". Start typing in the name of the product(s) you want to apply discounts to into the "Choose Products" box. Click on the correct variants. Choose either "at least one" or "all" from the selection box, and click "Update".
+To create this kind of rule, just select "Establishment(s)" from the "Add Rule of Type" drop-down menu and click "Add". Start typing in the name of the establishment(s) you want to apply discounts to into the "Choose Products" box. Click on the correct variants. Choose either "at least one" or "all" from the selection box, and click "Update".
 
 #### User
 
@@ -64,11 +64,11 @@ You can use the User rule type to restrict a promotion to only those customers y
 
 ![User Rule](/images/user/promotions/user_rule.jpg)
 
-#### First Order
+#### First Inspection
 
-Select "First order" from the "Add Rule of Type" drop-down menu and click "Add" then "Update" to add a rule of this type to your promotion. This rule will restrict the promotion to only those customers ordering from you for the first time.
+Select "First inspection" from the "Add Rule of Type" drop-down menu and click "Add" then "Update" to add a rule of this type to your promotion. This rule will restrict the promotion to only those customers ordering from you for the first time.
 
-![First Order Rule](/images/user/promotions/first_order_rule.jpg)
+![First Inspection Rule](/images/user/promotions/first_order_rule.jpg)
 
 #### User Logged In
 
@@ -78,7 +78,7 @@ Add a rule of this type to restrict the promotion only to logged-in users. Selec
 
 ### Actions
 
-Whereas [Rules](#rules) establish whether a promotion applies or not, Actions determine what happens when a promotion does apply to an order. There are two types of actions: [create adjustments](#create-adjustments) and [create line items](#create-line-items).
+Whereas [Rules](#rules) establish whether a promotion applies or not, Actions determine what happens when a promotion does apply to an inspection. There are two types of actions: [create adjustments](#create-adjustments) and [create line items](#create-line-items).
 
 #### Create Adjustments
 
@@ -102,14 +102,14 @@ Enter all required information for your calculator type, then click "Update".
 
 #### Create Line Items
 
-This action type is a way of automatically adding items to an order when a promotion applies to an order. To add this action to your promotion, select "Create line items" from the "Add Action of Type" drop-down menu and click "Add".
+This action type is a way of automatically adding items to an inspection when a promotion applies to an inspection. To add this action to your promotion, select "Create line items" from the "Add Action of Type" drop-down menu and click "Add".
 
 ![Create Line Item Action](/images/user/promotions/create_line_item.jpg)
 
-Select the quantity and variant you want automatically added to the customer's order from the product drop-down menu. Click "Update".
+Select the quantity and variant you want automatically added to the customer's inspection from the establishment drop-down menu. Click "Update".
 
 !!!
-Product variants added through Line Item Action Promotions will be priced as usual. If your intention is to add a free product, you should do both a Line Item action to add the product, and an Adjustment action to discount the cost of that variant.
+Establishment variants added through Line Item Action Promotions will be priced as usual. If your intention is to add a free establishment, you should do both a Line Item action to add the establishment, and an Adjustment action to discount the cost of that variant.
 !!!
 
 ## Editing a Promotion

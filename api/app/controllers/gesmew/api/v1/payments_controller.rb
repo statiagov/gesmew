@@ -7,7 +7,7 @@ module Gesmew
         before_action :find_payment, only: [:update, :show, :authorize, :purchase, :capture, :void]
 
         def index
-          @payments = @order.payments.ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
+          @payments = @inspection.payments.ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
           respond_with(@payments)
         end
 
@@ -17,7 +17,7 @@ module Gesmew
         end
 
         def create
-          @payment = @order.payments.build(payment_params)
+          @payment = @inspection.payments.build(payment_params)
           if @payment.save
             respond_with(@payment, status: 201, default_template: :show)
           else
@@ -59,12 +59,12 @@ module Gesmew
         private
 
           def find_order
-            @order = Gesmew::Order.friendly.find(order_id)
-            authorize! :read, @order, order_token
+            @inspection = Gesmew::Inspection.friendly.find(order_id)
+            authorize! :read, @inspection, order_token
           end
 
           def find_payment
-            @payment = @order.payments.friendly.find(params[:id])
+            @payment = @inspection.payments.friendly.find(params[:id])
           end
 
           def perform_payment_action(action, *args)

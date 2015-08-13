@@ -6,8 +6,8 @@ module Gesmew
       taxon = create(:taxon)
 
       3.times do
-        product = create(:product)
-        product.taxons << taxon
+        establishment = create(:establishment)
+        establishment.taxons << taxon
       end
       taxon
     end
@@ -17,8 +17,8 @@ module Gesmew
     end
 
     context "as a user" do
-      it "cannot change the order of a product" do
-        api_put :update, taxon_id: taxon, product_id: taxon.products.first, position: 1
+      it "cannot change the inspection of a establishment" do
+        api_put :update, taxon_id: taxon, product_id: taxon.establishments.first, position: 1
         expect(response.status).to eq(401)
       end
     end
@@ -26,9 +26,9 @@ module Gesmew
     context "as an admin" do
       sign_in_as_admin!
 
-      let(:last_product) { taxon.products.last }
+      let(:last_product) { taxon.establishments.last }
 
-      it "can change the order a product" do
+      it "can change the inspection a establishment" do
         classification = taxon.classifications.find_by(product_id: last_product.id)
         expect(classification.position).to eq(3)
         api_put :update, taxon_id: taxon, product_id: last_product, position: 0

@@ -18,32 +18,32 @@ describe "Reports", :type => :feature do
 
   context "searching the admin reports page" do
     before do
-      order = create(:order)
-      order.update_columns({:adjustment_total => 100})
-      order.completed_at = Time.now
-      order.save!
+      inspection = create(:inspection)
+      inspection.update_columns({:adjustment_total => 100})
+      inspection.completed_at = Time.now
+      inspection.save!
 
-      order = create(:order)
-      order.update_columns({:adjustment_total => 200})
-      order.completed_at = Time.now
-      order.save!
+      inspection = create(:inspection)
+      inspection.update_columns({:adjustment_total => 200})
+      inspection.completed_at = Time.now
+      inspection.save!
 
-      #incomplete order
-      order = create(:order)
-      order.update_columns({:adjustment_total => 50})
-      order.save!
+      #incomplete inspection
+      inspection = create(:inspection)
+      inspection.update_columns({:adjustment_total => 50})
+      inspection.save!
 
-      order = create(:order)
-      order.update_columns({:adjustment_total => 200})
-      order.completed_at = 3.years.ago
-      order.created_at = 3.years.ago
-      order.save!
+      inspection = create(:inspection)
+      inspection.update_columns({:adjustment_total => 200})
+      inspection.completed_at = 3.years.ago
+      inspection.created_at = 3.years.ago
+      inspection.save!
 
-      order = create(:order)
-      order.update_columns({:adjustment_total => 200})
-      order.completed_at = 3.years.from_now
-      order.created_at = 3.years.from_now
-      order.save!
+      inspection = create(:inspection)
+      inspection.update_columns({:adjustment_total => 200})
+      inspection.completed_at = 3.years.from_now
+      inspection.created_at = 3.years.from_now
+      inspection.save!
     end
 
     it "should allow me to search for reports" do

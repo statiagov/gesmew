@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Gesmew::OrdersController, :type => :controller do
   let(:user) { create(:user) }
 
-  context "Order model mock" do
-    let(:order) do
-      Gesmew::Order.create!
+  context "Inspection model mock" do
+    let(:inspection) do
+      Gesmew::Inspection.create!
     end
     let(:variant) { create(:variant) }
 
@@ -14,21 +14,21 @@ describe Gesmew::OrdersController, :type => :controller do
     end
 
     context "#populate" do
-      it "should create a new order when none specified" do
+      it "should create a new inspection when none specified" do
         gesmew_post :populate, {}, {}
         expect(cookies.signed[:guest_token]).not_to be_blank
-        expect(Gesmew::Order.find_by_guest_token(cookies.signed[:guest_token])).to be_persisted
+        expect(Gesmew::Inspection.find_by_guest_token(cookies.signed[:guest_token])).to be_persisted
       end
 
       context "with Variant" do
         it "should handle population" do
           expect do
             gesmew_post :populate, variant_id: variant.id, quantity: 5
-          end.to change { user.orders.count }.by(1)
-          order = user.orders.last
+          end.to change { user.inspections.count }.by(1)
+          inspection = user.inspections.last
           expect(response).to redirect_to gesmew.cart_path
-          expect(order.line_items.size).to eq(1)
-          line_item = order.line_items.first
+          expect(inspection.line_items.size).to eq(1)
+          line_item = inspection.line_items.first
           expect(line_item.variant_id).to eq(variant.id)
           expect(line_item.quantity).to eq(5)
         end
@@ -40,13 +40,13 @@ describe Gesmew::OrdersController, :type => :controller do
           )
           allow_any_instance_of(Gesmew::LineItem).to(
             receive_message_chain(:errors, :full_messages).
-              and_return(["Order population failed"])
+              and_return(["Inspection population failed"])
           )
 
           gesmew_post :populate, variant_id: variant.id, quantity: 5
 
           expect(response).to redirect_to('/dummy_redirect')
-          expect(flash[:error]).to eq("Order population failed")
+          expect(flash[:error]).to eq("Inspection population failed")
         end
 
         it "shows an error when quantity is invalid" do
@@ -69,18 +69,18 @@ describe Gesmew::OrdersController, :type => :controller do
       context "with authorization" do
         before do
           allow(controller).to receive :check_authorization
-          allow(controller).to receive_messages current_order: order
+          allow(controller).to receive_messages current_order: inspection
         end
 
         it "should render the edit view (on failure)" do
           # email validation is only after address state
-          order.update_column(:state, "delivery")
-          gesmew_put :update, { :order => { :email => "" } }, { :order_id => order.id }
+          inspection.update_column(:state, "delivery")
+          gesmew_put :update, { :inspection => { :email => "" } }, { :order_id => inspection.id }
           expect(response).to render_template :edit
         end
 
         it "should redirect to cart path (on success)" do
-          allow(order).to receive(:update_attributes).and_return true
+          allow(inspection).to receive(:update_attributes).and_return true
           gesmew_put :update, {}, {:order_id => 1}
           expect(response).to redirect_to(gesmew.cart_path)
         end
@@ -92,9 +92,9 @@ describe Gesmew::OrdersController, :type => :controller do
         allow(controller).to receive :check_authorization
       end
 
-      it "should destroy line items in the current order" do
-        allow(controller).to receive(:current_order).and_return(order)
-        expect(order).to receive(:empty!)
+      it "should destroy line items in the current inspection" do
+        allow(controller).to receive(:current_order).and_return(inspection)
+        expect(inspection).to receive(:empty!)
         gesmew_put :empty
         expect(response).to redirect_to(gesmew.cart_path)
       end
@@ -107,8 +107,8 @@ describe Gesmew::OrdersController, :type => :controller do
         allow(controller).to receive :set_current_order
       end
 
-      it "cannot update a blank order" do
-        gesmew_put :update, :order => { :email => "foo" }
+      it "cannot update a blank inspection" do
+        gesmew_put :update, :inspection => { :email => "foo" }
         expect(flash[:error]).to eq(Gesmew.t(:order_not_found))
         expect(response).to redirect_to(gesmew.root_path)
       end
@@ -116,19 +116,19 @@ describe Gesmew::OrdersController, :type => :controller do
   end
 
   context "line items quantity is 0" do
-    let(:order) { Gesmew::Order.create }
+    let(:inspection) { Gesmew::Inspection.create }
     let(:variant) { create(:variant) }
-    let!(:line_item) { order.contents.add(variant, 1) }
+    let!(:line_item) { inspection.contents.add(variant, 1) }
 
     before do
       allow(controller).to receive(:check_authorization)
-      allow(controller).to receive_messages(:current_order => order)
+      allow(controller).to receive_messages(:current_order => inspection)
     end
 
     it "removes line items on update" do
-      expect(order.line_items.count).to eq 1
-      gesmew_put :update, :order => { line_items_attributes: { "0" => { id: line_item.id, quantity: 0 } } }
-      expect(order.reload.line_items.count).to eq 0
+      expect(inspection.line_items.count).to eq 1
+      gesmew_put :update, :inspection => { line_items_attributes: { "0" => { id: line_item.id, quantity: 0 } } }
+      expect(inspection.reload.line_items.count).to eq 0
     end
   end
 end

@@ -11,7 +11,7 @@ The customization of the flow of the checkout can be done by using Gesmew's `che
 
 ## Default Checkout Steps
 
-The Gesmew checkout process consists of the following steps. With the exception of the Registration step, each of these steps corresponds to a state of the `Gesmew::Order` object:
+The Gesmew checkout process consists of the following steps. With the exception of the Registration step, each of these steps corresponds to a state of the `Gesmew::Inspection` object:
 
 * Registration (Optional - only if using gesmew_auth_devise extension, can be toggled through the `Gesmew::Auth::Config[:registration_step]` configuration setting)
 * Address Information
@@ -25,11 +25,11 @@ The following sections will provide a walk-though of a checkout from a user's pe
 
 Prior to beginning the checkout process, the customer will be prompted to create a new account or to login to their existing account. By default, there is also a "guest checkout" option which allows users to specify only their email address if they do not wish to create an account.
 
-Technically, the registration step is not an actual state in the `Gesmew::Order` state machine. The `gesmew_auth_devise` gem (an extension that comes with Gesmew by default) adds the `check_registration` before filter to the all actions of `Gesmew::CheckoutController` (except for obvious reasons the `registration` and `update_registration` actions), which redirects to a registration page unless one of the following is true:
+Technically, the registration step is not an actual state in the `Gesmew::Inspection` state machine. The `gesmew_auth_devise` gem (an extension that comes with Gesmew by default) adds the `check_registration` before filter to the all actions of `Gesmew::CheckoutController` (except for obvious reasons the `registration` and `update_registration` actions), which redirects to a registration page unless one of the following is true:
 
 * `Gesmew::Auth::Config[:registration_step]` preference is not `true`
 * user is already logged in
-* the current order has an email address associated with it
+* the current inspection has an email address associated with it
 
 The method is defined like this:
 
@@ -70,13 +70,13 @@ During this step, the user may choose a delivery method. Gesmew assumes the list
 
 ### Payment
 
-This step is where the customer provides payment information. This step is intentionally placed last in order to minimize security issues with credit card information. Credit card information is never stored in the database so it would be impossible to have a subsequent step and still be able to submit the information to the payment gateway. Gesmew submits the information to the gateway before saving the model so that the sensitive information can be discarded before saving the checkout information.
+This step is where the customer provides payment information. This step is intentionally placed last in inspection to minimize security issues with credit card information. Credit card information is never stored in the database so it would be impossible to have a subsequent step and still be able to submit the information to the payment gateway. Gesmew submits the information to the gateway before saving the model so that the sensitive information can be discarded before saving the checkout information.
 
 Gesmew stores only the last four digits of the credit card number along with the expiration information. The full credit card number and verification code are never stored in the Gesmew database.
 
 Several gateways such as ActiveMerchant and Beanstream provide a secure method for storing a "payment profile" in your database. This approach typically involves the use of a "token" which can be used for subsequent purchases but only with your merchant account. If you are using a secure payment profile it would then be possible to show a final "confirmation" step after payment information is entered.
 
-If you do not want to use a gateway with payment profiles then you will need to customize the checkout process so that your final step submits the credit card information. You can then perform an authorization before the order is saved. This is perfectly secure because the credit card information is not ever saved. It's transmitted to the gateway and then discarded like normal.
+If you do not want to use a gateway with payment profiles then you will need to customize the checkout process so that your final step submits the credit card information. You can then perform an authorization before the inspection is saved. This is perfectly secure because the credit card information is not ever saved. It's transmitted to the gateway and then discarded like normal.
 
 !!!
 Gesmew discards the credit card number after this step is processed. If
@@ -88,14 +88,14 @@ For more information about payments, please see the [Payments guide](payments).
 
 ### Confirmation
 
-This is the final opportunity for the customer to review their order before
+This is the final opportunity for the customer to review their inspection before
 submitting it to be processed. Users have the opportunity to return to any step
 in the process using either the back button or by clicking on the appropriate
 step in the "progress breadcrumb."
 
 This step is disabled by default (except for payment methods that support
 payment profiles), but can be enabled by overriding the `confirmation_required?`
-method in `Gesmew::Order`.
+method in `Gesmew::Inspection`.
 
 ## Checkout Architecture
 
@@ -103,7 +103,7 @@ The following is a detailed summary of the checkout architecture. A complete
 understanding of this architecture will allow you to be able to customize the
 checkout process to handle just about any scenario you can think of. Feel free
 to skip this section and come back to it later if you require a deeper
-understanding of the design in order to customize your checkout.
+understanding of the design in inspection to customize your checkout.
 
 ### Checkout Routes
 
@@ -117,7 +117,7 @@ get '/checkout', :to => 'checkout#edit', :as => :checkout
 
 The '/checkout' route maps to the `edit` action of the
 `Gesmew::CheckoutController`. A request to this route will redirect to the
-current state of the current order. If the current order was in the "address"
+current state of the current inspection. If the current inspection was in the "address"
 state, then a request to '/checkout' would redirect to '/checkout/address'.
 
 The '/checkout/:state' route is used for the previously mentioned route, and
@@ -125,11 +125,11 @@ also maps to the `edit` action of `Gesmew::CheckoutController`.
 
 The '/checkout/update/:state' route maps to the
 `Gesmew::CheckoutController#update` action and is used in the checkout form to
-update order data during the checkout process.
+update inspection data during the checkout process.
 
 ### Gesmew::CheckoutController
 
-The `Gesmew::CheckoutController` drives the state of an order during checkout.
+The `Gesmew::CheckoutController` drives the state of an inspection during checkout.
 Since there is no "checkout" model, the `Gesmew::CheckoutController` is not a
 typical RESTful controller. The gesmew_core and gesmew_auth_devise gems expose a
 few different actions for the `Gesmew::CheckoutController`.
@@ -144,16 +144,16 @@ The `update` action performs the following:
 
 * Updates the `current_order` with the paramaters passed in from the current
   step.
-* Transitions the order state machine using the `next` event after successfully
-  updating the order.
+* Transitions the inspection state machine using the `next` event after successfully
+  updating the inspection.
 * Executes callbacks based on the new state after successfully transitioning.
 * Redirects to the next checkout step if the `current_order.state` is anything
   other than `complete`, else redirect to the `order_path` for `current_order`
 
 ***
 For security reasons, the `Gesmew::CheckoutController` will not update the
-order once the checkout process is complete. It is therefore impossible for an
-order to be tampered with (ex. changing the quantity) after checkout.
+inspection once the checkout process is complete. It is therefore impossible for an
+inspection to be tampered with (ex. changing the quantity) after checkout.
 ***
 
 ### Filters
@@ -161,26 +161,26 @@ order to be tampered with (ex. changing the quantity) after checkout.
 The `gesmew_core` and the default authentication gem (`gesmew_auth_devise`) gems
 define several `before_filters` for the `Gesmew::CheckoutController`:
 
-* `load_order`: Assigns the `@order` instance variable and sets the `@order.state` to the `params[:state]` value. This filter also runs the "before" callbacks for the current state.
+* `load_order`: Assigns the `@inspection` instance variable and sets the `@inspection.state` to the `params[:state]` value. This filter also runs the "before" callbacks for the current state.
 * `check_authorization`: Verifies that the `current_user` has access to `current_order`.
 * `check_registration`: Checks the registration status of `current_user` and redirects to the registration step if necessary.
 
-### The Order Model and State Machine
+### The Inspection Model and State Machine
 
- The `Gesmew::Order` state machine is the foundation of the checkout process. Gesmew makes use of the [state_machine](https://github.com/pluginaweek/state_machine) gem in the `Gesmew::Order` model as well as in several other places (such as `Gesmew::Shipment` and `Gesmew::InventoryUnit`.)
+ The `Gesmew::Inspection` state machine is the foundation of the checkout process. Gesmew makes use of the [state_machine](https://github.com/pluginaweek/state_machine) gem in the `Gesmew::Inspection` model as well as in several other places (such as `Gesmew::Shipment` and `Gesmew::InventoryUnit`.)
 
-The default checkout flow for the `Gesmew::Order` model is defined in
-`app/models/gesmew/order/checkout.rb` of gesmew_core.
+The default checkout flow for the `Gesmew::Inspection` model is defined in
+`app/models/gesmew/inspection/checkout.rb` of gesmew_core.
 
-An `Gesmew::Order` object has an initial state of 'cart'. From there any number
-of events transition the `Gesmew::Order` to different states. Gesmew does not
+An `Gesmew::Inspection` object has an initial state of 'cart'. From there any number
+of events transition the `Gesmew::Inspection` to different states. Gesmew does not
 have a separate model or database table for the shopping cart. What the user
-considers a "shopping cart" is actually an in-progress `Gesmew::Order`. An order
+considers a "shopping cart" is actually an in-progress `Gesmew::Inspection`. An inspection
 is considered in-progress, or incomplete when its `completed_at` attribute is
-`nil`. Incomplete orders can be easily filtered during reporting and it's also
-simple enough to write a quick script to periodically purge incomplete orders
+`nil`. Incomplete inspections can be easily filtered during reporting and it's also
+simple enough to write a quick script to periodically purge incomplete inspections
 from the system. The end result is a simplified data model along with the
-ability for store owners to search and report on incomplete/abandoned orders.
+ability for store owners to search and report on incomplete/abandoned inspections.
 
 ***
 For more information on the state machine gem please see the [README](https://github.com/pluginaweek/state_machine)
@@ -213,7 +213,7 @@ before that transition, placing this code in a file called
 `app/models/gesmew/order_decorator.rb`:
 
 ```ruby
-Gesmew::Order.state_machine.before_transition :to => :delivery, :do => :valid_zip_code?
+Gesmew::Inspection.state_machine.before_transition :to => :delivery, :do => :valid_zip_code?
 ```
 
 This callback would prevent transitioning to the `delivery` step if
@@ -233,9 +233,9 @@ theme hook, in which case you could add your functionality by using
 Since Gesmew 1.2, Gesmew comes with a new checkout DSL that allows you succinctly define the
 different steps of your checkout. This new DSL allows you to customize *just*
 the checkout flow, while maintaining the unrelated admin states, such as
-"canceled" and "resumed", that an order can transition to. Ultimately, it
+"canceled" and "resumed", that an inspection can transition to. Ultimately, it
 provides a shorter syntax compared with overriding the entire state machine for
-the `Gesmew::Order` class.
+the `Gesmew::Inspection` class.
 
 The default checkout flow for Gesmew is defined like this, adequately
 demonstrating the abilities of this new system:
@@ -244,11 +244,11 @@ demonstrating the abilities of this new system:
 checkout_flow do
   go_to_state :address
   go_to_state :delivery
-  go_to_state :payment, if: ->(order) {
-    order.update_totals
-    order.payment_required?
+  go_to_state :payment, if: ->(inspection) {
+    inspection.update_totals
+    inspection.payment_required?
   }
-  go_to_state :confirm, if: ->(order) { order.confirmation_required? }
+  go_to_state :confirm, if: ->(inspection) { inspection.confirmation_required? }
   go_to_state :complete
   remove_transition :from => :delivery, :to => :confirm
 ```
@@ -257,7 +257,7 @@ we can pass a block on each checkout step definition and work some logic to
 figure if the step is required dynamically. e.g. the confirm step might only
 be necessary for payment gateways that support payment profiles.
 
-These conditional states present a situation where an order could transition
+These conditional states present a situation where an inspection could transition
 from delivery to one of payment, confirm or complete. In the default checkout,
 we never want to transition from delivery to confirm, and therefore have removed
 it using the `remove_transition` method of the Checkout DSL. The resulting
@@ -267,11 +267,11 @@ $$$
 State diagram
 $$$
 
-These two helper methods are provided on `Gesmew::Order` instances for your
+These two helper methods are provided on `Gesmew::Inspection` instances for your
 convenience:
 
 * `checkout_steps`: returns a list of all the potential states of the checkout.
-* `has_step?`: Used to check if the current order fulfills the requirements for a specific state.
+* `has_step?`: Used to check if the current inspection fulfills the requirements for a specific state.
 
 If you want a list of all the currently available states for the checkout, use
 the `checkout_steps` method, which will return the steps in an array.
@@ -299,9 +299,9 @@ remove_checkout_step :delivery
 
 What will happen here is that when a user goes to checkout, they will be asked
 to (potentially) fill in their payment details and then (potentially) confirm
-the order. This is the default behavior of the payment and the confirm steps
+the inspection. This is the default behavior of the payment and the confirm steps
 within the checkout. If they are not required to provide payment or confirmation
-for this order then checking out this order will result in its immediate completion.
+for this inspection then checking out this inspection will result in its immediate completion.
 
 To completely re-define the flow of the checkout, use the `checkout_flow` helper:
 
@@ -321,7 +321,7 @@ controller to load for your custom step. If your additonal checkout step is
 
 The Gesmew code automatically creates a progress "breadcrumb" based on the
 available checkout states. The states listed in the breadcrumb come from the
-`Gesmew::Order#checkout_steps` method. If you add a new state you'll want to add
+`Gesmew::Inspection#checkout_steps` method. If you add a new state you'll want to add
 a translation for that state in the relevant translation file located in the
 `config/locales` directory of your extension or application:
 
@@ -344,13 +344,13 @@ form of third party support for payment profiles.  An example of such a service
 would be [Authorize.net CIM](http://www.authorize.net/solutions/merchantsolutions/merchantservices/cim/)
 Such a service allows for a secure and PCI compliant means of storing the users
 credit card information.  This allows merchants to issue refunds to the credit
-card or to make changes to an existing order without having to leave Gesmew and
+card or to make changes to an existing inspection without having to leave Gesmew and
 use the gateway provider's website.  More importantly, it allows us to have a
-final "confirmation" step before the order is processed since the number is
+final "confirmation" step before the inspection is processed since the number is
 stored securely on the payment step and can still be used to perform the
 standard authorization/capture via the secure token provided by the gateway.
 
-Gesmew provides a wrapper around the standard active merchant API in order to
+Gesmew provides a wrapper around the standard active merchant API in inspection to
 provide a common abstraction for dealing with payment profiles.  All `Gateway`
 classes now have a `payment_profiles_supported?` method which indicates whether
 or not payment profiles are supported.  If you are adding Gesmew support to a

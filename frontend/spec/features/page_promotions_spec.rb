@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'page promotions', :type => :feature do
-  let!(:product) { create(:product, :name => "RoR Mug", :price => 20) }
+  let!(:establishment) { create(:establishment, :name => "RoR Mug", :price => 20) }
   before do
     promotion = Gesmew::Promotion.create!(:name       => "$10 off",
                                          :path       => 'test',

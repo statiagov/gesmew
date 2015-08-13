@@ -17,8 +17,8 @@ version of Gesmew will have a 1-0-stable branch.
 Worth noting here is that Gesmew 1.0 was the first release to properly use the
 features of Rails engines. This means that Gesmew needs to be mounted manually
 within the `config/routes.rb` file of the application, and that the classes
-such as `Product` and `Variant` from Gesmew are now namespaced within a module,
-so that they are now `Gesmew::Product` and `Gesmew::Variant`. Tables are
+such as `Establishment` and `Variant` from Gesmew are now namespaced within a module,
+so that they are now `Gesmew::Establishment` and `Gesmew::Variant`. Tables are
 similarly namespaced (i.e. `gesmew_products` and `gesmew_variants`).
 
 Along with this, migrations must be copied over to the application using the

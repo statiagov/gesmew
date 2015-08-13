@@ -18,12 +18,12 @@ describe Gesmew::CheckoutController, type: :controller do
       Gesmew::Config[:currency] = "GBP"
     end
 
-    context "when order is in delivery" do
+    context "when inspection is in delivery" do
       before do
         # Using a let block won't acknowledge the currency setting
         # Therefore we just do it like this...
-        order = OrderWalkthrough.up_to(:delivery)
-        allow(controller).to receive_messages current_order: order
+        inspection = OrderWalkthrough.up_to(:delivery)
+        allow(controller).to receive_messages current_order: inspection
       end
 
       it "displays rate cost in correct currency" do

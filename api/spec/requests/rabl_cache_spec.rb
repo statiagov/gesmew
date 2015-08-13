@@ -6,7 +6,7 @@ describe "Rabl Cache", :type => :request, :caching => true do
   before do
     create(:variant)
     user.generate_gesmew_api_key!
-    expect(Gesmew::Product.count).to eq(1)
+    expect(Gesmew::Establishment.count).to eq(1)
   end
 
   it "doesn't create a cache key collision for models with different rabl templates" do
@@ -21,7 +21,7 @@ describe "Rabl Cache", :type => :request, :caching => true do
     expect(variant_a['is_master']).to be false
     expect(variant_a['stock_items']).not_to be_nil
 
-    get "/api/v1/products/#{Gesmew::Product.first.id}", :token => user.gesmew_api_key
+    get "/api/v1/establishments/#{Gesmew::Establishment.first.id}", :token => user.gesmew_api_key
     expect(response.status).to eq(200)
     variant_b = JSON.parse(response.body)['variants'].last
     expect(variant_b['is_master']).to be false

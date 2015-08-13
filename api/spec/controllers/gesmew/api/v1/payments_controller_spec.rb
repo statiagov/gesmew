@@ -3,25 +3,25 @@ require 'spec_helper'
 module Gesmew
   describe Api::V1::PaymentsController, :type => :controller do
     render_views
-    let!(:order) { create(:order) }
-    let!(:payment) { create(:payment, :order => order) }
+    let!(:inspection) { create(:inspection) }
+    let!(:payment) { create(:payment, :inspection => inspection) }
     let!(:attributes) { [:id, :source_type, :source_id, :amount, :display_amount,
                          :payment_method_id, :response_code, :state, :avs_response,
                          :created_at, :updated_at] }
 
-    let(:resource_scoping) { { :order_id => order.to_param } }
+    let(:resource_scoping) { { :order_id => inspection.to_param } }
 
     before do
       stub_authentication!
     end
 
     context "as a user" do
-      context "when the order belongs to the user" do
+      context "when the inspection belongs to the user" do
         before do
-          allow_any_instance_of(Order).to receive_messages :user => current_api_user
+          allow_any_instance_of(Inspection).to receive_messages :user => current_api_user
         end
 
-        it "can view the payments for their order" do
+        it "can view the payments for their inspection" do
           api_get :index
           expect(json_response["payments"].first).to have_attributes(attributes)
         end
@@ -55,18 +55,18 @@ module Gesmew
         end
       end
 
-      context "when the order does not belong to the user" do
+      context "when the inspection does not belong to the user" do
         before do
-          allow_any_instance_of(Order).to receive_messages :user => stub_model(LegacyUser)
+          allow_any_instance_of(Inspection).to receive_messages :user => stub_model(LegacyUser)
         end
 
-        it "cannot view payments for somebody else's order" do
-          api_get :index, :order_id => order.to_param
+        it "cannot view payments for somebody else's inspection" do
+          api_get :index, :order_id => inspection.to_param
           assert_unauthorized!
         end
 
-        it "can view the payments for an order given the order token" do
-          api_get :index, :order_id => order.to_param, :order_token => order.guest_token
+        it "can view the payments for an inspection given the inspection token" do
+          api_get :index, :order_id => inspection.to_param, :order_token => inspection.guest_token
           expect(json_response["payments"].first).to have_attributes(attributes)
         end
       end
@@ -75,16 +75,16 @@ module Gesmew
     context "as an admin" do
       sign_in_as_admin!
 
-      it "can view the payments on any order" do
+      it "can view the payments on any inspection" do
         api_get :index
         expect(response.status).to eq(200)
         expect(json_response["payments"].first).to have_attributes(attributes)
       end
 
       context "multiple payments" do
-        before { @payment = create(:payment, :order => order, :response_code => '99999') }
+        before { @payment = create(:payment, :inspection => inspection, :response_code => '99999') }
 
-        it "can view all payments on an order" do
+        it "can view all payments on an inspection" do
           api_get :index
           expect(json_response["count"]).to eq(2)
         end

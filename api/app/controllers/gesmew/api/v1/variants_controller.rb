@@ -2,7 +2,7 @@ module Gesmew
   module Api
     module V1
       class VariantsController < Gesmew::Api::BaseController
-        before_action :product
+        before_action :establishment
 
         def create
           authorize! :create, Variant
@@ -24,7 +24,7 @@ module Gesmew
         # we render on the view so we better update it any time a node is included
         # or removed from the views.
         def index
-          @variants = scope.includes({ option_values: :option_type }, :product, :default_price, :images, { stock_items: :stock_location })
+          @variants = scope.includes({ option_values: :option_type }, :establishment, :default_price, :images, { stock_items: :stock_location })
             .ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
           respond_with(@variants)
         end
@@ -33,7 +33,7 @@ module Gesmew
         end
 
         def show
-          @variant = scope.includes({ option_values: :option_type }, :option_values, :product, :default_price, :images, { stock_items: :stock_location })
+          @variant = scope.includes({ option_values: :option_type }, :option_values, :establishment, :default_price, :images, { stock_items: :stock_location })
             .find(params[:id])
           respond_with(@variant)
         end
@@ -43,18 +43,18 @@ module Gesmew
           if @variant.update_attributes(variant_params)
             respond_with(@variant, status: 200, default_template: :show)
           else
-            invalid_resource!(@product)
+            invalid_resource!(@establishment)
           end
         end
 
         private
-          def product
-            @product ||= Gesmew::Product.accessible_by(current_ability, :read).friendly.find(params[:product_id]) if params[:product_id]
+          def establishment
+            @establishment ||= Gesmew::Establishment.accessible_by(current_ability, :read).friendly.find(params[:product_id]) if params[:product_id]
           end
 
           def scope
-            if @product
-              variants = @product.variants_including_master
+            if @establishment
+              variants = @establishment.variants_including_master
             else
               variants = Variant
             end

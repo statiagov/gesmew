@@ -4,7 +4,7 @@ title: Inventory Settings
 
 ## Introduction
 
-The Gesmew store gives you a great deal of leverage in managing your business' inventory. You can set up multiple [stock locations](#stock-locations), each of which represents a physical location at which you store your products for delivery to customers. As you add new products and make sales, [stock movements](#stock-movements) are recorded. You can receive stock from a supplier, and even move products from one stock location to another by recording [stock transfers](#stock-transfers). All of this helps to keep your inventorying manageable and current.
+The Gesmew store gives you a great deal of leverage in managing your business' inventory. You can set up multiple [stock locations](#stock-locations), each of which represents a physical location at which you store your establishments for delivery to customers. As you add new establishments and make sales, [stock movements](#stock-movements) are recorded. You can receive stock from a supplier, and even move establishments from one stock location to another by recording [stock transfers](#stock-transfers). All of this helps to keep your inventorying manageable and current.
 
 ### Stock Locations
 
@@ -18,9 +18,9 @@ To add a stock location to your store, click the "New Stock Location" button.
 
 Here, you can input everything of relevance about your stock location: name, address, and phone are the most obvious. The three checkboxes on the right-hand side merit more explanation:
 
-* **Active** - Denotes whether the stock location is currently in operation and serving inventory for orders.
+* **Active** - Denotes whether the stock location is currently in operation and serving inventory for inspections.
 * **Backorderable Default** - Controls whether inventory items at this location can be backordered when they run out. You can still change this on an item-by-item basis as needed.
-* **Propagate All Variants** - Checking this option when you create a new stock location will loop through all of the products you already have in your store, and create an entry for each one at your new location, with a starting inventory amount of 0.
+* **Propagate All Variants** - Checking this option when you create a new stock location will loop through all of the establishments you already have in your store, and create an entry for each one at your new location, with a starting inventory amount of 0.
 
 Input the values for all of the fields, and click "Create" to add your new stock location.
 
@@ -62,7 +62,7 @@ You can enter an optional Reference Number - this could correlate to a PO number
 
 Next, select your Source and Destination stock locations. If you are receiving stock from a supplier, check the "Receive Stock" checkbox and the "Source" drop-down box will be hidden.
 
-Select a product variant from the "Variant" drop-down list and enter the quantity of that product being transferred. Click the "Add" button.
+Select a establishment variant from the "Variant" drop-down list and enter the quantity of that establishment being transferred. Click the "Add" button.
 
 ![Stock Transfer Readied](/images/user/config/stock_transfer.jpg)
 

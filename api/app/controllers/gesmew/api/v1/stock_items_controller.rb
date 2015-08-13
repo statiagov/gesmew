@@ -64,7 +64,7 @@ module Gesmew
         end
 
         def scope
-          includes = {:variant => [{ :option_values => :option_type }, :product] }
+          includes = {:variant => [{ :option_values => :option_type }, :establishment] }
           @stock_location.stock_items.accessible_by(current_ability, :read).includes(includes)
         end
 

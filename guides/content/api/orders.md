@@ -1,35 +1,35 @@
 ---
 title: Orders
-description: Use the Gesmew Commerce storefront API to access Order data.
+description: Use the Gesmew Commerce storefront API to access Inspection data.
 ---
 
 ## Index
 
 <%= admin_only %>
 
-Retrieve a list of orders by making this request:
+Retrieve a list of inspections by making this request:
 
 ```text
-GET /api/orders```
+GET /api/inspections```
 
 Orders are paginated and can be iterated through by passing along a `page` parameter:
 
 ```text
-GET /api/orders?page=2```
+GET /api/inspections?page=2```
 
 ### Parameters
 
 page
-: The page number of order to display.
+: The page number of inspection to display.
 
 per_page
-: The number of orders to return per page
+: The number of inspections to return per page
 
 ### Response
 
 <%= headers 200 %>
-<%= json(:order) do |h|
-{ :orders => [h],
+<%= json(:inspection) do |h|
+{ :inspections => [h],
   :count => 25,
   :pages => 5,
   :current_page => 1 }
@@ -37,10 +37,10 @@ end %>
 
 ## Search
 
-To search for a particular order, make a request like this:
+To search for a particular inspection, make a request like this:
 
 ```text
-GET /api/orders?q[email_cont]=bob```
+GET /api/inspections?q[email_cont]=bob```
 
 The searching API is provided through the Ransack gem which Gesmew depends on. The `email_cont` here is called a predicate, and you can learn more about them by reading about [Predicates on the Ransack wiki](https://github.com/ernie/ransack/wiki/Basic-Searching).
 
@@ -49,8 +49,8 @@ The search results are paginated.
 ### Response
 
 <%= headers 200 %>
-<%= json(:order) do |h|
- { :orders => [h],
+<%= json(:inspection) do |h|
+ { :inspections => [h],
    :count => 25,
    :pages => 5,
    :current_page => 1 }
@@ -58,34 +58,34 @@ end %>
 
 ### Sorting results
 
-Results can be returned in a specific order by specifying which field to sort by when making a request.
+Results can be returned in a specific inspection by specifying which field to sort by when making a request.
 
 ```text
-GET /api/orders?q[s]=number%20desc```
+GET /api/inspections?q[s]=number%20desc```
 
 It is also possible to sort results using an associated object's field.
 
 ```text
-GET /api/orders?q[s]=user_name%20asc```
+GET /api/inspections?q[s]=user_name%20asc```
 
 ## Show
 
-To view the details for a single product, make a request using that order\'s number:
+To view the details for a single establishment, make a request using that inspection\'s number:
 
 ```text
-GET /api/orders/R123456789```
+GET /api/inspections/R123456789```
 
 Orders through the API will only be visible to admins and the users who own
-them. If a user attempts to access an order that does not belong to them, they
+them. If a user attempts to access an inspection that does not belong to them, they
 will be met with an authorization error.
 
-Users may pass in the order's token in order to be authorized to view an order:
+Users may pass in the inspection's token in inspection to be authorized to view an inspection:
 
 ```text
-GET /api/orders/R123456789?order_token=abcdef123456
+GET /api/inspections/R123456789?order_token=abcdef123456
 ```
 
-The `order_token` parameter will work for authorizing any action for an order within Gesmew's API.
+The `order_token` parameter will work for authorizing any action for an inspection within Gesmew's API.
 
 ### Successful Response
 
@@ -102,7 +102,7 @@ The `order_token` parameter will work for authorizing any action for an order wi
 
 ## Show (delivery)
 
-When an order is in the "delivery" state, additional shipments information will be returned in the API:
+When an inspection is in the "delivery" state, additional shipments information will be returned in the API:
 
 <%= json(:shipment) do |h|
  { :shipments => [h] }
@@ -110,18 +110,18 @@ end %>
 
 ## Create
 
-To create a new order through the API, make this request:
+To create a new inspection through the API, make this request:
 
 ```text
-POST /api/orders```
+POST /api/inspections```
 
-If you wish to create an order with a line item matching to a variant whose ID is \"1\" and quantity is 5, make this request:
+If you wish to create an inspection with a line item matching to a variant whose ID is \"1\" and quantity is 5, make this request:
 
 ```text
-POST /api/orders
+POST /api/inspections
 
 {
-  "order": {
+  "inspection": {
     "line_items": [
       { "variant_id": 1, "quantity": 5 }
     ]
@@ -146,15 +146,15 @@ POST /api/orders
 
 ## Update Address
 
-To add address information to an order, please see the [checkout transitions](checkouts#checkout-transitions) section of the Checkouts guide.
+To add address information to an inspection, please see the [checkout transitions](checkouts#checkout-transitions) section of the Checkouts guide.
 
 ## Empty
 
-To empty an order\'s cart, make this request:
+To empty an inspection\'s cart, make this request:
 
 ```text
-PUT /api/orders/R1234567/empty```
+PUT /api/inspections/R1234567/empty```
 
-All line items will be removed from the cart and the order\'s information will
-be cleared. Inventory that was previously depleted by this order will be
+All line items will be removed from the cart and the inspection\'s information will
+be cleared. Inventory that was previously depleted by this inspection will be
 repleted.

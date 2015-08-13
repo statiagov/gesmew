@@ -3,10 +3,10 @@ module Gesmew
     validate :no_attachment_errors
 
     has_attached_file :attachment,
-                      styles: { mini: '48x48>', small: '100x100>', product: '240x240>', large: '600x600>' },
-                      default_style: :product,
-                      url: '/gesmew/products/:id/:style/:basename.:extension',
-                      path: ':rails_root/public/gesmew/products/:id/:style/:basename.:extension',
+                      styles: { mini: '48x48>', small: '100x100>', establishment: '240x240>', large: '600x600>' },
+                      default_style: :establishment,
+                      url: '/gesmew/establishments/:id/:style/:basename.:extension',
+                      path: ':rails_root/public/gesmew/establishments/:id/:style/:basename.:extension',
                       convert_options: { all: '-strip -auto-orient -colorspace sRGB' }
     validates_attachment :attachment,
       :presence => true,
@@ -16,7 +16,7 @@ module Gesmew
     # we need to look at the write-queue for images which have not been saved yet
     after_post_process :find_dimensions
 
-    #used by admin products autocomplete
+    #used by admin establishments autocomplete
     def mini_url
       attachment.url(:mini, false)
     end

@@ -52,7 +52,7 @@ end %>
 
 ### Sorting results
 
-Results can be returned in a specific order by specifying which field to sort by when making a request.
+Results can be returned in a specific inspection by specifying which field to sort by when making a request.
 
 ```text
 GET /api/taxonomies?q[s]=name%20asc```

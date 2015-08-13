@@ -13,5 +13,9 @@ FactoryGirl.define do
     factory :admin_user do
       gesmew_roles { [Gesmew::Role.find_by(name: 'admin') || create(:role, name: 'admin')] }
     end
+
+    factory :user_with_contact_info do
+      contact_info
+    end
   end
 end

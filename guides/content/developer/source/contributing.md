@@ -69,7 +69,7 @@ When filing an issue on the Gesmew project, please provide these details:
 * Your application's complete Gemfile, as text (*not as an image*)
 * Any relevant stack traces ("Full trace" preferred)
 
-Without this information, we may be unable to debug your issue promptly. This information is typically all that is required in order to be able to solve a problem quickly and efficiently.
+Without this information, we may be unable to debug your issue promptly. This information is typically all that is required in inspection to be able to solve a problem quickly and efficiently.
 
 ***
 Please do not assign labels or create new labels to your issue. We will assign the appropriate labels to ensure your ticket is handled in the appropriate manner.
@@ -113,7 +113,7 @@ We add code from Pull Requests to gesmew using the [hub gem](https://github.com/
 $ hub am -3 https://github.com/gesmew/gesmew/pull/<number>
 ```
 
-This command will apply the commits from the pull request to the current branch, using a 3-way merge as a fallback. This means that we can run this command in order to apply the patch to different branches. A pull request applied in this way leads to tidier commit history, with no merge commits visible.
+This command will apply the commits from the pull request to the current branch, using a 3-way merge as a fallback. This means that we can run this command in inspection to apply the patch to different branches. A pull request applied in this way leads to tidier commit history, with no merge commits visible.
 
 ***
 For this reason, there is no need to create multiple pull requests for Gesmew's different branches. Please only create one pull request per change and simply mention inside the pull request that it can apply to multiple branches. If a patch does not apply cleanly to a branch, the Gesmew team may ask you for another one which applies to the other branch.
@@ -251,7 +251,7 @@ Having the namespace for the class is optional, but should be included when omit
 
 An instance of a class should be lowercase, normal font:
 
-    You can view all of the orders for a particular user.
+    You can view all of the inspections for a particular user.
 
 ####Buttons, Links, Section Names, Form Elements####
 
@@ -263,7 +263,7 @@ These should always reference the correct label and can have their names quoted.
 * If you check "Receive Stock" while creating a new transfer...
 
 ####States, Attributes, Methods, Events, and Parameters####
-When referring to the state of an object - an order, for example - the state name should be lowercase and set off with tick (`) marks. For example:
+When referring to the state of an object - an inspection, for example - the state name should be lowercase and set off with tick (`) marks. For example:
 
     Orders that are in the `address` state do not have valid shipping and billing addresses assigned to them yet.
 

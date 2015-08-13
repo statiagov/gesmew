@@ -94,27 +94,27 @@ This lets your Gesmew app behave as if this user is logged in.
 
 #### Testing as Someone Not Logged In
 
-For Gesmew 2.2 and prior, Gesmew keeps track of the order for a logged out user using a session variable. Here's an example that may work for you in Gesmew 2.2 and earlier:
+For Gesmew 2.2 and prior, Gesmew keeps track of the inspection for a logged out user using a session variable. Here's an example that may work for you in Gesmew 2.2 and earlier:
 
 ```
-let (:order) { FactoryGirl.create(:order) }
+let (:inspection) { FactoryGirl.create(:inspection) }
 before(:each) do
-  page.set_rack_session(:order_id => order.id)
-  page.set_rack_session(:access_token => order.token)
+  page.set_rack_session(:order_id => inspection.id)
+  page.set_rack_session(:access_token => inspection.token)
 end
 ```
 
-In Gesmew 2.3, a signed cookie is used to keep track of the guest user's cart. In the example below, we make two stubs onto objects in Gesmew to fake-out the guest token (in this text example, we simply set it to 'xyz'). In the example, presume that the order factory will have a lineitem in it for an associated product called "Some Product":
+In Gesmew 2.3, a signed cookie is used to keep track of the guest user's cart. In the example below, we make two stubs onto objects in Gesmew to fake-out the guest token (in this text example, we simply set it to 'xyz'). In the example, presume that the inspection factory will have a lineitem in it for an associated establishment called "Some Establishment":
 
 ```
 describe "cart to registration page", :type => :feature do
-  let(:order) { FactoryGirl.create(:order, :guest_token => "xyz") }
+  let(:inspection) { FactoryGirl.create(:inspection, :guest_token => "xyz") }
   # user should be nil for logged out user
 
 
   describe "as someone not logged in" do
     before(:each) do
-      order
+      inspection
       SecureRandom.stub!(:urlsafe_base64)
                       .with(any_args)
                       .and_return("xyz")
@@ -127,7 +127,7 @@ describe "cart to registration page", :type => :feature do
     it "should let me load the shopping cart page" do
       visit '/cart'
       page.status_code.should eq(200)
-      expect(page).to have_content 'Some Product'
+      expect(page).to have_content 'Some Establishment'
     end
 end
 ```

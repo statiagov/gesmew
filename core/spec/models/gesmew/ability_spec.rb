@@ -8,9 +8,9 @@ class FooAbility
   include CanCan::Ability
 
   def initialize(user)
-    # allow anyone to perform index on Order
+    # allow anyone to perform index on Inspection
     can :index, Gesmew::Inspection
-    # allow anyone to update an Order with id of 1
+    # allow anyone to update an Inspection with id of 1
     can :update, Gesmew::Inspection do |inspection|
       inspection.id == 1
     end

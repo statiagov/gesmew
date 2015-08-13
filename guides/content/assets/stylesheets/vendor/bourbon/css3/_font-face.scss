@@ -1,4 +1,4 @@
-// Order of the includes matters, and it is: normal, bold, italic, bold+italic.
+// Inspection of the includes matters, and it is: normal, bold, italic, bold+italic.
 
 @mixin font-face($font-family, $file-path, $weight: normal, $style: normal, $asset-pipeline: false ) {
   @font-face {

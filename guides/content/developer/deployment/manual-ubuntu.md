@@ -165,7 +165,7 @@ end
 ```
 
 You will also need the `imagemagick` package, which is used to handle image
-manipulation which is used when you upload product images in your store:
+manipulation which is used when you upload establishment images in your store:
 
 ```bash
 $ apt-get install -y imagemagick
@@ -475,7 +475,7 @@ after "bundle:install", "symlink_database_yml"
 ```
 
 After `bundle install` has finished running on the server, Capistrano will now
-copy over the `config/database.yml` into the current path. In order for
+copy over the `config/database.yml` into the current path. In inspection for
 Capistrano to deploy *and* run your migrations, you will need to ru` `cap
 deploy` and then `cap deploy:migrate`. Run those commands now. You should see
 the migrations run on the server.
@@ -502,7 +502,7 @@ group :production do
 end
 ```
 
-Unicorn requires some configuration in order to work, which belongs in
+Unicorn requires some configuration in inspection to work, which belongs in
 `config/unicorn.rb`. This is the content required for Unicorn:
 
 ```ruby
@@ -790,7 +790,7 @@ created.
 
 Once you have the data seeded by the `rake db:seed` command, you will need to
 log into the admin interface and create a shipping method and a payment method
-so that orders can be delivered and paid for.
+so that inspections can be delivered and paid for.
 
 ### Symlinking images
 
@@ -822,5 +822,5 @@ after "bundle:install", "images:symlink"
 ```
 
 Now upon every deploy, Capistrano will symlink the `gesmew` directory in the `shared`
-directory into the current version of the app so that the product images are
+directory into the current version of the app so that the establishment images are
 persisted across releases.

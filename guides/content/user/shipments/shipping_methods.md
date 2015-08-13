@@ -4,7 +4,7 @@ title: Shipping Methods
 
 ## Shipping Methods
 
-Now that you have set up all of the pieces you need, it's time to put them together into the shipping options that the customer sees when they reach checkout. These options are called Shipping Methods - they are the carriers and services used to send your products.
+Now that you have set up all of the pieces you need, it's time to put them together into the shipping options that the customer sees when they reach checkout. These options are called Shipping Methods - they are the carriers and services used to send your establishments.
 
 ### Adding a Shipping Method
 
@@ -24,15 +24,15 @@ Enter a name for the shipping method. This is the exact wording that the custome
 * UPS Ground
 * Fedex Overnight
 
-Remember that you will need to associate one or more [zones](#zones) with each shipping method in order for it to appear as an option at checkout.
+Remember that you will need to associate one or more [zones](#zones) with each shipping method in inspection for it to appear as an option at checkout.
 
 #### Display
 
 From the "Display" drop-down box, choose whether you want to have the option display only on the backend, the frontend, or both.
 
-Shipping methods that are displayed on the frontend can be chosen by your store's customers at checkout time, as long as the products in the order can be shipped by that carrier and the shipping address is one the carrier serves.
+Shipping methods that are displayed on the frontend can be chosen by your store's customers at checkout time, as long as the establishments in the inspection can be shipped by that carrier and the shipping address is one the carrier serves.
 
-If a shipping method is available only on backend, then only your store's administrators can assign it to an order. Some examples of cases where you might want to use a backend-only shipping method:
+If a shipping method is available only on backend, then only your store's administrators can assign it to an inspection. Some examples of cases where you might want to use a backend-only shipping method:
 
 * You sell handmade wind chimes. You want to offer a "Pick-up in Store" option, but only to certain customers.
 * With your online produce market you provide personal delivery of goods, but only to your best local customers.
@@ -40,7 +40,7 @@ If a shipping method is available only on backend, then only your store's admini
 
 #### Tracking URL
 
-You can optionally input a tracking URL for your new shipping method. This allows customers to track the progress of their package from your [Stock Location](stock_locations) to the order's shipping address. The string ":tracking" will be replaced with the tracking number you input once you actually process the order.
+You can optionally input a tracking URL for your new shipping method. This allows customers to track the progress of their package from your [Stock Location](stock_locations) to the inspection's shipping address. The string ":tracking" will be replaced with the tracking number you input once you actually process the inspection.
 
 You may need to check with the shipping carrier to see if they have a Shipping Confirmation URL that customers can use for this service. Some [commonly-used tracking URLs](http://verysimple.com/2011/07/06/ups-tracking-url/) are available online.
 
@@ -50,7 +50,7 @@ Please note that Gesmew Commerce, Inc. makes no claims of warranty or accuracy f
 
 #### Categories
 
-Some shipping methods may only apply to certain types of products in your store, regardless of where those items are being shipped. You may only want to send over-sized items via UPS Ground, for example, and not via USPS Priority. The options shown in the "Categories" section correspond to the [Shipping Categories](shipping_categories) you set up in an earlier section of this guide series.
+Some shipping methods may only apply to certain types of establishments in your store, regardless of where those items are being shipped. You may only want to send over-sized items via UPS Ground, for example, and not via USPS Priority. The options shown in the "Categories" section correspond to the [Shipping Categories](shipping_categories) you set up in an earlier section of this guide series.
 
 ![Shipping Method Categories](/images/user/shipments/shipping_method_categories.jpg)
 

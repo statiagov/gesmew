@@ -12,7 +12,7 @@ describe "Free shipping promotions", :type => :feature, :js => true do
   end
 
   let!(:payment_method) { create(:check_payment_method) }
-  let!(:product) { create(:product, :name => "RoR Mug", :price => 20) }
+  let!(:establishment) { create(:establishment, :name => "RoR Mug", :price => 20) }
   let!(:promotion) do
     promotion = Gesmew::Promotion.create!(:name       => "Free Shipping",
                                          :starts_at  => 1.day.ago,
@@ -39,7 +39,7 @@ describe "Free shipping promotions", :type => :feature, :js => true do
       fill_in "City", :with => "City of John"
       fill_in "Zip", :with => "01337"
       select country.name, :from => "Country"
-      select state.name, :from => "order[bill_address_attributes][state_id]"
+      select state.name, :from => "inspection[bill_address_attributes][state_id]"
       fill_in "Phone", :with => "555-555-5555"
 
       # To shipping method screen

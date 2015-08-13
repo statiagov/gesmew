@@ -10,7 +10,7 @@ $(document).ready ->
       dataType:'json',
       data:
         token: Gesmew.api_key,
-        product_id: ui.item.data('product-id'),
+        product_id: ui.item.data('establishment-id'),
         taxon_id: $('#taxon_id').val(),
         position: ui.item.index()
 
@@ -46,19 +46,19 @@ $(document).ready ->
         token: Gesmew.api_key
       success: (data) ->
         el.empty();
-        if data.products.length == 0
+        if data.establishments.length == 0
           $('#taxon_products').html("<div class='alert alert-info'>" + Gesmew.translations.no_results + "</div>")
         else
-          for product in data.products
-            if product.master.images[0] != undefined && product.master.images[0].small_url != undefined
-              product.image = product.master.images[0].small_url
-            el.append(productTemplate({ product: product }))
+          for establishment in data.establishments
+            if establishment.master.images[0] != undefined && establishment.master.images[0].small_url != undefined
+              establishment.image = establishment.master.images[0].small_url
+            el.append(productTemplate({ establishment: establishment }))
 
-  $('#taxon_products').on "click", ".js-delete-product", (e) ->
+  $('#taxon_products').on "click", ".js-delete-establishment", (e) ->
     current_taxon_id = $("#taxon_id").val()
-    product = $(this).parents(".product")
-    product_id = product.data("product-id")
-    product_taxons = String(product.data("taxons")).split(',').map(Number)
+    establishment = $(this).parents(".establishment")
+    product_id = establishment.data("establishment-id")
+    product_taxons = String(establishment.data("taxons")).split(',').map(Number)
     product_index = product_taxons.indexOf(parseFloat(current_taxon_id))
     product_taxons.splice(product_index, 1)
     taxon_ids = if product_taxons.length > 0 then product_taxons else [""]
@@ -66,17 +66,17 @@ $(document).ready ->
     $.ajax
       url: Gesmew.routes.products_api + "/" + product_id
       data:
-        product:
+        establishment:
           taxon_ids: taxon_ids
         token: Gesmew.api_key
       type: "PUT",
       success: (data) ->
-        product.fadeOut 400, (e) ->
-          product.remove()
+        establishment.fadeOut 400, (e) ->
+          establishment.remove()
 
-  $('#taxon_products').on "click", ".js-edit-product", (e) ->
-    product = $(this).parents(".product")
-    product_id = product.data("product-id")
+  $('#taxon_products').on "click", ".js-edit-establishment", (e) ->
+    establishment = $(this).parents(".establishment")
+    product_id = establishment.data("establishment-id")
     window.location = Gesmew.routes.edit_product(product_id)
 
   $(".variant_autocomplete").variantAutocomplete();

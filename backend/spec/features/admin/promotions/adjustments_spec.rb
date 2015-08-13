@@ -11,7 +11,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
 
     it "should allow an admin to create a flat rate discount coupon promo" do
       fill_in "Name", with: "Promotion"
-      fill_in "Code", with: "order"
+      fill_in "Code", with: "inspection"
       click_button "Create"
       expect(page).to have_content("Editing Promotion")
 
@@ -22,7 +22,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       eventually_fill_in "promotion_promotion_rules_attributes_#{Gesmew::Promotion.count}_preferred_amount_max", :with => 60
       within('#rule_fields') { click_button "Update" }
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#action_fields') { click_button "Add" }
       select2 "Flat Rate", from: "Calculator"
       within('#actions_container') { click_button "Update" }
@@ -31,7 +31,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       within('#actions_container') { click_button "Update" }
 
       promotion = Gesmew::Promotion.find_by_name("Promotion")
-      expect(promotion.code).to eq("order")
+      expect(promotion.code).to eq("inspection")
 
       first_rule = promotion.rules.first
       expect(first_rule.class).to eq(Gesmew::Promotion::Rules::ItemTotal)
@@ -52,7 +52,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       click_button "Create"
       expect(page).to have_content("Editing Promotion")
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#action_fields') { click_button "Add" }
       select2 "Flat Rate", from: "Calculator"
       within('#actions_container') { click_button "Update" }
@@ -82,7 +82,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       eventually_fill_in "promotion_promotion_rules_attributes_1_preferred_amount_max", with: 60
       within('#rule_fields') { click_button "Update" }
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#action_fields') { click_button "Add" }
       select2 "Flat Percent", from: "Calculator"
       within('#actions_container') { click_button "Update" }
@@ -104,16 +104,16 @@ describe "Promotion Adjustments", type: :feature, js: true do
       expect(first_action_calculator.preferred_flat_percent).to eq(10)
     end
 
-    it "should allow an admin to create an product promo with percent per item discount" do
-      create(:product, name: "RoR Mug")
+    it "should allow an admin to create an establishment promo with percent per item discount" do
+      create(:establishment, name: "RoR Mug")
 
       fill_in "Name", with: "Promotion"
       click_button "Create"
       expect(page).to have_content("Editing Promotion")
 
-      select2 "Product(s)", from: "Add rule of type"
+      select2 "Establishment(s)", from: "Add rule of type"
       within("#rule_fields") { click_button "Add" }
-      select2_search "RoR Mug", from: "Choose products"
+      select2_search "RoR Mug", from: "Choose establishments"
       within('#rule_fields') { click_button "Update" }
 
       select2 "Create per-line-item adjustment", from: "Add action of type"
@@ -127,8 +127,8 @@ describe "Promotion Adjustments", type: :feature, js: true do
       expect(promotion.code).to be_blank
 
       first_rule = promotion.rules.first
-      expect(first_rule.class).to eq(Gesmew::Promotion::Rules::Product)
-      expect(first_rule.products.map(&:name)).to include("RoR Mug")
+      expect(first_rule.class).to eq(Gesmew::Promotion::Rules::Establishment)
+      expect(first_rule.establishments.map(&:name)).to include("RoR Mug")
 
       first_action = promotion.actions.first
       expect(first_action.class).to eq(Gesmew::Promotion::Actions::CreateItemAdjustments)
@@ -147,7 +147,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       eventually_fill_in "promotion_promotion_rules_attributes_1_preferred_amount", with: "30"
       within('#rule_fields') { click_button "Update" }
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#action_fields') { click_button "Add" }
       select2 "Free Shipping", from: "Calculator"
       within('#actions_container') { click_button "Update" }
@@ -170,7 +170,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       click_button "Create"
       expect(page).to have_content("Editing Promotion")
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#action_fields') { click_button "Add" }
       select2 "Flat Rate", from: "Calculator"
       within('#actions_container') { click_button "Update" }
@@ -190,7 +190,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
     end
 
     it "should allow an admin to create a promotion that adds a 'free' item to the cart" do
-      create(:product, name: "RoR Mug")
+      create(:establishment, name: "RoR Mug")
       fill_in "Name", with: "Promotion"
       fill_in "Code", with: "complex"
       click_button "Create"
@@ -206,7 +206,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
 
       within('#actions_container') { click_button "Update" }
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#new_promotion_action_form') { click_button "Add" }
       select2 "Flat Rate", from: "Calculator"
       within('#actions_container') { click_button "Update" }
@@ -232,7 +232,7 @@ describe "Promotion Adjustments", type: :feature, js: true do
       eventually_fill_in "promotion_promotion_rules_attributes_1_preferred_amount_max", with: "150"
       within('#rule_fields') { click_button "Update" }
 
-      select2 "Create whole-order adjustment", from: "Add action of type"
+      select2 "Create whole-inspection adjustment", from: "Add action of type"
       within('#action_fields') { click_button "Add" }
       select2 "Flat Rate", from: "Calculator"
       within('#actions_container') { click_button "Update" }

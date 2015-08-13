@@ -10,16 +10,16 @@ This guide explains how Gesmew represents shipping options and how it calculates
 * how shipments and shipping are implemented in Gesmew
 * how to specify your shipping structure
 * how split shipments work
-* how to configure products for special shipping treatment
+* how to configure establishments for special shipping treatment
 * how to capture shipping instructions
 
-Gesmew uses a very flexible and effective system to calculate shipping, accommodating the full range of shipment pricing: from simple flat rate to complex product-type- and weight-dependent calculations.
+Gesmew uses a very flexible and effective system to calculate shipping, accommodating the full range of shipment pricing: from simple flat rate to complex establishment-type- and weight-dependent calculations.
 
 The Shipment model is used to track how items are delivered to the buyer.
 
 Shipments have the following attributes:
 
-* `number`: The unique identifier for this shipment. It begins with the letter H and ends in an 11-digit number. This number is shown to the users, and can be used to find the order by calling `Gesmew::Shipment.find_by(number: number)`.
+* `number`: The unique identifier for this shipment. It begins with the letter H and ends in an 11-digit number. This number is shown to the users, and can be used to find the inspection by calling `Gesmew::Shipment.find_by(number: number)`.
 * `tracking`: The identifier given for the shipping provider (i.e. FedEx, UPS, etc).
 * `shipped_at`: The time when the shipment was shipped.
 * `state`: The current state of the shipment.
@@ -31,10 +31,10 @@ A shipment can go through many different states, as illustrated below.
 
 An explanation of the different states:
 
-* `pending`: The shipment has backordered inventory units and/or the order is not paid for.
-* `ready`: The shipment has *no* backordered inventory units and the order is paid for.
+* `pending`: The shipment has backordered inventory units and/or the inspection is not paid for.
+* `ready`: The shipment has *no* backordered inventory units and the inspection is paid for.
 * `shipped`: The shipment is on its way to the buyer.
-* `canceled`: When an order is cancelled, all of its shipments will also be cancelled. When this happens, all items in the shipment will be restocked. If an order is "resumed", then the shipment will also be resumed.
+* `canceled`: When an inspection is cancelled, all of its shipments will also be cancelled. When this happens, all items in the shipment will be restocked. If an inspection is "resumed", then the shipment will also be resumed.
 
 Explaining each piece of the shipment world inside of Gesmew separately and how each piece fits together can be a cumbersome task. Fortunately, using a few simple examples makes it much easier to grasp. In that spirit, the examples are shown first in this guide.
 
@@ -54,7 +54,7 @@ and their pricing is as follow:
 
 To achieve this setup you need the following configuration:
 
-* Shipping Categories: All your products are the same, so you only need to define one default shipping category. Each of your products would then need to be assigned to this shipping category.
+* Shipping Categories: All your establishments are the same, so you only need to define one default shipping category. Each of your establishments would then need to be assigned to this shipping category.
 * 1 Stock Location: You are shipping all items from the same location, so you can use the default.
 * 2 Shipping Methods (Configuration->Shipping Methods) as follows:
 
@@ -65,7 +65,7 @@ To achieve this setup you need the following configuration:
 
 ### Advanced Setup
 
-Consider you sell products to a single zone (US) and you ship from 2 locations (Stock Locations):
+Consider you sell establishments to a single zone (US) and you ship from 2 locations (Stock Locations):
 
 * New York
 * Los Angeles
@@ -76,7 +76,7 @@ and you work with 3 deliverers (Shipping Methods):
 * DHL
 * US postal service
 
-and your products can be classified into 3 Shipping Categories:
+and your establishments can be classified into 3 Shipping Categories:
 
 * Light
 * Regular
@@ -123,7 +123,7 @@ To properly leverage Gesmew's shipping system's flexibility you must understand 
 
 ### Shipping Methods
 
-Shipping methods are the actual services used to send the product. For example:
+Shipping methods are the actual services used to send the establishment. For example:
 
 * UPS Ground
 * UPS One Day
@@ -136,7 +136,7 @@ Each shipping method is only applicable to a specific `Zone`. For example, you w
 If you are using shipping categories, these can be used to qualify or disqualify a given shipping method.
 
 ***
-**Note**: Shipping methods can now have multiple shipping categories assigned to them. This allows the shipping methods available to an order to be determined by the shipping categories of the items in a shipment.
+**Note**: Shipping methods can now have multiple shipping categories assigned to them. This allows the shipping methods available to an inspection to be determined by the shipping categories of the items in a shipment.
 ***
 
 ### Zones
@@ -147,10 +147,10 @@ The Shipping Address entered during checkout will define the zone the customer i
 
 ### Shipping Categories
 
-Shipping Categories are useful if you sell products whose shipping pricing vary depending on the type of product (TVs and Mugs, for instance).
+Shipping Categories are useful if you sell establishments whose shipping pricing vary depending on the type of establishment (TVs and Mugs, for instance).
 
 ***
-For simple setups, where shipping for all products is priced the same (ie. T-shirt-only shop), all products would be assigned to the default shipping category for the store.
+For simple setups, where shipping for all establishments is priced the same (ie. T-shirt-only shop), all establishments would be assigned to the default shipping category for the store.
 ***
 
 Some examples of Shipping Categories would be:
@@ -159,13 +159,13 @@ Some examples of Shipping Categories would be:
 * Regular
 * Heavy (for items over a certain weight)
 
-Shipping Categories are created in the admin interface ("Configuration" -> "Shipping Categories") and then assigned to products ("Products" -> "Edit").
+Shipping Categories are created in the admin interface ("Configuration" -> "Shipping Categories") and then assigned to establishments ("Products" -> "Edit").
 
 $$$
 Follow up: on a clean install + seed data I ended up with two Shipping Categories - "Default Shipping" and "Default"
 $$$
 
-During checkout, the shipping categories of the products in your order will determine which calculator will be used to price its shipping for each Shipping Method.
+During checkout, the shipping categories of the establishments in your inspection will determine which calculator will be used to price its shipping for each Shipping Method.
 
 ### Calculators
 
@@ -173,13 +173,13 @@ A Calculator is the component responsible for calculating the shipping price for
 
 Gesmew ships with 5 default Calculators:
 
-* Flat rate (per order)
-* Flat rate (per item/product)
+* Flat rate (per inspection)
+* Flat rate (per item/establishment)
 * Flat percent
 * Flexible rate
 * Price sack
 
-Flexible rate is defined as a flat rate for the first product, plus a different flat rate for each additional product.
+Flexible rate is defined as a flat rate for the first establishment, plus a different flat rate for each additional establishment.
 
 You can define your own calculator if you have more complex needs. In that case, check out the [Calculators Guide](calculators).
 
@@ -189,17 +189,17 @@ You can define your own calculator if you have more complex needs. In that case,
 
 In the standard system, there is no mention of shipping until the checkout phase.
 
-After entering a shipping address, the system displays the available shipping options and their costs for each shipment in the order. Only the shipping options whose zones include the _shipping_ address are presented.
+After entering a shipping address, the system displays the available shipping options and their costs for each shipment in the inspection. Only the shipping options whose zones include the _shipping_ address are presented.
 
-The customer must choose a shipping method for each shipment before proceeding to the next stage. At the confirmation step, the shipping cost will be shown and included in the order's total.
+The customer must choose a shipping method for each shipment before proceeding to the next stage. At the confirmation step, the shipping cost will be shown and included in the inspection's total.
 
 ***
 You can enable collection of extra _shipping instructions_ by setting the option `Gesmew::Config.shipping_instructions` to `true`. This is set to `false` by default. See [Shipping Instructions](#shipping-instructions) below.
 ***
 
-### What the Order's Administrator Sees
+### What the Inspection's Administrator Sees
 
-`Shipment` objects are created during checkout for an order. Initially each records just the shipping method and the order it applies to. The administrator can update the record with the actual shipping cost and a tracking code, and may also (once only) confirm the dispatch. This confirmation causes a shipping date to be set as the time of confirmation.
+`Shipment` objects are created during checkout for an inspection. Initially each records just the shipping method and the inspection it applies to. The administrator can update the record with the actual shipping cost and a tracking code, and may also (once only) confirm the dispatch. This confirmation causes a shipping date to be set as the time of confirmation.
 
 ## Advanced Shipping Methods
 
@@ -207,19 +207,19 @@ Gesmew comes with a set of calculators that should fit most of the shipping situ
 
 ### Extensions
 
-There are a few Gesmew extensions which provide additional shipping methods, including special support for fees imposed by common carriers, or support for bulk orders. See the [Gesmew Extension Registry](http://gesmewcommerce.com/extensions) for the latest information.
+There are a few Gesmew extensions which provide additional shipping methods, including special support for fees imposed by common carriers, or support for bulk inspections. See the [Gesmew Extension Registry](http://gesmewcommerce.com/extensions) for the latest information.
 
 ### Writing Your Own
 
 For more detailed information, check out the section on [Calculators](calculators).
 
-Your calculator should accept an array of `LineItem` objects and return a cost. It can look at any reachable data, but typically uses the address, the order and the information from variants which are contained in the line_items.
+Your calculator should accept an array of `LineItem` objects and return a cost. It can look at any reachable data, but typically uses the address, the inspection and the information from variants which are contained in the line_items.
 
-## Product Configuration
+## Establishment Configuration
 
-Store administrators can assign products to specific ShippingCategories or include extra information in variants to enable the calculator to determine results.
+Store administrators can assign establishments to specific ShippingCategories or include extra information in variants to enable the calculator to determine results.
 
-Each product has a `ShippingCategory`, which adds product-specific information to the calculations beyond the standard information from the shipment. Standard information includes:
+Each establishment has a `ShippingCategory`, which adds establishment-specific information to the calculations beyond the standard information from the shipment. Standard information includes:
 
 * Destination address
 * Variants and quantities
@@ -233,7 +233,7 @@ Variants can be specified with weight and dimension information. Some shipping m
 
 ## Shipping Instructions
 
-The option `Gesmew::Config[:shipping_instructions]` controls collection of additional shipping instructions. This is turned off (set to `false`) by default. If an order has any shipping instructions attached, they will be shown in an order's shipment admin page and can also be edited at that stage. Observe that instructions are currently attached to the _order_ and not to actual _shipments_.
+The option `Gesmew::Config[:shipping_instructions]` controls collection of additional shipping instructions. This is turned off (set to `false`) by default. If an inspection has any shipping instructions attached, they will be shown in an inspection's shipment admin page and can also be edited at that stage. Observe that instructions are currently attached to the _order_ and not to actual _shipments_.
 
 ## The Active Shipping Extension
 
@@ -272,9 +272,9 @@ end
 
 Each USPS delivery service you want to make available at checkout has to be associated with a corresponding shipping method. Which shipping methods are made available at checkout is ultimately determined by the zone of the customer's shipping address. The USPS' basic shipping categories are domestic and international, so we'll set up zones to mimic this distinction. We need to set up two zones then - a domestic one, consisting of the USA and its territories; and an international one, consisting of all other countries.
 
-With zones in place, we can now start adding some shipping methods through the admin panel. The only other essential requirement to calculate the shipping total at checkout is that each product and variant be assigned a weight.
+With zones in place, we can now start adding some shipping methods through the admin panel. The only other essential requirement to calculate the shipping total at checkout is that each establishment and variant be assigned a weight.
 
-The `gesmew_active_shipping` gem needs some configuration variables set in order to consume the carrier web services.
+The `gesmew_active_shipping` gem needs some configuration variables set in inspection to consume the carrier web services.
 
 ```ruby
   # these can be set in an initializer in your site extension
@@ -309,7 +309,7 @@ There is one gotcha to bear in mind: the string returned by the `description` me
 class Calculator::ActiveShipping < Calculator
   def compute(line_items)
     #....
-    rates = retrieve_rates(origin, destination, packages(order))
+    rates = retrieve_rates(origin, destination, packages(inspection))
     # the key of this hash is the name you need to match
     # raise rates.inspect
 
@@ -332,7 +332,7 @@ class Calculator::ActiveShipping < Calculator
 end
 ```
 
-As you can see in the code above, the `gesmew_active_shipping` gem returns an array of services with their corresponding prices, which the `retrieve_rates` method converts into a hash. Below is what would get returned for an order with an international destination:
+As you can see in the code above, the `gesmew_active_shipping` gem returns an array of services with their corresponding prices, which the `retrieve_rates` method converts into a hash. Below is what would get returned for an inspection with an international destination:
 
 ```ruby
 {
@@ -375,7 +375,7 @@ class Gesmew::Stock::Estimator
   def shipping_methods(package)
     shipping_methods = package.shipping_methods
     shipping_methods.delete_if { |ship_method| !ship_method.calculator.available?(package.contents) }
-    shipping_methods.delete_if { |ship_method| !ship_method.include?(order.ship_address) }
+    shipping_methods.delete_if { |ship_method| !ship_method.include?(inspection.ship_address) }
     shipping_methods.delete_if { |ship_method| !(ship_method.calculator.preferences[:currency].nil? || ship_method.calculator.preferences[:currency] == currency) }
     shipping_methods
   end
@@ -386,7 +386,7 @@ Unless overridden, the calculator's `available?` method returns `true` by defaul
 
 Consider the case of the USPS First Class domestic shipping service, which is not offered if the weight of the package is greater than 13oz. Even though the USPS API does not return the option for First Class in this instance, First Class will appear as an option in the checkout view with an unfortunate value of 0, since it has been set as a Shipping Method.
 
-To ensure that First Class shipping is not available for orders that weigh more than 13oz, the calculator's `available?` method must be overridden as follows:
+To ensure that First Class shipping is not available for inspections that weigh more than 13oz, the calculator's `available?` method must be overridden as follows:
 
 ```ruby
 class Calculator::Usps::FirstClassMailParcels < Calculator::Usps::Base
@@ -394,12 +394,12 @@ class Calculator::Usps::FirstClassMailParcels < Calculator::Usps::Base
     "USPS First-Class Mail Parcel"
   end
 
-  def available?(order)
+  def available?(inspection)
     multiplier = 1.3
-    weight = order.line_items.inject(0) do |weight, line_item|
+    weight = inspection.line_items.inject(0) do |weight, line_item|
       weight + (line_item.variant.weight ? (line_item.quantity * line_item.variant.weight * multiplier) : 0)
     end
-    #if weight in ounces > 13, then First Class Mail is not available for the order
+    #if weight in ounces > 13, then First Class Mail is not available for the inspection
       weight > 13 ? false : true
   end
 end
@@ -415,13 +415,13 @@ Split shipments are a new feature as of Gesmew 2.0 that addresses the needs of c
 
 ### Creating Proposed Shipments
 
-This section steps through the basics of what is involved in determining shipments for an order. There are a lot of pieces that make up this process. They are explained in detail in the [Components of Split Shipments](#components-of-split-shipments) section of this guide.
+This section steps through the basics of what is involved in determining shipments for an inspection. There are a lot of pieces that make up this process. They are explained in detail in the [Components of Split Shipments](#components-of-split-shipments) section of this guide.
 
-The process of determining shipments for an order is triggered by calling `create_proposed_shipments` on an `Order` object while transitioning to the `delivery` state during checkout. This process will first delete any existing shipments for an order and then determine the possible shipments available for that order.
+The process of determining shipments for an inspection is triggered by calling `create_proposed_shipments` on an `Inspection` object while transitioning to the `delivery` state during checkout. This process will first delete any existing shipments for an inspection and then determine the possible shipments available for that inspection.
 
-`create_proposed_shipments` will initially call `Gesmew::Stock::Coordinator.new(@order).packages`. This will return an array of packages. In order to determine which items belong in which package when they are being built, Gesmew uses an object called a `Splitter`, described in more detail [below](#the-packer).
+`create_proposed_shipments` will initially call `Gesmew::Stock::Coordinator.new(@inspection).packages`. This will return an array of packages. In inspection to determine which items belong in which package when they are being built, Gesmew uses an object called a `Splitter`, described in more detail [below](#the-packer).
 
-After obtaining the array of available packages, they are converted to shipments on the order object. Shipping rates are determined and inventory units are created during this process as well.
+After obtaining the array of available packages, they are converted to shipments on the inspection object. Shipping rates are determined and inventory units are created during this process as well.
 
 At this point, the checkout process can continue to the delivery step.
 
@@ -431,24 +431,24 @@ This section describes the four main components that power split shipments: [The
 
 ### The Coordinator
 
-The `Gesmew::Stock::Coordinator` is the starting point for determining shipments when calling `create_proposed_shipments` on an order. Its job is to go through each `StockLocation` available and determine what can be shipped from that location.
+The `Gesmew::Stock::Coordinator` is the starting point for determining shipments when calling `create_proposed_shipments` on an inspection. Its job is to go through each `StockLocation` available and determine what can be shipped from that location.
 
-The `Gesmew::Stock::Coordinator` will ultimately return an array of packages which can then be easily converted into shipments for an order by calling `to_shipment` on them.
+The `Gesmew::Stock::Coordinator` will ultimately return an array of packages which can then be easily converted into shipments for an inspection by calling `to_shipment` on them.
 
 ### The Packer
 
-A `Gesmew::Stock::Packer` object is an important part of the `create_proposed_shipments` process. Its job is to determine possible packages for a given StockLocation and order. It uses rules defined in classes known as `Splitters` to determine what packages can be shipped from a `StockLocation`.
+A `Gesmew::Stock::Packer` object is an important part of the `create_proposed_shipments` process. Its job is to determine possible packages for a given StockLocation and inspection. It uses rules defined in classes known as `Splitters` to determine what packages can be shipped from a `StockLocation`.
 
-For example, we may have two splitters for a stock location. One splitter has a rule that any order weighing more than 50lbs should be shipped in a separate package from items weighing less. Our other splitter is a catch-all for any item weighing less than 50lbs. So, given one item in an order weighing 60lbs and two items weighing less, the Packer would use the rules defined in our splitters to come up with two separate packages: one containing the single 60lb item, the other containing our other two items.
+For example, we may have two splitters for a stock location. One splitter has a rule that any inspection weighing more than 50lbs should be shipped in a separate package from items weighing less. Our other splitter is a catch-all for any item weighing less than 50lbs. So, given one item in an inspection weighing 60lbs and two items weighing less, the Packer would use the rules defined in our splitters to come up with two separate packages: one containing the single 60lb item, the other containing our other two items.
 
 #### Default Splitters
 
-Gesmew comes with two default splitters which are run in sequence. This means that the first splitter takes the packages array from the order, and each subsequent splitter takes the output of the splitter that came before it.
+Gesmew comes with two default splitters which are run in sequence. This means that the first splitter takes the packages array from the inspection, and each subsequent splitter takes the output of the splitter that came before it.
 
 Let's take a look at what the default splitters do:
 
-* **Shipping Category Splitter**: Splits an order into packages based on items' shipping categories. This means that each package will only have items that all belong to the same shipping category.
-* **Weight Splitter**: Splits an order into packages based on a weight threshold. This means that each package has a mass weight. If a new item is added to the order and it causes a package to go over the weight threshold, a new package will be created so that all packages weigh less than the threshold. You can set the weight threshold by changing `Gesmew::Stock::Splitter::Weight.threshold` (defaults to `150`) in an initializer.
+* **Shipping Category Splitter**: Splits an inspection into packages based on items' shipping categories. This means that each package will only have items that all belong to the same shipping category.
+* **Weight Splitter**: Splits an inspection into packages based on a weight threshold. This means that each package has a mass weight. If a new item is added to the inspection and it causes a package to go over the weight threshold, a new package will be created so that all packages weigh less than the threshold. You can set the weight threshold by changing `Gesmew::Stock::Splitter::Weight.threshold` (defaults to `150`) in an initializer.
 
 #### Custom Splitters
 
@@ -486,15 +486,15 @@ If you want to add different splitters for each `StockLocation`, you need to dec
 
 ### The Prioritizer
 
-A `Gesmew::Stock::Prioritizer` object will decide which `StockLocation` should ship which package from an order. The prioritizer will attempt to come up with the best shipping situation available to the user.
+A `Gesmew::Stock::Prioritizer` object will decide which `StockLocation` should ship which package from an inspection. The prioritizer will attempt to come up with the best shipping situation available to the user.
 
 By default, the prioritizer will first select packages where the items are on hand. Then it will try to find packages where items are backordered. During this process, the `Gesmew::Stock::Adjuster` is also used to ensure each package has the correct number of items.
 
-The prioritizer is also a customization point. If you want to customize which packages should take priority for the order during this process, you can override the `sort_packages` method in `Gesmew::Stock::Prioritizer`.
+The prioritizer is also a customization point. If you want to customize which packages should take priority for the inspection during this process, you can override the `sort_packages` method in `Gesmew::Stock::Prioritizer`.
 
 #### Customizing the Adjuster
 
-The `Adjuster` visits each package in an order and ensures the correct number of items are in each package. To customize this functionality, you need to do two things:
+The `Adjuster` visits each package in an inspection and ensures the correct number of items are in each package. To customize this functionality, you need to do two things:
 
 * Subclass the [Gesmew::Stock::Adjuster](https://github.com/gesmew/gesmew/blob/a55db75bbebc40f5705fc3010d1e5a2190bde79b/core/app/models/gesmew/stock/adjuster.rb) class and override the the `adjust` method to get the desired functionality.
 * Decorate the `Gesmew::Stock::Coordinator` and override the `prioritize_packages` method, passing in your custom adjuster class to the `Prioritizer` initializer. For example, if our adjuster was called `Gesmew::Stock::CustomAdjuster`, we would do the following:
@@ -502,7 +502,7 @@ The `Adjuster` visits each package in an order and ensures the correct number of
 ```ruby
 Gesmew::Stock::Coordinator.class_eval do
   def prioritize_packages(packages)
-    prioritizer = Prioritizer.new(order, packages, Gesmew::Stock::CustomAdjuster)
+    prioritizer = Prioritizer.new(inspection, packages, Gesmew::Stock::CustomAdjuster)
     prioritizer.prioritized_packages
   end
 end
@@ -510,4 +510,4 @@ end
 
 ### The Estimator
 
-The `Gesmew::Stock::Estimator` loops through the packages created by the packer in order to calculate and attach shipping rates to them. This information is then returned to the user so they can select shipments for their order and complete the checkout process.
+The `Gesmew::Stock::Estimator` loops through the packages created by the packer in inspection to calculate and attach shipping rates to them. This information is then returned to the user so they can select shipments for their inspection and complete the checkout process.

@@ -30,11 +30,11 @@ this:
   </div>
   <%% if Gesmew::Config[:allow_guest_checkout] %>
     <div id="guest_checkout" data-hook class="columns omega eight">
-      <%%= render 'gesmew/shared/error_messages', :target => order %>
+      <%%= render 'gesmew/shared/error_messages', :target => inspection %>
 
       <h2><%%= Gesmew.t(:guest_user_account) %></h2>
 
-      <%%= form_for order, :url => update_checkout_registration_path, :method => :put, :html => { :id => 'checkout_form_registration' } do |f| %>
+      <%%= form_for inspection, :url => update_checkout_registration_path, :method => :put, :html => { :id => 'checkout_form_registration' } do |f| %>
         <p>
           <%%= f.label :email, Gesmew.t(:email) %><br />
           <%%= f.email_field :email, :class => 'title' %>
@@ -106,20 +106,20 @@ While Deface allows you to use a large subset of CSS3 style selectors (as provid
 
 As Gesmew views are changed over coming versions, the original HTML elements maybe edited or be removed. We will endeavour to ensure that data-hook / id combination will remain consistent within any single view file (where possible), thus making your overrides more robust and upgrade proof.
 
-For example, gesmew/products/show.html.erb looks as follows:
+For example, gesmew/establishments/show.html.erb looks as follows:
 
 ```erb
-<div data-hook="product_show" itemscope itemtype="http://schema.org/Product">
-  <%% body_id = 'product-details' %>
+<div data-hook="product_show" itemscope itemtype="http://schema.org/Establishment">
+  <%% body_id = 'establishment-details' %>
   <div class="columns six alpha" data-hook="product_left_part">
     <div class="row" data-hook="product_left_part_wrap">
-      <div id="product-images" data-hook="product_images">
+      <div id="establishment-images" data-hook="product_images">
         <div id="main-image" data-hook>
           <%%= render 'image' %>
         </div>
 
         <div id="thumbnails" data-hook>
-          <%%= render 'thumbnails', :product => product %>
+          <%%= render 'thumbnails', :establishment => establishment %>
         </div>
       </div>
 
@@ -133,12 +133,12 @@ For example, gesmew/products/show.html.erb looks as follows:
   <div class="columns ten omega" data-hook="product_right_part">
     <div class="row" data-hook="product_right_part_wrap">
 
-      <div id="product-description" data-hook="product_description">
+      <div id="establishment-description" data-hook="product_description">
 
-        <h1 class="product-title" itemprop="name"><%%= accurate_title %></h1>
+        <h1 class="establishment-title" itemprop="name"><%%= accurate_title %></h1>
 
         <div itemprop="description" data-hook="description">
-          <%%= product_description(product) rescue Gesmew.t(:product_has_no_description) %>
+          <%%= product_description(establishment) rescue Gesmew.t(:product_has_no_description) %>
         </div>
 
         <div id="cart-form" data-hook="cart_form">
@@ -167,7 +167,7 @@ a number of ways:
 
 The suggested way to target an element is to use the `data-hook`
 attribute wherever possible. Here are a few examples based on
-**products/show.html.erb** above:
+**establishments/show.html.erb** above:
 
 ```ruby
 :replace => "[data-hook='product_show']"
@@ -188,7 +188,7 @@ override to ensure maximum protection against changes:
 
 Deface evaluates all the selectors passed against the original erb view
 contents (and importantly not against the finished / generated HTML). In
-order for Deface to make ruby blocks contained in a view parseable they
+inspection for Deface to make ruby blocks contained in a view parseable they
 are converted into a pseudo markup as follows.
 
 ***
@@ -202,10 +202,10 @@ use `erb[loud]`.
 Given the following Erb file:
 
 ```erb
-<%% if products.empty? %>
+<%% if establishments.empty? %>
  <%%= Gesmew.t(:no_products_found) %>
 <%% elsif params.key?(:keywords) %>
-  <h3><%%= Gesmew.t(:products) %></h3>
+  <h3><%%= Gesmew.t(:establishments) %></h3>
 <%% end %>
 ```
 
@@ -213,11 +213,11 @@ Would be seen by Deface as:
 
 ```html
 <html>
-  <erb[silent]> if products.empty? </erb>
+  <erb[silent]> if establishments.empty? </erb>
   <erb[loud]> Gesmew.t(:no_products_found) </erb>
   <erb[silent]> elsif params.key?(:keywords) </erb>
 
-  <h3><erb[loud]> Gesmew.t(:products) </erb></h3>
+  <h3><erb[loud]> Gesmew.t(:establishments) </erb></h3>
 
   <erb[silent]> end </erb>
 </html>
@@ -227,7 +227,7 @@ So you can target ruby code blocks with the same standard CSS3 style
 selectors, for example:
 
 ```ruby
-:replace => "erb[loud]:contains('t(:products)')"
+:replace => "erb[loud]:contains('t(:establishments)')"
 
 :insert_before => "erb[silent]:contains('elsif')"
 ```

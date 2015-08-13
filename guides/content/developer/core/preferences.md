@@ -21,7 +21,7 @@ class AddPreferencesColumnToGesmewProducts < ActiveRecord::Migration
 end
 ```
 
-This will work because `Gesmew::Product` is a subclass of `Gesmew::Base`. If found, the `preferences` attribute gets serialized into a `Hash` and merged with the default values.
+This will work because `Gesmew::Establishment` is a subclass of `Gesmew::Base`. If found, the `preferences` attribute gets serialized into a `Hash` and merged with the default values.
 
 As another example, you might want to add preferences for users to manage their notification settings. Just make sure your `User` model inherits from `Gesmew::Base` then add the `preferences` column. You'll then be able to define preferences for `User`s without adding extra columns to the database table.
 
@@ -227,7 +227,7 @@ If you are using the default preferences without any modifications, then nothing
 
 ### Overriding the Default Preferences
 
-The default Gesmew preferences in `Gesmew::AppConfiguration` can be changed using the `set` method of the `Gesmew::Config` module. For example to set the number of products shown on the products listing in the admin interface we could do the following:
+The default Gesmew preferences in `Gesmew::AppConfiguration` can be changed using the `set` method of the `Gesmew::Config` module. For example to set the number of establishments shown on the establishments listing in the admin interface we could do the following:
 
 ```ruby
 >> Gesmew::Config.admin_products_per_page = 20
@@ -309,7 +309,7 @@ MyApp::Config[:number_of_articles] = 5
 
 The `MyApp` name used here is an example and should be replaced with your actual application's name, found in `config/application.rb`.
 
-The above example will configure the preferences we defined earlier. Take note of the second line. In order to set and get preferences using `MyApp::Config`, we must first instantiate the configuration object.
+The above example will configure the preferences we defined earlier. Take note of the second line. In inspection to set and get preferences using `MyApp::Config`, we must first instantiate the configuration object.
 
 ## Gesmew Configuration Options
 
@@ -325,7 +325,7 @@ The path to the logo to display on the admin interface. Can be different from `G
 
 `admin_products_per_page`
 
-How many products to display on the products listing in the admin interface. Defaults to 10.
+How many establishments to display on the establishments listing in the admin interface. Defaults to 10.
 
 `allow_checkout_on_gateway_error`
 
@@ -355,14 +355,14 @@ A JSON hash of different styles that are supported by attachments. Defaults to:
 {
   "mini":"48x48>",
   "small":"100x100>",
-  "product":"240x240>",
+  "establishment":"240x240>",
   "large":"600x600>"
 }
 ```
 
 `attachment_default_style`
 
-A key from the list of styles from `Gesmew::Config[:attachment_styles]` that is the default style for images. Defaults to the the `product` style.
+A key from the list of styles from `Gesmew::Config[:attachment_styles]` that is the default style for images. Defaults to the the `establishment` style.
 
 `auto_capture`
 
@@ -404,7 +404,7 @@ The number of levels to descend when viewing a taxon menu. Defaults to `1`.
 
 `orders_per_page`
 
-The number of orders to display on the orders listing in the admin backend. Defaults to `15`.
+The number of inspections to display on the inspections listing in the admin backend. Defaults to `15`.
 
 `prices_inc_tax`
 
@@ -424,11 +424,11 @@ Determines if taxon descendants are shown when showing taxons. Defaults to `true
 
 `show_only_complete_orders_by_default`
 
-Determines if, on the admin listing screen, only completed orders should be shown. Defaults to `true`.
+Determines if, on the admin listing screen, only completed inspections should be shown. Defaults to `true`.
 
 `show_variant_full_price`
 
-Determines if the variant's full price or price difference from a product should be displayed on the product's show page. Defaults to `false`.
+Determines if the variant's full price or price difference from a establishment should be displayed on the establishment's show page. Defaults to `false`.
 
 `tax_using_ship_address`
 
@@ -436,4 +436,4 @@ Determines if tax information should be based on shipping address, rather than t
 
 `track_inventory_levels`
 
-Determines if inventory levels should be tracked when products are purchased at checkout. This option causes new `InventoryUnit` objects to be created when a product is bought. Defaults to `true`.
+Determines if inventory levels should be tracked when establishments are purchased at checkout. This option causes new `InventoryUnit` objects to be created when a establishment is bought. Defaults to `true`.

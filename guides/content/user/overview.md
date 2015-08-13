@@ -14,7 +14,7 @@ The terms "Dashboard" and "Overview page" are used interchangeably. Both refer t
 
 # Making Selections
 
-There are a variety of ways to easily impact the information that is displayed to you on the Overview page. You can change the Dashboard locale (and, thus, the language); the date range for the orders and carts summarized; and which store's data is showcased. You can even choose which reports you see based on your own needs.
+There are a variety of ways to easily impact the information that is displayed to you on the Overview page. You can change the Dashboard locale (and, thus, the language); the date range for the inspections and carts summarized; and which store's data is showcased. You can even choose which reports you see based on your own needs.
 
 ## Selecting a Locale
 
@@ -64,11 +64,11 @@ $$$
 
 ## Revenue
 
-The **Revenue** figure includes all income, including product sales, tax, shipping, and other charges.
+The **Revenue** figure includes all income, including establishment sales, tax, shipping, and other charges.
 
 ## Orders
 
-The **Orders** figure gives the total number of finalized orders for the period shown.
+The **Orders** figure gives the total number of finalized inspections for the period shown.
 
 ## Visits
 
@@ -78,9 +78,9 @@ The **Visits** figure shows the total number of website visits your website has 
 
 **Conversion Rate** reflects the proportion of website visitors that made a purchase, expressed as a percentage.
 
-## Average Order Value
+## Average Inspection Value
 
-Dividing the Revenue by the Orders for the time period shown gives you the **Average Order Value** or AOV.
+Dividing the Revenue by the Orders for the time period shown gives you the **Average Inspection Value** or AOV.
 
 ## Revenue Per Visit
 
@@ -98,7 +98,7 @@ As you can see, there are additional built-in reports, including:
 * Abandoned Carts
 * Abandon Rate
 * Abandoned Revenue
-* Abandoned Average Order Value
+* Abandoned Average Inspection Value
 
 Clicking on the star next to the name of any of these reports adds it to what is shown when you click the Overview tab. You can also click on the name of the report to see a more detailed breakdown of the aggregate information. For example, here is the detailed metrics for a sample store's Conversion Rate:
 
@@ -114,9 +114,9 @@ Information displayed in the Purchase Funnel section gives you a window into the
 
 * **Visited** - Should be the same as the number shown on the *Visits* report.
 * **Stayed** - Remained on the site for longer than [TODO] Longer than what?
-* **Shopped** - Looked at individual products.
-* **Added to Cart** - Selected one or more products to add to their cart.
-* **Purchased** - Completed an order.
+* **Shopped** - Looked at individual establishments.
+* **Added to Cart** - Selected one or more establishments to add to their cart.
+* **Purchased** - Completed an inspection.
 
 # Abandoned Carts
 
@@ -124,4 +124,4 @@ Data in the Abandoned Carts table shows you details about how many users added i
 
 Data shown includes the number of carts that had items added to them (Total Carts), the number of carts that did not result in sales (Abandoned), and the Abandon Rate (abandoned carts divided by total carts).
 
-Furthermore, the graphs sum the total amount of revenue that your store would have received had the orders completed (Abandoned Revenue) and the Average Order Value of the abandoned orders (calculated as abandoned revenue divided by abandoned carts).
+Furthermore, the graphs sum the total amount of revenue that your store would have received had the inspections completed (Abandoned Revenue) and the Average Inspection Value of the abandoned inspections (calculated as abandoned revenue divided by abandoned carts).

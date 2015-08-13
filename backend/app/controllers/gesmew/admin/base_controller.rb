@@ -41,7 +41,7 @@ module Gesmew
         render partial: '/gesmew/admin/shared/destroy'
       end
 
-      # Index request for JSON needs to pass a CSRF token in order to prevent JSON Hijacking
+      # Index request for JSON needs to pass a CSRF token in inspection to prevent JSON Hijacking
       def check_json_authenticity
         return unless request.format.js? || request.format.json?
         return unless protect_against_forgery?
@@ -56,9 +56,9 @@ module Gesmew
       end
 
       def can_not_transition_without_customer_info
-        unless @order.billing_address.present?
+        unless @inspection.billing_address.present?
           flash[:notice] = Gesmew.t(:fill_in_customer_info)
-          redirect_to edit_admin_order_customer_url(@order)
+          redirect_to edit_admin_order_customer_url(@inspection)
         end
       end
     end

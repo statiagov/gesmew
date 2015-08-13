@@ -12,7 +12,7 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
     context "defaults to use billing address" do
       before do
         add_mug_to_cart
-        Gesmew::Order.last.update_column(:email, "test@example.com")
+        Gesmew::Inspection.last.update_column(:email, "test@example.com")
         click_button "Checkout"
       end
 
@@ -34,8 +34,8 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       end
 
       specify do
-        expect(Gesmew::Order.count).to eq 1
-        expect(Gesmew::Order.last.state).to eq "address"
+        expect(Gesmew::Inspection.count).to eq 1
+        expect(Gesmew::Inspection.last.state).to eq "address"
       end
     end
 
@@ -96,15 +96,15 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
   # Regression test for #2694 and #4117
   context "doesn't allow bad credit card numbers" do
     before(:each) do
-      order = OrderWalkthrough.up_to(:payment)
-      allow(order).to receive_messages confirmation_required?: true
-      allow(order).to receive_messages(:available_payment_methods => [ create(:credit_card_payment_method) ])
+      inspection = OrderWalkthrough.up_to(:payment)
+      allow(inspection).to receive_messages confirmation_required?: true
+      allow(inspection).to receive_messages(:available_payment_methods => [ create(:credit_card_payment_method) ])
 
       user = create(:user)
-      order.user = user
-      order.update!
+      inspection.user = user
+      inspection.update!
 
-      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: order)
+      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: inspection)
       allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: user)
     end
 
@@ -116,7 +116,7 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       fill_in "card_expiry", with: '04 / 20'
       fill_in "Card Code", with: '123'
       click_button "Save and Continue"
-      click_button "Place Order"
+      click_button "Place Inspection"
       expect(page).to have_content("Bogus Gateway: Forced failure")
       expect(page.current_url).to include("/checkout/payment")
     end
@@ -141,25 +141,25 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       click_button "Save and Continue"
 
       continue_button = find("#checkout .btn-success")
-      expect(continue_button.value).to eq "Place Order"
+      expect(continue_button.value).to eq "Place Inspection"
     end
   end
 
   context "and likes to double click buttons" do
     let!(:user) { create(:user) }
 
-    let!(:order) do
-      order = OrderWalkthrough.up_to(:payment)
-      allow(order).to receive_messages confirmation_required?: true
+    let!(:inspection) do
+      inspection = OrderWalkthrough.up_to(:payment)
+      allow(inspection).to receive_messages confirmation_required?: true
 
-      order.reload
-      order.user = user
-      order.update!
-      order
+      inspection.reload
+      inspection.user = user
+      inspection.update!
+      inspection
     end
 
     before(:each) do
-      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: order)
+      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: inspection)
       allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: user)
       allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(skip_state_validation?: true)
     end
@@ -176,14 +176,14 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
     end
 
     it "prevents double clicking the confirm button on checkout", :js => true do
-      order.payments << create(:payment, amount: order.amount)
+      inspection.payments << create(:payment, amount: inspection.amount)
       visit gesmew.checkout_state_path(:confirm)
 
       # prevent form submit to verify button is disabled
       page.execute_script("$('#checkout_form_confirm').submit(function(){return false;})")
 
       expect(page).to_not have_selector('input.btn[disabled]')
-      click_button "Place Order"
+      click_button "Place Inspection"
       expect(page).to have_selector('input.btn[disabled]')
     end
   end
@@ -198,13 +198,13 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
 
     before do
       Capybara.ignore_hidden_elements = false
-      order = OrderWalkthrough.up_to(:payment)
-      allow(order).to receive_messages(available_payment_methods: [check_payment,credit_cart_payment])
-      order.user = create(:user)
-      order.update!
+      inspection = OrderWalkthrough.up_to(:payment)
+      allow(inspection).to receive_messages(available_payment_methods: [check_payment,credit_cart_payment])
+      inspection.user = create(:user)
+      inspection.update!
 
-      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: order)
-      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: order.user)
+      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: inspection)
+      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: inspection.user)
 
       visit gesmew.checkout_state_path(:payment)
     end
@@ -231,10 +231,10 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
     end
 
     before do
-      order = OrderWalkthrough.up_to(:payment)
-      allow(order).to receive_messages(available_payment_methods: [bogus])
+      inspection = OrderWalkthrough.up_to(:payment)
+      allow(inspection).to receive_messages(available_payment_methods: [bogus])
 
-      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: order)
+      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: inspection)
       allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: user)
       allow_any_instance_of(Gesmew::OrdersController).to receive_messages(try_gesmew_current_user: user)
 
@@ -248,8 +248,8 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
         click_on "Save and Continue"
       }.not_to change { Gesmew::CreditCard.count }
 
-      click_on "Place Order"
-      expect(current_path).to match(gesmew.order_path(Gesmew::Order.last))
+      click_on "Place Inspection"
+      expect(current_path).to match(gesmew.order_path(Gesmew::Inspection.last))
     end
 
     it "allows user to enter a new source" do
@@ -264,14 +264,14 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
         click_on "Save and Continue"
       }.to change { Gesmew::CreditCard.count }.by 1
 
-      click_on "Place Order"
-      expect(current_path).to match(gesmew.order_path(Gesmew::Order.last))
+      click_on "Place Inspection"
+      expect(current_path).to match(gesmew.order_path(Gesmew::Inspection.last))
     end
   end
 
   # regression for #2921
   context "goes back from payment to add another item", js: true do
-    let!(:bag) { create(:product, name: "RoR Bag") }
+    let!(:bag) { create(:establishment, name: "RoR Bag") }
 
     it "transit nicely through checkout steps again" do
       add_mug_to_cart
@@ -292,7 +292,7 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       click_on "Save and Continue"
       click_on "Save and Continue"
 
-      expect(current_path).to match(gesmew.order_path(Gesmew::Order.last))
+      expect(current_path).to match(gesmew.order_path(Gesmew::Inspection.last))
     end
   end
 
@@ -332,8 +332,8 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       end
     end
 
-    context "and adds new product to cart and try to reach payment page" do
-      let!(:bag) { create(:product, name: "RoR Bag") }
+    context "and adds new establishment to cart and try to reach payment page" do
+      let!(:bag) { create(:establishment, name: "RoR Bag") }
 
       before do
         visit gesmew.root_path
@@ -376,12 +376,12 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       expect(current_path).to eql(gesmew.checkout_state_path("payment"))
     end
 
-    it "makes sure payment reflects order total with discounts" do
+    it "makes sure payment reflects inspection total with discounts" do
       fill_in "Coupon Code", with: promotion.code
       click_on "Save and Continue"
 
       expect(page).to have_content(promotion.name)
-      expect(Gesmew::Payment.first.amount.to_f).to eq Gesmew::Order.last.total.to_f
+      expect(Gesmew::Payment.first.amount.to_f).to eq Gesmew::Inspection.last.total.to_f
     end
 
     context "invalid coupon" do
@@ -397,33 +397,33 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
     context "doesn't fill in coupon code input" do
       it "advances just fine" do
         click_on "Save and Continue"
-        expect(current_path).to match(gesmew.order_path(Gesmew::Order.last))
+        expect(current_path).to match(gesmew.order_path(Gesmew::Inspection.last))
       end
     end
   end
 
-  context "order has only payment step" do
+  context "inspection has only payment step" do
     before do
       create(:credit_card_payment_method)
-      @old_checkout_flow = Gesmew::Order.checkout_flow
-      Gesmew::Order.class_eval do
+      @old_checkout_flow = Gesmew::Inspection.checkout_flow
+      Gesmew::Inspection.class_eval do
         checkout_flow do
           go_to_state :payment
           go_to_state :confirm
         end
       end
 
-      allow_any_instance_of(Gesmew::Order).to receive_messages email: "gesmew@commerce.com"
+      allow_any_instance_of(Gesmew::Inspection).to receive_messages email: "gesmew@commerce.com"
 
       add_mug_to_cart
       click_on "Checkout"
     end
 
     after do
-      Gesmew::Order.checkout_flow(&@old_checkout_flow)
+      Gesmew::Inspection.checkout_flow(&@old_checkout_flow)
     end
 
-    it "goes right payment step and place order just fine" do
+    it "goes right payment step and place inspection just fine" do
       expect(current_path).to eq gesmew.checkout_state_path('payment')
 
       choose "Credit Card"
@@ -434,7 +434,7 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       click_button "Save and Continue"
 
       expect(current_path).to eq gesmew.checkout_state_path('confirm')
-      click_button "Place Order"
+      click_button "Place Inspection"
     end
   end
 
@@ -447,7 +447,7 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
 
     context 'as a guest' do
       before do
-        Gesmew::Order.last.update_column(:email, "test@example.com")
+        Gesmew::Inspection.last.update_column(:email, "test@example.com")
         click_button "Checkout"
       end
 
@@ -459,7 +459,7 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
     context 'as a User' do
       before do
         user = create(:user)
-        Gesmew::Order.last.update_column :user_id, user.id
+        Gesmew::Inspection.last.update_column :user_id, user.id
         allow_any_instance_of(Gesmew::OrdersController).to receive_messages(try_gesmew_current_user: user)
         allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: user)
         click_button "Checkout"
@@ -471,12 +471,12 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
     end
   end
 
-  context "when order is completed" do
+  context "when inspection is completed" do
     let!(:user) { create(:user) }
-    let!(:order) { OrderWalkthrough.up_to(:payment) }
+    let!(:inspection) { OrderWalkthrough.up_to(:payment) }
 
     before(:each) do
-      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: order)
+      allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(current_order: inspection)
       allow_any_instance_of(Gesmew::CheckoutController).to receive_messages(try_gesmew_current_user: user)
       allow_any_instance_of(Gesmew::OrdersController).to receive_messages(try_gesmew_current_user: user)
 
@@ -488,8 +488,8 @@ describe "Checkout", type: :feature, inaccessible: true, js: true do
       expect(page).to have_content(Gesmew.t(:thank_you_for_your_order))
     end
 
-    it "does not display a thank you message on that order future visits" do
-      visit gesmew.order_path(order)
+    it "does not display a thank you message on that inspection future visits" do
+      visit gesmew.order_path(inspection)
       expect(page).to_not have_content(Gesmew.t(:thank_you_for_your_order))
     end
   end

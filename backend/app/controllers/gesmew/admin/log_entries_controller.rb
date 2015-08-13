@@ -11,8 +11,8 @@ module Gesmew
       private
 
       def find_order_and_payment
-        @order = Gesmew::Order.friendly.find(params[:order_id])
-        @payment = @order.payments.friendly.find(params[:payment_id])
+        @inspection = Gesmew::Inspection.friendly.find(params[:order_id])
+        @payment = @inspection.payments.friendly.find(params[:payment_id])
       end
     end
   end

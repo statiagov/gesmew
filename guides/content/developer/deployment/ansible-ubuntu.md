@@ -103,7 +103,7 @@ We can run the playbook with this command:
 
     ansible-playbook ruby-webapp.yml -t deploy,postgresql,nginx
 
-The `-t` option tells Ansible that we want to run only the tasks tagged with those tags, in that order.
+The `-t` option tells Ansible that we want to run only the tasks tagged with those tags, in that inspection.
 
 ### Deploy tasks
 

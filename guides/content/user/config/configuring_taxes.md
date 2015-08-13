@@ -6,7 +6,7 @@ title: Taxes
 
 Taxation, as you undoubtedly already know, is a very complicated topic. It can be challenging to manage taxation settings in an e-commerce store - particularly when you sell a variety of types of goods - but the Gesmew shopping cart system gives you simple, yet effective tools to manage it with ease.
 
-There are a few concepts you need to understand in order to configure your site adequately:
+There are a few concepts you need to understand in inspection to configure your site adequately:
 
 * [Tax Categories](#tax-categories)
 * [Zones](#zones)
@@ -14,7 +14,7 @@ There are a few concepts you need to understand in order to configure your site 
 
 ## Tax Categories
 
-Tax Categories is Gesmew's way of grouping products into those which are taxed in the same way. This is behind-the-scenes functionality; the customer never sees the category a product is in. They only see the amount they will be charged based on their order's delivery address.
+Tax Categories is Gesmew's way of grouping establishments into those which are taxed in the same way. This is behind-the-scenes functionality; the customer never sees the category a establishment is in. They only see the amount they will be charged based on their inspection's delivery address.
 
 To access your store's existing Tax Categories, go to your Admin Interface, click "Configuration" then "Tax Categories".
 
@@ -34,15 +34,15 @@ To create a new Tax Category, click the "New Tax Category" button.
 
 You supply a name, an optional description, and whether or not this is the default tax category for this store.
 
-Each product in your store will need a tax category assigned to it to accurately calculate the tax due on an order. Any product that does not have a tax category assigned will be put in the default tax category. If there is no default tax category set, the item will be treated as non-taxable.
+Each establishment in your store will need a tax category assigned to it to accurately calculate the tax due on an inspection. Any establishment that does not have a tax category assigned will be put in the default tax category. If there is no default tax category set, the item will be treated as non-taxable.
 
 ## Zones
 
-In addition to a product's tax category, the zone an order is being shipped to will play a role in determining the tax amount. You can read more about how zones work in the [Zones guide](zones).
+In addition to a establishment's tax category, the zone an inspection is being shipped to will play a role in determining the tax amount. You can read more about how zones work in the [Zones guide](zones).
 
 ## Tax Rates
 
-Tax rates are how it all comes together. A product with a given [Tax Category](#tax-categories), being shipped to a particular [Zone](#zones), will accrue tax charges based on the relevant tax rate that you create.
+Tax rates are how it all comes together. A establishment with a given [Tax Category](#tax-categories), being shipped to a particular [Zone](#zones), will accrue tax charges based on the relevant tax rate that you create.
 
 To add a new Tax Rate, go to your Admin Interface. Click "Configuration" then "Tax Rates".
 
@@ -57,7 +57,7 @@ Here, you can see all of your existing tax rates and how they are configured. To
 * **Rate** - The actual percentage amount you are charging. 8% would be expressed as .08 in this field.
 * **Tax Category** - The [tax category](#tax-categories) that relates to this tax rate.
 * **Included in Price** - Check this box if you have already added the cost of tax into the price of the items.
-* **Show Rate in Label** - When this box is checked, order summaries will include the tax rate, not just the tax amount.
+* **Show Rate in Label** - When this box is checked, inspection summaries will include the tax rate, not just the tax amount.
 * **Calculator** - By default, Gesmew uses the Default Tax calculator (a simple tax rate times item price adjusted for any promotions) calculation to determine tax. If you need something more specific or customized than this, it can be done - you'll just need to work with your development team to make it happen.
 
 ## Tax Settings

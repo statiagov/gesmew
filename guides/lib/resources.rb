@@ -91,10 +91,10 @@ module Gesmew
 
       LINKS ||= {}
       LINKS[:core] = "/developer/"
-      LINKS[:products] = LINKS[:core] + "products"
-      LINKS[:variants] = LINKS[:products] + "#variants"
+      LINKS[:establishments] = LINKS[:core] + "establishments"
+      LINKS[:variants] = LINKS[:establishments] + "#variants"
       LINKS[:prices] = LINKS[:core] + "#prices"
-      LINKS[:inspection] = LINKS[:core] + "orders"
+      LINKS[:inspection] = LINKS[:core] + "inspections"
       LINKS[:line_items] = LINKS[:inspection] + "#line-items"
       LINKS[:adjustments] = LINKS[:core] + "adjustments"
       LINKS[:payments] = LINKS[:core] + "payments"
@@ -178,10 +178,10 @@ module Gesmew
         "alt"=>nil,
         "viewable_type"=>"Gesmew::Variant",
         "viewable_id"=>1,
-        "mini_url"=>"/gesmew/products/1/mini/file.png?1370533476",
-        "small_url"=>"/gesmew/products/1/small/file.png?1370533476",
-        "product_url"=>"/gesmew/products/1/product/file.png?1370533476",
-        "large_url"=>"/gesmew/products/1/large/file.png?1370533476"}
+        "mini_url"=>"/gesmew/establishments/1/mini/file.png?1370533476",
+        "small_url"=>"/gesmew/establishments/1/small/file.png?1370533476",
+        "product_url"=>"/gesmew/establishments/1/establishment/file.png?1370533476",
+        "large_url"=>"/gesmew/establishments/1/large/file.png?1370533476"}
 
     OPTION_VALUE ||=
       {
@@ -214,7 +214,7 @@ module Gesmew
           "is_master"=>true,
           "cost_price"=>"13.0",
           "permalink"=>"ruby-on-rails-tote",
-          "description"=>"A text description of the product.",
+          "description"=>"A text description of the establishment.",
           "options_text"=> "(Size: small, Colour: red)",
           "in_stock" => true,
           "option_values"=> [OPTION_VALUE],
@@ -254,11 +254,11 @@ module Gesmew
 
     NEW_PRODUCT_EVENT ||=
       {
-        "event" => 'product:new',
+        "event" => 'establishment:new',
         "event_id" => '510bfe8e7575e41e41000017',
         "payload" => {
           "id"=>1,
-          "name"=>"Example product",
+          "name"=>"Example establishment",
           "description"=> "Description",
           "price"=>"15.99",
           "available_on"=>"2012-10-17T03:43:57Z",
@@ -272,16 +272,16 @@ module Gesmew
       "event_id" => '510bfe8e7575e41e41000004',
       "result" => 'OK',
       "details" => {
-        "message" => "Product Added"
+        "message" => "Establishment Added"
       }
     }
 
     NEW_PRODUCT_PUSH ||=
       {
-        "message"=> 'product:new',
+        "message"=> 'establishment:new',
         "payload" => {
           "id"=>1123,
-          "name"=>"Example product",
+          "name"=>"Example establishment",
           "description"=> "Description",
           "price"=>"15.99",
           "available_on"=>"2012-10-17T03:43:57Z",
@@ -297,11 +297,11 @@ module Gesmew
 
     UPDATE_PRODUCT_EVENT ||=
       {
-        "event" => 'product:update',
+        "event" => 'establishment:update',
         "event_id" => '510bfe8e7575e41e41000017',
         "payload" => {
           "id"=>1,
-          "name"=>"Example product",
+          "name"=>"Example establishment",
           "description"=> "Description",
           "price"=>"15.99",
           "available_on"=>"2012-10-17T03:43:57Z",
@@ -315,14 +315,14 @@ module Gesmew
       "event_id" => '510bfe8e7575e41e41000004',
       "result" => 'OK',
       "details" => {
-        "message" => "Product Updated"
+        "message" => "Establishment Updated"
       }
     }
 
     PRODUCT ||=
       {
         "id"=>1,
-        "name"=>"Example product",
+        "name"=>"Example establishment",
         "description"=> "Description",
         "price"=>"15.99",
         "display_price"=>"$15.99",
@@ -405,9 +405,9 @@ module Gesmew
     ADJUSTMENT ||=
     {
       "id" => 1073043775,
-      "source_type" => "Gesmew::Order",
+      "source_type" => "Gesmew::Inspection",
       "source_id" => 1,
-      "adjustable_type" => "Gesmew::Order",
+      "adjustable_type" => "Gesmew::Inspection",
       "adjustable_id" => 1,
       "originator_type" => "Gesmew::PromotionAction",
       "originator_id" => 1,
@@ -556,7 +556,7 @@ module Gesmew
     })
 
     ORDER_FAILED_TRANSITION ||= {
-      "error" => "The order could not be transitioned. Please fix the errors and try again.",
+      "error" => "The inspection could not be transitioned. Please fix the errors and try again.",
       "errors" => { :email => ["can't be blank"] }
     }
 
@@ -598,7 +598,7 @@ module Gesmew
       "event" => 'event:name',
       "event_id" => 'guid',
       "payload" => {
-        "order" => "..."
+        "inspection" => "..."
       }
     }
 
@@ -611,10 +611,10 @@ module Gesmew
     }
 
     NEW_ORDER_EVENT ||= {
-      "event" => 'order:new',
+      "event" => 'inspection:new',
       "event_id" => '510bfe8e7575e41e41000001',
       "payload" => {
-        "order" => ORDER_SHOW
+        "inspection" => ORDER_SHOW
       }
     }
 
@@ -622,15 +622,15 @@ module Gesmew
       "event_id" => '510bfe8e7575e41e41000001',
       "result" => 'ok',
       "details" => {
-        "message" => "Order sent to warehouse"
+        "message" => "Inspection sent to warehouse"
       }
     }
 
     UPDATED_ORDER_EVENT ||= {
-      "event" => 'order:updated',
+      "event" => 'inspection:updated',
       "event_id" => '510bfe8e7575e41e41000002',
       "payload" => {
-        "order" => ORDER_SHOW2
+        "inspection" => ORDER_SHOW2
       }
     }
 
@@ -643,10 +643,10 @@ module Gesmew
     }
 
     CANCELLED_ORDER_EVENT ||= {
-      "event" => 'order:cancelled',
+      "event" => 'inspection:cancelled',
       "event_id" => '510bfe8e7575e41e41000003',
       "payload" => {
-        "order" => ORDER
+        "inspection" => ORDER
       }
     }
 
@@ -654,7 +654,7 @@ module Gesmew
       "event_id" => '510bfe8e7575e41e41000003',
       "result" => 'ok',
       "details" => {
-        "message" => "Order cancellation sent to warehouse"
+        "message" => "Inspection cancellation sent to warehouse"
       }
     }
 
@@ -913,7 +913,7 @@ module Gesmew
         "id"=> "5279322c84a816b42e000010",
         "name"=> "dotcom",
         "display"=> "Dotcom Distribution",
-        "description"=> "Order fulfillment and tracking using Dotcom Distribution",
+        "description"=> "Inspection fulfillment and tracking using Dotcom Distribution",
         "help"=> "http://guides.gesmewcommerce.com/integration/dotcom_integration.html",
         "url"=> "http://ep-rlm.gesmew.fm",
         "category"=> "distribution",
@@ -963,8 +963,8 @@ module Gesmew
             "_id"=> "52794a8b84a816f2f5000241",
             "store_id"=> "5279008084a81693d5000001",
             "message_id"=> "52794a8a84a816f2f400022e",
-            "subject"=> "Completed order poll",
-            "description"=> "Gesmew endpoint successfully polled for orders.",
+            "subject"=> "Completed inspection poll",
+            "description"=> "Gesmew endpoint successfully polled for inspections.",
             "level"=> "info",
             "occurrences"=> 1,
             "logged_on"=> "2013-11-05T19:44:11Z",
@@ -975,8 +975,8 @@ module Gesmew
             "reference_type"=> nil
         },
         "level"=> "info",
-        "subject"=> "Completed order poll",
-        "description"=> "Gesmew endpoint successfully polled for orders.",
+        "subject"=> "Completed inspection poll",
+        "description"=> "Gesmew endpoint successfully polled for inspections.",
         "occurrences"=> 1,
         "logged_on"=> "2013-11-05T19:44:11Z",
         "last_update"=> "2013-11-05T19:44:11Z",
@@ -994,8 +994,8 @@ module Gesmew
             "_id"=> "52794a8b84a816f2f5000241",
             "store_id"=> "5279008084a81693d5000001",
             "message_id"=> "52794a8a84a816f2f400022e",
-            "subject"=> "Could not complete order poll",
-            "description"=> "Gesmew endpoint failed while polling for orders.",
+            "subject"=> "Could not complete inspection poll",
+            "description"=> "Gesmew endpoint failed while polling for inspections.",
             "level"=> "error",
             "occurrences"=> 1,
             "logged_on"=> "2013-11-05T19:44:11Z",

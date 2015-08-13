@@ -58,19 +58,19 @@ module Gesmew
         end
       end
 
-      def orders
+      def inspections
         params[:q] ||= {}
-        @search = Gesmew::Order.reverse_chronological.ransack(params[:q].merge(user_id_eq: @user.id))
-        @orders = @search.result.page(params[:page]).per(Gesmew::Config[:admin_products_per_page])
+        @search = Gesmew::Inspection.reverse_chronological.ransack(params[:q].merge(user_id_eq: @user.id))
+        @inspections = @search.result.page(params[:page]).per(Gesmew::Config[:admin_products_per_page])
       end
 
       def items
         params[:q] ||= {}
-        @search = Gesmew::Order.includes(
+        @search = Gesmew::Inspection.includes(
           line_items: {
-            variant: [:product, { option_values: :option_type }]
+            variant: [:establishment, { option_values: :option_type }]
           }).ransack(params[:q].merge(user_id_eq: @user.id))
-        @orders = @search.result.page(params[:page]).per(Gesmew::Config[:admin_products_per_page])
+        @inspections = @search.result.page(params[:page]).per(Gesmew::Config[:admin_products_per_page])
       end
 
       def generate_api_key

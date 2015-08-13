@@ -5,9 +5,9 @@ module Gesmew
     render_views
 
     let(:option_value) { create(:option_value) }
-    let!(:product) { create(:product) }
+    let!(:establishment) { create(:establishment) }
     let!(:variant) do
-      variant = product.master
+      variant = establishment.master
       variant.option_values << option_value
       variant
     end
@@ -152,7 +152,7 @@ module Gesmew
 
     context "as an admin" do
       sign_in_as_admin!
-      let(:resource_scoping) { { :product_id => variant.product.to_param } }
+      let(:resource_scoping) { { :product_id => variant.establishment.to_param } }
 
       # Test for #2141
       context "deleted variants" do
@@ -182,7 +182,7 @@ module Gesmew
         option_value_ids = json_response["option_values"].map { |o| o['id'] }
         expect(option_value_ids).to match_array [option_value.id, other_value.id]
 
-        expect(variant.product.variants.count).to eq(1)
+        expect(variant.establishment.variants.count).to eq(1)
       end
 
       it "can update a variant" do

@@ -14,7 +14,7 @@ module Gesmew
   describe DelegateBelongsToStubModel do
     context "model has column attr delegated to associated object" do
       it "doesnt touch the associated object" do
-        expect(subject).not_to receive(:product)
+        expect(subject).not_to receive(:establishment)
         subject.name
       end
     end

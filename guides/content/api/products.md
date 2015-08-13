@@ -1,36 +1,36 @@
 ---
 title: Products
-description: Use the Gesmew Commerce storefront API to access Product data.
+description: Use the Gesmew Commerce storefront API to access Establishment data.
 ---
 
 ## Index
 
-List products visible to the authenticated user. If the user is not an admin, they will only be able to see products which have an `available_on` date in the past. If the user is an admin, they are able to see all products.
+List establishments visible to the authenticated user. If the user is not an admin, they will only be able to see establishments which have an `available_on` date in the past. If the user is an admin, they are able to see all establishments.
 
 ```text
-GET /api/products```
+GET /api/establishments```
 
 Products are paginated and can be iterated through by passing along a `page` parameter:
 
 ```text
-GET /api/products?page=2```
+GET /api/establishments?page=2```
 
 ### Parameters
 
 show_deleted
-: **boolean** - `true` to show deleted products, `false` to hide them. Default: `false`. **Only available to users with an admin role.**
+: **boolean** - `true` to show deleted establishments, `false` to hide them. Default: `false`. **Only available to users with an admin role.**
 
 page
-: The page number of products to display.
+: The page number of establishments to display.
 
 per_page
-: The number of products to return per page
+: The number of establishments to return per page
 
 ### Response
 
 <%= headers 200 %>
-<%= json(:product) do |h|
-{ :products => [h],
+<%= json(:establishment) do |h|
+{ :establishments => [h],
   :count => 25,
   :pages => 5,
   :current_page => 1 }
@@ -38,10 +38,10 @@ end %>
 
 ## Search
 
-To search for a particular product, make a request like this:
+To search for a particular establishment, make a request like this:
 
 ```text
-GET /api/products?q[name_cont]=Gesmew```
+GET /api/establishments?q[name_cont]=Gesmew```
 
 The searching API is provided through the Ransack gem which Gesmew depends on. The `name_cont` here is called a predicate, and you can learn more about them by reading about [Predicates on the Ransack wiki](https://github.com/ernie/ransack/wiki/Basic-Searching).
 
@@ -50,8 +50,8 @@ The search results are paginated.
 ### Response
 
 <%= headers 200 %>
-<%= json(:product) do |h|
-{ :products => [h],
+<%= json(:establishment) do |h|
+{ :establishments => [h],
   :count => 25,
   :pages => 5,
   :current_page => 1 }
@@ -59,34 +59,34 @@ end %>
 
 ### Sorting results
 
-Results can be returned in a specific order by specifying which field to sort by when making a request.
+Results can be returned in a specific inspection by specifying which field to sort by when making a request.
 
 ```text
-GET /api/products?q[s]=sku%20asc```
+GET /api/establishments?q[s]=sku%20asc```
 
 It is also possible to sort results using an associated object's field.
 
 ```text
-GET /api/products?q[s]=shipping_category_name%20asc```
+GET /api/establishments?q[s]=shipping_category_name%20asc```
 
 ## Show
 
-To view the details for a single product, make a request using that product\'s permalink:
+To view the details for a single establishment, make a request using that establishment\'s permalink:
 
 ```text
-GET /api/products/a-product```
+GET /api/establishments/a-establishment```
 
-You may also query by the product\'s id attribute:
+You may also query by the establishment\'s id attribute:
 
 ```text
-GET /api/products/1```
+GET /api/establishments/1```
 
 Note that the API will attempt a permalink lookup before an ID lookup.
 
 ### Successful Response
 
 <%= headers 200 %>
-<%= json :product %>
+<%= json :establishment %>
 
 ### Not Found Response
 
@@ -94,10 +94,10 @@ Note that the API will attempt a permalink lookup before an ID lookup.
 
 ## New
 
-You can learn about the potential attributes (required and non-required) for a product by making this request:
+You can learn about the potential attributes (required and non-required) for a establishment by making this request:
 
 ```text
-GET /api/products/new```
+GET /api/establishments/new```
 
 ### Response
 
@@ -114,15 +114,15 @@ GET /api/products/new```
 
 <%= admin_only %>
 
-To create a new product through the API, make this request with the necessary parameters:
+To create a new establishment through the API, make this request with the necessary parameters:
 
 ```text
-POST /api/products```
+POST /api/establishments```
 
-For instance, a request to create a new product called \"Headphones\" with a price of $100 would look like this:
+For instance, a request to create a new establishment called \"Headphones\" with a price of $100 would look like this:
 
 ```text
-POST /api/products?product[name]=Headphones&product[price]=100&product[shipping_category_id]=1```
+POST /api/establishments?establishment[name]=Headphones&establishment[price]=100&establishment[shipping_category_id]=1```
 
 ### Successful response
 
@@ -144,15 +144,15 @@ POST /api/products?product[name]=Headphones&product[price]=100&product[shipping_
 
 <%= admin_only %>
 
-To update a product\'s details, make this request with the necessary parameters:
+To update a establishment\'s details, make this request with the necessary parameters:
 
 ```text
-PUT /api/products/a-product```
+PUT /api/establishments/a-establishment```
 
-For instance, to update a product\'s name, send it through like this:
+For instance, to update a establishment\'s name, send it through like this:
 
 ```text
-PUT /api/products/a-product?product[name]=Headphones```
+PUT /api/establishments/a-establishment?establishment[name]=Headphones```
 
 ### Successful response
 
@@ -174,11 +174,11 @@ PUT /api/products/a-product?product[name]=Headphones```
 
 <%= admin_only %>
 
-To delete a product, make this request:
+To delete a establishment, make this request:
 
 ```text
-DELETE /api/products/a-product```
+DELETE /api/establishments/a-establishment```
 
-This request, much like a typical product \"deletion\" through the admin interface, will not actually remove the record from the database. It simply sets the `deleted_at` field to the current time on the product, as well as all of that product\'s variants.
+This request, much like a typical establishment \"deletion\" through the admin interface, will not actually remove the record from the database. It simply sets the `deleted_at` field to the current time on the establishment, as well as all of that establishment\'s variants.
 
 <%= headers 204 %>

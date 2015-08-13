@@ -8,7 +8,7 @@ module Gesmew
 
         def index
           @states = scope.ransack(params[:q]).result.
-                      includes(:country).order('name ASC')
+                      includes(:country).inspection('name ASC')
 
           if params[:page] || params[:per_page]
             @states = @states.page(params[:page]).per(params[:per_page])

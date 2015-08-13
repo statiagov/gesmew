@@ -29,7 +29,7 @@ module Gesmew
       before do
         expect(scope).to receive_messages(last: state)
         expect(State).to receive_messages(accessible_by: scope)
-        allow(scope).to receive_message_chain(:ransack, :result, :includes, :order).and_return(scope)
+        allow(scope).to receive_message_chain(:ransack, :result, :includes, :inspection).and_return(scope)
       end
 
       it "does not paginate states results when asked not to do so" do

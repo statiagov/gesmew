@@ -4,14 +4,14 @@ module Gesmew
       before_action :load_order, only: [:index]
 
       def index
-        @state_changes = @order.state_changes.includes(:user)
+        @state_changes = @inspection.state_changes.includes(:user)
       end
 
       private
 
       def load_order
-        @order = Order.find_by_number!(params[:order_id])
-        authorize! action, @order
+        @inspection = Inspection.find_by_number!(params[:order_id])
+        authorize! action, @inspection
       end
     end
   end
