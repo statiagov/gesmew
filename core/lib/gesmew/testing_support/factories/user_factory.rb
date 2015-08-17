@@ -9,10 +9,19 @@ FactoryGirl.define do
     password 'secret'
     password_confirmation { password }
     authentication_token { generate(:user_authentication_token) } if Gesmew.user_class.attribute_method? :authentication_token
-    contact_information
+
+    transient do
+      firstname {FFaker::Name.first_name}
+      lastname  {FFaker::Name.last_name}
+    end
+
+    contact_information do
+      create(:contact_information, firstname:firstname, lastname:lastname)
+    end
 
     factory :admin_user do
       gesmew_roles { [Gesmew::Role.find_by(name: 'admin') || create(:role, name: 'admin')] }
     end
+
   end
 end

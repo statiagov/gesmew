@@ -62,6 +62,7 @@ class GesmewInitial < ActiveRecord::Migration
     create_table :gesmew_contact_information do |t|
       t.string        :firstname
       t.string        :lastname
+      t.string        :fullname
       t.string        :address
       t.string        :district
       t.string        :phone
@@ -71,6 +72,7 @@ class GesmewInitial < ActiveRecord::Migration
 
     add_index :gesmew_contact_information, [:firstname], :name => 'index_contact_information_on_firstname'
     add_index :gesmew_contact_information, [:lastname],  :name => 'index_contact_information_on_lastname'
+    add_index :gesmew_contact_information, [:fullname],  :name => 'index_contact_information_on_fullname'
 
 
     create_table :gesmew_users do |t|
@@ -129,7 +131,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.string      :state
       t.string      :number, :limit => 15
       t.datetime    :completed_at
-      t.boolean     :considered_risky, :default => false
+      t.boolean     :considered_risky
       t.integer     :state_lock_version, default: 0, null: false
       t.timestamps  null: false
     end

@@ -1,6 +1,6 @@
 module Gesmew
   module Admin
-    module OrdersHelper
+    module InspectionsHelper
       # Renders all the extension partials that may have been specified in the extensions
       def event_links(inspection, events)
         links = []
@@ -19,8 +19,26 @@ module Gesmew
         links.join(' ').html_safe
       end
 
-      def line_item_shipment_price(line_item, quantity)
-        Gesmew::Money.new(line_item.price * quantity, { currency: line_item.currency })
+      def risky_text(risk)
+        case risk
+        when true
+          Gesmew.t("risky")
+        when false
+          Gesmew.t("safe")
+        else
+          Gesmew.t("undetermined")
+        end
+      end
+
+      def risky_label(risk)
+        case risk
+        when true
+          'considered_risky'
+        when false
+          'considered_safe'
+        else
+          'undetermined'
+        end
       end
 
       def avs_response_code

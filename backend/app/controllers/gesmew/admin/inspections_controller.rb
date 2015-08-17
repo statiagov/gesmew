@@ -13,6 +13,8 @@ module Gesmew
         params[:q][:s] ||= @show_only_completed ? 'completed_at desc' : 'created_at desc'
         params[:q][:completed_at_not_null] = '' unless @show_only_completed
 
+        @includes_risky = true
+
         # As date params are deleted if @show_only_completed, store
         # the original date so we can restore them into the params
         # after the search
@@ -31,14 +33,13 @@ module Gesmew
           params[:q][:completed_at_gt] = params[:q].delete(:created_at_gt)
           params[:q][:completed_at_lt] = params[:q].delete(:created_at_lt)
         end
-
+        
         @search = Inspection.accessible_by(current_ability, :index).ransack(params[:q])
         # lazyoading other models here (via includes) may result in an invalid query
         # e.g. SELECT  DISTINCT DISTINCT "gesmew_inspections".id, "gesmew_inspections"."created_at" AS alias_0 FROM "gesmew_inspections"
         @inspections = @search.result(distinct: true).includes(:inspectors).
           page(params[:page]).
           per(params[:per_page] || Gesmew::Config[:inspections_per_page])
-
         # Restore dates
         params[:q][:created_at_gt] = created_at_gt
         params[:q][:created_at_lt] = created_at_lt
@@ -139,6 +140,10 @@ module Gesmew
 
         def model_class
           Gesmew::Inspection
+        end
+
+        def excluded_states
+          ['pending']
         end
     end
   end

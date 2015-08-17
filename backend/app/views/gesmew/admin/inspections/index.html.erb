@@ -42,25 +42,21 @@
             <%= f.text_field :number_cont, class: 'form-control js-quick-search-target' %>
           </div>
         </div>
-
       </div>
 
       <div class="row">
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= label_tag :q_inspectors_id_in, Gesmew.t(:inspectors) %>
+            <%= f.select  :inspectors_id_in, Gesmew.user_class.includes(:contact_information).all.pluck(:fullname, :id),{:include_blank => true}, :multiple => true, :class => 'select2' %>
+          </div>
+        </div>
 
         <div class="col-md-4">
           <div class="form-group">
             <%= label_tag :q_state_eq, Gesmew.t(:status) %>
             <%= f.select :state_eq, Gesmew::Inspection.state_machines[:state].states.map {|s| [Gesmew.t("inspection_state.#{s.name}"), s.value]}, {:include_blank => true}, :class => 'select2 js-filterable' %>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group">
-            <%= label_tag :q_email_cont, Gesmew.t(:email) %>
-            <%= f.text_field :inspectors_email_cont, class: 'form-control js-filterable' %>
           </div>
         </div>
 
@@ -75,6 +71,13 @@
               <%= label_tag 'q_completed_at_not_null' do %>
                 <%= f.check_box :completed_at_not_null, {:checked => @show_only_completed}, '1', '0' %>
                 <%= Gesmew.t(:show_only_complete_inspections) %>
+              <% end %>
+            </div>
+
+            <div class="checkbox">
+              <%= label_tag 'q_considered_risky_eq' do %>
+                <%= f.check_box :considered_risky_eq, {:checked => (params[:q][:considered_risky_eq] == '1')}, '1', '' %>
+                <%= Gesmew.t(:show_only_considered_risky) %>
               <% end %>
             </div>
 
@@ -108,8 +111,8 @@
         <th><%= sort_link @search, :number,           I18n.t(:number, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th><%= sort_link @search, :considered_risky, I18n.t(:considered_risky, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th><%= sort_link @search, :state,            I18n.t(:state, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :email,            I18n.t(:number_of_inspectors, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :total,            I18n.t(:total, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :inspectors,       I18n.t(:inspectors, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :total,            I18n.t(:total_score, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th data-hook="admin_inspections_index_header_actions" class="actions"></th>
       </tr>
     </thead>
@@ -119,8 +122,8 @@
         <td><%= l (@show_only_completed ? inspection.completed_at : inspection.created_at).try!(:to_date) %></td>
         <td><%= link_to inspection.number, edit_admin_inspection_path(inspection) %></td>
         <td>
-          <span class="label label-<%= inspection.considered_risky ? 'considered_risky' : 'considered_safe' %>">
-            <%= inspection.considered_risky ? Gesmew.t("risky") : Gesmew.t("safe") %>
+          <span class="label label-<%= risky_label(inspection.considered_risky) %>">
+            <%= risky_text(inspection.considered_risky)  %>
           </span>
         </td>
         <td>
@@ -128,11 +131,14 @@
           <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_state_eq" data-ransack-value="<%= inspection.state %>"></span>
         </td>
         <td>
-          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_email_cont" data-ransack-value="<%= inspection.inspector_total %>"></span>
-          <!-- <% inspection.inspectors.all.each do |inspector| %>
-            <%= link_to("#{inspector.full_name}", edit_admin_user_path(inspector)) %>
-            <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_email_cont" data-ransack-value="<%= inspector.full_name %>"></span>
-          <% end %> -->
+          <ul>
+            <% inspection.inspectors.all.each do |inspector| %>
+                <li>
+                  <%= link_to("#{inspector.full_name}", edit_admin_user_path(inspector)) %>
+                  <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_inspectors_contact_information_firstname_or_lastname_cont" data-ransack-value="<%= inspector.full_name %>"></span>
+                </li>
+            <% end %>
+         </ul>
         </td>
         <td><%=inspection.score_total%></td>
         <td class='actions actions-1' data-hook="admin_inspections_index_row_actions">

@@ -21,7 +21,7 @@ module Gesmew
     end
 
     def full_name
-      "#{first_name} #{last_name}"
+      contact_information.fullname
     end
 
     attr_accessor :password

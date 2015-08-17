@@ -8,17 +8,25 @@ describe "Inspection Listing", type: :feature, js:true do
 
   let(:inspection_1) do
     create :inspection,
-      created_at: 1.day.from_now,
-      completed_at: 1.day.from_now,
+      created_at: 1.day.ago,
+      completed_at: 1.day.ago,
       considered_risky: true,
       number: "I100"
   end
 
   let(:inspection_2) do
     create :inspection,
-      created_at: 1.day.ago,
-      completed_at: 1.day.ago,
+      created_at: 3.day.ago,
+      completed_at: 3.day.ago,
       number: "I200"
+  end
+
+  let(:inspection_3) do
+    create :inspection,
+      created_at: 7.day.ago,
+      completed_at: 7.day.ago,
+      considered_risky: false,
+      number: "I600"
   end
 
   before do
@@ -26,6 +34,7 @@ describe "Inspection Listing", type: :feature, js:true do
     user_b.inspections << inspection_2
     user_a.inspections << inspection_2
     user_b.inspections << inspection_1
+    user_b.inspections << inspection_3
 
     visit gesmew.admin_inspections_path
   end
@@ -40,128 +49,157 @@ describe "Inspection Listing", type: :feature, js:true do
 
       within_row(2) do
         expect(column_text(2)).to eq "I200"
+        expect(find("td:nth-child(3)")).to have_css '.label-undetermined'
+      end
+
+      within_row(3) do
+        expect(column_text(2)).to eq "I600"
         expect(find("td:nth-child(3)")).to have_css '.label-considered_safe'
       end
-      sleep 20.seconds
     end
 
     it "should be able to sort the inspections listing" do
       # default is completed_at desc
-      within_row(1) { expect(page).to have_content("R100") }
-      within_row(2) { expect(page).to have_content("R200") }
+      within_row(1) { expect(page).to have_content("I100") }
+      within_row(2) { expect(page).to have_content("I200") }
+      within_row(3) { expect(page).to have_content("I600") }
 
       click_link "Completed At"
 
       # Completed at desc
-      within_row(1) { expect(page).to have_content("R200") }
-      within_row(2) { expect(page).to have_content("R100") }
+      within_row(1) { expect(page).to have_content("I600") }
+      within_row(2) { expect(page).to have_content("I200") }
+      within_row(3) { expect(page).to have_content("I100") }
 
-      within('table#listing_orders thead') { click_link "Number" }
+      within('table#listing_inspections thead') { click_link "Number" }
 
       # number asc
-      within_row(1) { expect(page).to have_content("R100") }
-      within_row(2) { expect(page).to have_content("R200") }
+      within_row(1) { expect(page).to have_content("I100") }
+      within_row(2) { expect(page).to have_content("I200") }
+      within_row(3) { expect(page).to have_content("I600") }
     end
   end
 
   describe "searching inspections" do
-    it "should be able to search inspections" do
-      fill_in "q_number_cont", with: "R200"
-      click_on 'Filter Results'
+    it "should be able to quick search inspections" do
+      fill_in "quick_search", with: "I200"
+      find('#quick-search>input').native.send_keys(:enter)
       within_row(1) do
-        expect(page).to have_content("R200")
+        expect(page).to have_content("I200")
       end
 
       # Ensure that the other inspection doesn't show up
-      within("table#listing_orders") { expect(page).not_to have_content("R100") }
+      within("table#listing_inspections") do
+        expect(page).not_to have_content("I100")
+        expect(page).not_to have_content("I600")
+      end
     end
 
     it "should return both complete and incomplete inspections when only complete inspections is not checked" do
-      Gesmew::Inspection.create! email: "incomplete@example.com", completed_at: nil, state: 'cart'
+      user_b.inspections << create(:inspection,
+        created_at: DateTime.now,
+        completed_at: nil,
+        number: "I300")
+
       click_on 'Filter'
       uncheck "q_completed_at_not_null"
       click_on 'Filter Results'
 
-      expect(page).to have_content("R200")
-      expect(page).to have_content("incomplete@example.com")
+      expect(page).to have_content("I300")
     end
 
     it "should be able to filter risky inspections" do
       # Check risky and filter
+      click_on 'Filter'
       check "q_considered_risky_eq"
       click_on 'Filter Results'
 
       # Insure checkbox still checked
+      click_on 'Filter'
       expect(find("#q_considered_risky_eq")).to be_checked
       # Insure we have the risky inspection, R100
       within_row(1) do
-        expect(page).to have_content("R100")
+        expect(page).to have_content("I100")
       end
       # Insure the non risky inspection is not present
-      expect(page).not_to have_content("R200")
-    end
-
-    it "should be able to filter on variant_sku" do
-      click_on 'Filter'
-      fill_in "q_line_items_variant_sku_eq", with: order1.line_items.first.variant.sku
-      click_on 'Filter Results'
-
-      within_row(1) do
-        expect(page).to have_content(order1.number)
-      end
-
-      expect(page).not_to have_content(order2.number)
+      expect(page).not_to have_content("I200")
+      expect(page).not_to have_content("I600")
     end
 
     context "when pagination is really short" do
       before do
-        @old_per_page = Gesmew::Config[:orders_per_page]
-        Gesmew::Config[:orders_per_page] = 1
+        @old_per_page = Gesmew::Config[:inspections_per_page]
+        Gesmew::Config[:inspections_per_page] = 2
       end
 
       after do
-        Gesmew::Config[:orders_per_page] = @old_per_page
+        Gesmew::Config[:inspections_per_page] = @old_per_page
       end
 
       # Regression test for #4004
       it "should be able to go from page to page for incomplete inspections" do
-        Gesmew::Inspection.destroy_all
-        2.times { Gesmew::Inspection.create! email: "incomplete@example.com", completed_at: nil, state: 'cart' }
         click_on 'Filter'
         uncheck "q_completed_at_not_null"
         click_on 'Filter Results'
         within(".pagination") do
           click_link "2"
         end
-        expect(page).to have_content("incomplete@example.com")
-        expect(find("#q_completed_at_not_null")).not_to be_checked
+        expect(page).to have_content("I600")
       end
     end
 
     it "should be able to search inspections using only completed at input" do
-      fill_in "q_created_at_gt", with: Date.current
+      click_on "Filter"
+      fill_in "q_created_at_gt", with: 2.days.ago
       click_on 'Filter Results'
 
-      within_row(1) { expect(page).to have_content("R100") }
+      within_row(1) { expect(page).to have_content("I100") }
 
       # Ensure that the other inspection doesn't show up
-      within("table#listing_orders") { expect(page).not_to have_content("R200") }
+      within("table#listing_inspections") do
+       expect(page).not_to have_content("I200")
+       expect(page).not_to have_content("I600")
+     end
     end
 
-    context "filter on promotions" do
-      let!(:promotion) { create(:promotion_with_item_adjustment) }
+    context "filter on inspectors" do
+      let(:inspector_1) { create(:user, firstname:'Michail',lastname:'Gumbs') }
+      let!(:inspector_2) { create(:user, firstname:"N'kili",lastname:'Gumbs') }
 
       before do
-        order1.promotions << promotion
-        order1.save
-        visit gesmew.admin_orders_path
+        inspector_1.inspections <<  inspection_2
+        visit gesmew.admin_inspections_path
       end
 
-      it "only shows the inspections with the selected promotion" do
-        select promotion.name, from: "Promotion"
+      it "only shows the inspections with the selected inspector" do
+        click_on 'Filter'
+        select inspector_1.full_name, from: "Inspectors"
         click_on 'Filter Results'
-        within_row(1) { expect(page).to have_content("R100") }
-        within("table#listing_orders") { expect(page).not_to have_content("R200") }
+        within_row(1) { expect(page).to have_content("I200") }
+        within("table#listing_inspections") do
+           expect(page).not_to have_content("I100")
+           expect(page).not_to have_content("I600")
+        end
+      end
+
+      it "only shows the inspections with the selected inspectors" do
+        inspector_1.inspections <<  inspection_3
+        inspector_2.inspections <<  inspection_3
+
+        click_on 'Filter'
+        select inspector_1.full_name, from: "Inspectors"
+        select inspector_2.full_name, from: "Inspectors"
+        click_on 'Filter Results'
+        within_row(1) do
+          expect(page).to have_content("I200")
+        end
+
+        within_row(2) do
+          expect(page).to have_content("I600")
+        end
+        within("table#listing_inspections") do
+           expect(page).not_to have_content("I100")
+        end
       end
     end
 
@@ -173,26 +211,10 @@ describe "Inspection Listing", type: :feature, js:true do
       within(parent_td) do
         find('.js-add-filter').click
       end
-
-      expect(page).to have_content("R100")
-      expect(page).not_to have_content("R200")
-    end
-
-    context "filter on shipment state" do
-      it "only shows the inspections with the selected shipment state" do
-        select Gesmew.t("payment_states.#{order1.shipment_state}"), from: "Shipment State"
-        click_on 'Filter Results'
-        within_row(1) { expect(page).to have_content("R100") }
-        within("table#listing_orders") { expect(page).not_to have_content("R200") }
-      end
-    end
-
-    context "filter on payment state" do
-      it "only shows the inspections with the selected payment state" do
-        select Gesmew.t("payment_states.#{order1.payment_state}"), from: "Payment State"
-        click_on 'Filter Results'
-        within_row(1) { expect(page).to have_content("R100") }
-        within("table#listing_orders") { expect(page).not_to have_content("R200") }
+      within_row(1) {expect(page).to have_content("I200")}
+      wthin("table#listing_inspections") do
+        expect(page).not_to have_content("I100")
+        expect(page).not_to have_content("I600")
       end
     end
   end

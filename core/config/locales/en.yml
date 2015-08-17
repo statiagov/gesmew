@@ -46,6 +46,7 @@ en:
         completed_at: Completed At
         coupon_code: Coupon Code
         created_at: Inspection Date
+        inspectors: Inspector(s)
         email: Customer E-Mail
         ip_address: IP Address
         item_total: Item Total
@@ -54,7 +55,7 @@ en:
         shipment_state: Shipment State
         special_instructions: Special Instructions
         state: State
-        total: Total
+        total_score: Total Score
         considered_risky: Risky
       gesmew/inspection/bill_address:
         address1: Billing address street
@@ -741,6 +742,7 @@ en:
     implement_requires_manual_intervention: "Must implement #requires_manual_intervention? for your EligibilityValidator."
     inactive: Inactive
     incl: incl.
+    inspectors: Inspector(s)
     inspection_approved: Inspection Aproved
     inspection_number: Inspection Number
     inspection_state:
@@ -1367,6 +1369,7 @@ en:
     tree: Tree
     type: Type
     type_to_search: Type to search
+    undetermined: Undetermined
     unable_to_connect_to_gateway: Unable to connect to gateway.
     unable_to_create_reimbursements: Unable to create reimbursements because there are items pending manual intervention.
     under_price: Under %{price}
