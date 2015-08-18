@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "Inspection Listing", type: :feature, js:true do
+  include Gesmew::BaseHelper
   stub_authorization!
 
   let!(:user_a) { create(:admin_user, email: 'a@example.com') }
@@ -8,6 +9,7 @@ describe "Inspection Listing", type: :feature, js:true do
 
   let(:inspection_1) do
     create :inspection,
+      establishment_name: "Duggins Supermarket N.V.",
       created_at: 1.day.ago,
       completed_at: 1.day.ago,
       considered_risky: true,
@@ -16,6 +18,8 @@ describe "Inspection Listing", type: :feature, js:true do
 
   let(:inspection_2) do
     create :inspection,
+      establishment_name: "Golden Era Hotel",
+      establishment_type_name: "Hotel",
       created_at: 3.day.ago,
       completed_at: 3.day.ago,
       number: "I200"
@@ -162,6 +166,22 @@ describe "Inspection Listing", type: :feature, js:true do
      end
     end
 
+    context "filter on establishment type" do
+      it "only shows the inspections with the selected establishment type" do
+        label = page.find ".label-#{labelize(inspection_1.establishment_type.name)}"
+        parent_td = label.find(:xpath, '..')
+
+        within(parent_td) do
+          find('.js-add-filter').click
+        end
+        within_row(1) do
+          expect(page).to have_content("I100")
+          expect(page).not_to have_content("I600")
+        end
+        within("table#listing_inspections") {expect(page).not_to have_content("I200")}
+      end
+    end
+
     context "filter on inspectors" do
       let(:inspector_1) { create(:user, firstname:'Michail',lastname:'Gumbs') }
       let!(:inspector_2) { create(:user, firstname:"N'kili",lastname:'Gumbs') }
@@ -173,7 +193,7 @@ describe "Inspection Listing", type: :feature, js:true do
 
       it "only shows the inspections with the selected inspector" do
         click_on 'Filter'
-        select inspector_1.full_name, from: "Inspectors"
+        select inspector_1.full_name, from: "Inspector(s)"
         click_on 'Filter Results'
         within_row(1) { expect(page).to have_content("I200") }
         within("table#listing_inspections") do
@@ -187,8 +207,8 @@ describe "Inspection Listing", type: :feature, js:true do
         inspector_2.inspections <<  inspection_3
 
         click_on 'Filter'
-        select inspector_1.full_name, from: "Inspectors"
-        select inspector_2.full_name, from: "Inspectors"
+        select inspector_1.full_name, from: "Inspector(s)"
+        select inspector_2.full_name, from: "Inspector(s)"
         click_on 'Filter Results'
         within_row(1) do
           expect(page).to have_content("I200")
@@ -204,16 +224,15 @@ describe "Inspection Listing", type: :feature, js:true do
     end
 
     it "should be able to apply a ransack filter by clicking a quickfilter icon", js: true do
-      label_pending = page.find '.label-pending'
-      parent_td = label_pending.find(:xpath, '..')
+      label = page.find ".label-#{labelize(inspection_1.establishment.name)}"
+      parent_td = label.find(:xpath, '..')
 
-      # Click the quick filter Pending for inspection #R100
       within(parent_td) do
         find('.js-add-filter').click
       end
-      within_row(1) {expect(page).to have_content("I200")}
-      wthin("table#listing_inspections") do
-        expect(page).not_to have_content("I100")
+      within_row(1) {expect(page).to have_content("I100")}
+      within("table#listing_inspections") do
+        expect(page).not_to have_content("I200")
         expect(page).not_to have_content("I600")
       end
     end

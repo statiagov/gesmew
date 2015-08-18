@@ -44,7 +44,8 @@ en:
         checkout_complete: Checkout Complete
         number_of_inspectors: Number of Inspectors
         completed_at: Completed At
-        coupon_code: Coupon Code
+        establishment: Establishment
+        establishment_type: Establishment Type
         created_at: Inspection Date
         inspectors: Inspector(s)
         email: Customer E-Mail

@@ -18,8 +18,8 @@ module Gesmew
       has_many   :inspectors, -> {distinct}, :through => :inspection_users, source: :user
     end
 
-    def inspector_total
-      inspectors.all.count
+    def establishment_type
+      establishment.establishment_type
     end
 
     def score_total

@@ -16,7 +16,7 @@ FactoryGirl.define do
     end
 
     contact_information do
-      create(:contact_information, firstname:firstname, lastname:lastname)
+      Gesmew::ContactInformation.find_by(firstname:firstname, lastname:lastname) || create(:contact_information, firstname:firstname, lastname:lastname)
     end
 
     factory :admin_user do

@@ -15,7 +15,7 @@ Hopefully, this will evolve into a propper class.
 **/
 
 jQuery(function($) {
-
+  console.log("LOGGING")
   // Add some tips
   $('.with-tip').tooltip();
 
@@ -114,9 +114,9 @@ jQuery(function($) {
 
   // Clickable ransack filters
   $(".js-add-filter").click(function() {
+    console.log("clicked")
     var ransack_field = $(this).data("ransack-field");
     var ransack_value = $(this).data("ransack-value");
-
     $("#" + ransack_field).val(ransack_value);
     $("#table-filter form").submit();
   });
@@ -130,7 +130,6 @@ jQuery(function($) {
 
   $(".js-filterable").each(function() {
     var $this = $(this);
-
     if ($this.val()) {
       var ransack_value, filter;
       var ransack_field = $this.attr("id");

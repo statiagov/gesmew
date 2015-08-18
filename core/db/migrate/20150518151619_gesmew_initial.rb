@@ -100,6 +100,8 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
+    add_index :gesmew_users, [:contact_information_id], :name => 'index_gesmew_users_on_contact_information_id'
+
 
     create_table :gesmew_establishments do |t|
       t.string     :name
@@ -108,6 +110,9 @@ class GesmewInitial < ActiveRecord::Migration
       t.integer    :workers
       t.timestamps null: false
     end
+
+    add_index :gesmew_establishments, [:establishment_type_id], :name => 'index_gesmew_establishments_on_establishment_type_id'
+    add_index :gesmew_establishments, [:contact_information_id], :name => 'index_gesmew_establishments_on_contact_information_id'
 
     create_table :gesmew_establishment_types do |t|
       t.string :name
@@ -127,7 +132,8 @@ class GesmewInitial < ActiveRecord::Migration
     add_index :gesmew_state_changes, [:stateful_id, :stateful_type]
 
     create_table :gesmew_inspections do |t|
-      t.references  :establishment
+      t.references  :establishment, :null => false
+      t.string      :inspection_type,          :null => false
       t.string      :state
       t.string      :number, :limit => 15
       t.datetime    :completed_at
@@ -135,6 +141,8 @@ class GesmewInitial < ActiveRecord::Migration
       t.integer     :state_lock_version, default: 0, null: false
       t.timestamps  null: false
     end
+
+    add_index :gesmew_inspections, [:establishment_id], :name => 'index_gesmew_inspections_on_establishment_id'
 
     create_table :gesmew_inspection_users do |t|
       t.belongs_to :user

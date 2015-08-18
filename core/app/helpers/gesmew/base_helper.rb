@@ -39,6 +39,10 @@ module Gesmew
       end.join("\n")
     end
 
+    def labelize(str)
+      str.delete('.').downcase.tr(" ","_")
+    end
+
     def method_missing(method_name, *args, &block)
       if image_style = image_style_from_method_name(method_name)
         define_image_method(image_style)

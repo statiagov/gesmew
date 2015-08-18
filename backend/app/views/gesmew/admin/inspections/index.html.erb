@@ -46,14 +46,28 @@
 
       <div class="row">
 
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= label_tag :q_establishment_establishment_type_id_in, Gesmew.t(:establishment_type) %>
+            <%= f.select  :establishment_establishment_type_id_in, Gesmew::EstablishmentType.all.pluck(:name, :id),{:include_blank => true}, :class => 'select2 js-filterable' %>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= label_tag :q_establishment_id_in, Gesmew.t(:establishment) %>
+            <%= f.select  :establishment_id_in, Gesmew::Establishment.all.pluck(:name, :id),{:include_blank => true}, :class => 'select2 js-filterable' %>
+          </div>
+        </div>
+
+        <div class="col-md-3">
           <div class="form-group">
             <%= label_tag :q_inspectors_id_in, Gesmew.t(:inspectors) %>
             <%= f.select  :inspectors_id_in, Gesmew.user_class.includes(:contact_information).all.pluck(:fullname, :id),{:include_blank => true}, :multiple => true, :class => 'select2' %>
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <%= label_tag :q_state_eq, Gesmew.t(:status) %>
             <%= f.select :state_eq, Gesmew::Inspection.state_machines[:state].states.map {|s| [Gesmew.t("inspection_state.#{s.name}"), s.value]}, {:include_blank => true}, :class => 'select2 js-filterable' %>
@@ -104,15 +118,17 @@
     <thead>
       <tr data-hook="admin_inspections_index_headers">
         <% if @show_only_completed %>
-          <th><%= sort_link @search, :completed_at,   I18n.t(:completed_at, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+          <th><%= sort_link @search, :completed_at,                         I18n.t(:completed_at, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <% else %>
-          <th><%= sort_link @search, :created_at,     I18n.t(:created_at, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+          <th><%= sort_link @search, :created_at,                           I18n.t(:created_at, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <% end %>
-        <th><%= sort_link @search, :number,           I18n.t(:number, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :considered_risky, I18n.t(:considered_risky, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :state,            I18n.t(:state, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :inspectors,       I18n.t(:inspectors, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th><%= sort_link @search, :total,            I18n.t(:total_score, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :number,                                 I18n.t(:number, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :considered_risky,                       I18n.t(:considered_risky, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :state,                                  I18n.t(:state, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :establishment_establishment_type_name,  I18n.t(:establishment_type, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :establishment_name,                     I18n.t(:establishment, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :inspectors_fullname,                    I18n.t(:inspectors, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
+        <th><%= sort_link @search, :total,                                  I18n.t(:total_score, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th data-hook="admin_inspections_index_header_actions" class="actions"></th>
       </tr>
     </thead>
@@ -131,11 +147,18 @@
           <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_state_eq" data-ransack-value="<%= inspection.state %>"></span>
         </td>
         <td>
+          <span class="label-<%= labelize(inspection.establishment_type.name) %>"><%= inspection.establishment_type.name %></span>
+          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_establishment_establishment_type_id_in" data-ransack-value="<%= inspection.establishment_type.id %>"></span>
+        </td>
+        <td>
+          <span class="label-<%= labelize(inspection.establishment.name) %>"><%= inspection.establishment.name %></span>
+          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_establishment_id_in" data-ransack-value="<%= inspection.establishment.id %>"></span>
+        </td>
+        <td>
           <ul>
             <% inspection.inspectors.all.each do |inspector| %>
                 <li>
                   <%= link_to("#{inspector.full_name}", edit_admin_user_path(inspector)) %>
-                  <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_inspectors_contact_information_firstname_or_lastname_cont" data-ransack-value="<%= inspector.full_name %>"></span>
                 </li>
             <% end %>
          </ul>
