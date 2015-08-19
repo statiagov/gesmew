@@ -45,10 +45,10 @@ en:
         number_of_inspectors: Number of Inspectors
         completed_at: Completed At
         establishment: Establishment
-        establishment_type: Establishment Type
+        establishment_type: Est. Type
         created_at: Inspection Date
         inspectors: Inspector(s)
-        inspection_type: Inspection Type
+        inspection_type: Insp. Type
         email: Customer E-Mail
         ip_address: IP Address
         item_total: Item Total
@@ -675,7 +675,7 @@ en:
       other: ! '%{count} errors prohibited this record from being saved'
     establishment: Establishment
     event: Event
-    establishment_type: Establishment Type
+    establishment_type: Est. Type
     events:
       gesmew:
         cart:
@@ -748,6 +748,7 @@ en:
     inspectors: Inspector(s)
     inspection_approved: Inspection Aproved
     inspection_number: Inspection Number
+    inspection_type: Insp. Type
     inspection_state:
       establishment: choosing establishment
       pending: pending
