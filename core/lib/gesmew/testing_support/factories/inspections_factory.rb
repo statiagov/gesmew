@@ -3,10 +3,13 @@ FactoryGirl.define do
     transient do
       establishment_name {FFaker::Company.name}
       establishment_type_name "Retail"
+      inspection_type_name "Inspection"
     end
-    inspection_type "Inspection"
     establishment do
       Gesmew::Establishment.find_by(name:establishment_name) || create(:establishment, name:establishment_name, type_name: establishment_type_name )
+    end
+    inspection_type do
+      Gesmew::InspectionType.find_by(name:inspection_type_name) || create(:inspection_type, name:inspection_type_name)
     end
     completed_at  {nil}
   end

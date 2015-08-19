@@ -17,6 +17,7 @@ gem 'gesmew_auth_devise', github: 'statiagov/gesmew_auth_devise', branch: 'maste
 group :test, :development do
   gem 'bullet'
   gem 'pry-byebug'
+  gem 'rack-mini-profiler'
 end
 RUBY
 

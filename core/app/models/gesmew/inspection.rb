@@ -8,6 +8,7 @@ module Gesmew
     include Gesmew::Core::NumberGenerator.new(prefix:'I')
 
     belongs_to :establishment
+    belongs_to :inspection_type
     has_many   :state_changes, as: :stateful, dependent: :destroy
 
     has_many  :inspection_users, class_name: Gesmew::InspectionUser, :foreign_key => :inspection_id

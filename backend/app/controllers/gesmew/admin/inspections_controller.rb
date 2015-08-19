@@ -33,8 +33,9 @@ module Gesmew
           params[:q][:completed_at_gt] = params[:q].delete(:created_at_gt)
           params[:q][:completed_at_lt] = params[:q].delete(:created_at_lt)
         end
-        
+
         @search = Inspection.accessible_by(current_ability, :index).ransack(params[:q])
+
         # lazyoading other models here (via includes) may result in an invalid query
         # e.g. SELECT  DISTINCT DISTINCT "gesmew_inspections".id, "gesmew_inspections"."created_at" AS alias_0 FROM "gesmew_inspections"
         @inspections = @search.result(distinct: true).includes(:inspectors).

@@ -33,11 +33,13 @@ class GesmewInitial < ActiveRecord::Migration
 
     create_table :gesmew_roles do |t|
       t.string :name
+      t.timestamps null: false
     end
 
     create_table :gesmew_role_users, :id => false do |t|
       t.references :role
       t.references :user
+      t.timestamps null: false
     end
 
     add_index :gesmew_role_users, [:role_id], :name => 'index_gesmew_role_users_on_role_id'
@@ -105,8 +107,8 @@ class GesmewInitial < ActiveRecord::Migration
 
     create_table :gesmew_establishments do |t|
       t.string     :name
-      t.references :establishment_type
-      t.references :contact_information
+      t.references :establishment_type,  :null => false
+      t.references :contact_information, :null => false
       t.integer    :workers
       t.timestamps null: false
     end
@@ -115,8 +117,9 @@ class GesmewInitial < ActiveRecord::Migration
     add_index :gesmew_establishments, [:contact_information_id], :name => 'index_gesmew_establishments_on_contact_information_id'
 
     create_table :gesmew_establishment_types do |t|
-      t.string :name
+      t.string :name, :null => false
       t.string :description
+      t.timestamps null: false
     end
 
     create_table :gesmew_state_changes do |t|
@@ -131,9 +134,15 @@ class GesmewInitial < ActiveRecord::Migration
 
     add_index :gesmew_state_changes, [:stateful_id, :stateful_type]
 
+    create_table :gesmew_inspection_types do |t|
+      t.string :name, :null => false
+      t.string :description
+      t.timestamps null: false
+    end
+
     create_table :gesmew_inspections do |t|
-      t.references  :establishment, :null => false
-      t.string      :inspection_type,          :null => false
+      t.references  :establishment
+      t.references  :inspection_type,          :null => false
       t.string      :state
       t.string      :number, :limit => 15
       t.datetime    :completed_at
@@ -143,6 +152,7 @@ class GesmewInitial < ActiveRecord::Migration
     end
 
     add_index :gesmew_inspections, [:establishment_id], :name => 'index_gesmew_inspections_on_establishment_id'
+    add_index :gesmew_inspections, [:inspection_type_id], :name => 'index_gesmew_inspections_on_inspection_type_id'
 
     create_table :gesmew_inspection_users do |t|
       t.belongs_to :user
