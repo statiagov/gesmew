@@ -1,18 +1,14 @@
 require 'spec_helper'
 
 describe "New Inspection", :type => :feature do
-  let!(:establishment) { create(:product_in_stock) }
-  let!(:state) { create(:state) }
-  let!(:user) { create(:user, ship_address: create(:address), bill_address: create(:address)) }
-  let!(:payment_method) { create(:check_payment_method) }
-  let!(:shipping_method) { create(:shipping_method) }
+  let!(:establishment) { create(:establishment) }
+  let!(:inspection_type) { create(:inspection_type) }
+  let!(:user) { create(:admin_user,email: 'user@example.com') }
 
   stub_authorization!
 
   before do
-    # create default store
-    create(:store)
-    visit gesmew.new_admin_order_path
+    visit gesmew.new_admin_inspection_path
   end
 
   it "does check if you have a billing address before letting you add shipments" do

@@ -125,8 +125,7 @@ module Gesmew
 
       private
         def inspection_params
-          params[:created_by_id] = try_gesmew_current_user.try(:id)
-          params.permit(:created_by_id, :user_id)
+          params.permit(:user_id)
         end
 
         def load_inspection

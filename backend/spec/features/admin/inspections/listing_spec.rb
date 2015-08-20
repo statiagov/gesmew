@@ -274,6 +274,7 @@ describe "Inspection Listing", type: :feature, js:true do
         expect(page).not_to have_content("I200")
         expect(page).not_to have_content("I600")
       end
+      sleep 10.minutes
     end
   end
 end

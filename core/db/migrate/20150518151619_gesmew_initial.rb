@@ -142,7 +142,7 @@ class GesmewInitial < ActiveRecord::Migration
 
     create_table :gesmew_inspections do |t|
       t.references  :establishment
-      t.references  :inspection_type,          :null => false
+      t.references  :inspection_type,  default: 1, :null => false
       t.string      :state
       t.string      :number, :limit => 15
       t.datetime    :completed_at

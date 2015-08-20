@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :inspection_type, class: Gesmew::InspectionType do
-    sequence(:name)        {|n| "Type #{n}" }
+    name "Inspection"
     description "Some description"
   end
 end
