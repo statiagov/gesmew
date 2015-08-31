@@ -29,7 +29,9 @@ module Gesmew
 
 
     inspection_flow do
-      go_to_state :pending
+      go_to_state :processing
+      go_to_state :grading
+      go_to_state :completed
     end
   end
 end

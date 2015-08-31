@@ -11,7 +11,7 @@ module Gesmew
 
         self.inspection_steps ||= {}
         self.next_event_transitions ||= []
-        self.previous_states ||= [:establishment]
+        self.previous_states ||= [:pending]
         self.removed_transitions ||= []
 
         def self.inspection_flow(&block)
@@ -26,7 +26,7 @@ module Gesmew
         def self.define_state_machine!
           self.inspection_steps ||= {}
           self.next_event_transitions ||= []
-          self.previous_states ||= [:establishment]
+          self.previous_states ||= [:pending]
           self.removed_transitions ||= []
 
           instance_eval(&inspection_flow)
@@ -52,12 +52,16 @@ module Gesmew
               inspection.save
             end
 
-            event :cancel do
-              transition to: :canceled, if: :allow_cancel?
+            event :process do
+              transition to: :processing, from: :pending
             end
 
-            event :resume do
-              transition to: :resumed, from: :canceled, if: :canceled?
+            event :grade do
+              transition to: :grading, from: :processing
+            end
+
+            event :complete do
+              transition to: :completed, from: :grading
             end
           end
 

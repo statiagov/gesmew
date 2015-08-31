@@ -10,13 +10,34 @@ describe Gesmew::Inspection, type: :model do
   end
 
   context "#next!" do
-    context "when current state is confirm" do
+    context "when current state is pending" do
       before do
-        inspection.state = "confirm"
+        inspection.state = "pending"
         inspection.run_callbacks(:create)
-        allow(inspection).to receive_messages payment_required?: true
-        allow(inspection).to receive_messages process_payments!: true
-        allow(inspection).to receive :has_available_shipment
+      end
+      it "shouild transistion to processing" do
+        inspection.next
+        expect(inspection.state).to eq("processing")
+      end
+    end
+    context "when current state is processing" do
+      before do
+        inspection.state = "processing"
+        inspection.run_callbacks(:create)
+      end
+      it "shouild transistion to grading" do
+        inspection.next
+        expect(inspection.state).to eq("grading")
+      end
+    end
+    context "when current state is grading" do
+      before do
+        inspection.state = "grading"
+        inspection.run_callbacks(:create)
+      end
+      it "shouild transistion to completed" do
+        inspection.next
+        expect(inspection.state).to eq("completed")
       end
     end
   end
