@@ -5,7 +5,7 @@ Gesmew::Core::Engine.add_routes do
 
     resources :inspections, except: [:show] do
       member do
-        get :scores
+        get :proccess
         post :resend
         get :open_adjustments
         get :close_adjustments

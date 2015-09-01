@@ -2,7 +2,7 @@ module Gesmew
   module Admin
     class InspectionsController < Gesmew::Admin::BaseController
       before_action :initialize_inspection_events
-      before_action :load_inspection, only: [:edit, :update, :cancel, :resume, :approve, :resend, :open_adjustments, :close_adjustments, :cart]
+      before_action :load_inspection, only: [:edit, :update, :cancel, :resume, :approve, :resend, :open_adjustments, :close_adjustments, :proccess]
 
       respond_to :html
 
@@ -34,7 +34,7 @@ module Gesmew
           params[:q][:completed_at_lt] = params[:q].delete(:created_at_lt)
         end
 
-        @search = Inspection.accessible_by(current_ability, :index).ransack(params[:q])
+        @search = Gesmew::Inspection.accessible_by(current_ability, :index).ransack(params[:q])
 
         # lazyoading other models here (via includes) may result in an invalid query
         # e.g. SELECT  DISTINCT DISTINCT "gesmew_inspections".id, "gesmew_inspections"."created_at" AS alias_0 FROM "gesmew_inspections"
@@ -47,23 +47,16 @@ module Gesmew
       end
 
       def new
-        @inspection = Inspection.create(inspection_params)
-        redirect_to cart_admin_inspection_url(@inspection)
+        @inspection = Gesmew::Inspection.create(inspection_params)
+        redirect_to proccess_admin_inspection_url(@inspection)
       end
 
       def edit
         can_not_transition_without_customer_info
-
-        unless @inspection.completed?
-          @inspection.refresh_shipment_rates(ShippingMethod::DISPLAY_ON_FRONT_AND_BACK_END)
-        end
       end
 
-      def cart
-        unless @inspection.completed?
-          @inspection.refresh_shipment_rates
-        end
-        if @inspection.shipments.shipped.count > 0
+      def proccess
+        if @inspection.completed?
           redirect_to edit_admin_inspection_url(@inspection)
         end
       end
@@ -135,7 +128,7 @@ module Gesmew
 
         # Used for extensions which need to provide their own custom event links on the inspection details view.
         def initialize_inspection_events
-          @inspection_events = %w{approve cancel resume}
+          @inspection_events = %w{cancel}
         end
 
         def model_class

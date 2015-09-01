@@ -1,0 +1,30 @@
+<%= render 'inspection_actions', inspection: @inspection, events: @inspection_events %>
+
+<%= render 'gesmew/admin/shared/inspection_tabs', current: :proccess %>
+
+<div data-hook="admin_inspection_edit_header">
+  <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
+</div>
+
+<!-- <% if @inspection.considered_risky? %>
+  <%= render 'gesmew/admin/inspections/risk_analysis', latest_payment: @inspection.payments.inspection("created_at DESC").first %>
+<% end %> -->
+
+<%= render 'add_establishment' if can?(:update, @inspection) %>
+<% if @inspection.establishment %>
+  <div class="alert alert-warning">
+    <%= Gesmew.t(:establishment_is_empty_add_establishment)%>
+  </div>
+<% end %>
+
+<div data-hook="admin_inspection_edit_form">
+  <div id="inspection-form-wrapper">
+    <%=  %>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <%= javascript_tag 'var expand_variants = true;' %>
+<% end %>
+
+<%= render 'gesmew/admin/shared/inspection_summary' %>

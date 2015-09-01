@@ -27,6 +27,14 @@ module Gesmew
       Random.rand(10) + 1
     end
 
+    def completed?
+      completed_at.present?
+    end
+
+    def can_cancel?
+      return false unless completed? and state != 'canceled'
+    end
+
 
     inspection_flow do
       go_to_state :processing
