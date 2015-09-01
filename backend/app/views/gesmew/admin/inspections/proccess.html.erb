@@ -10,10 +10,10 @@
   <%= render 'gesmew/admin/inspections/risk_analysis', latest_payment: @inspection.payments.inspection("created_at DESC").first %>
 <% end %> -->
 
-<%= render 'add_establishment' if can?(:update, @inspection) %>
-<% if @inspection.establishment %>
+<%= render 'add_inspector' if can?(:update, @inspection) %>
+<% if @inspection.inspectors.any? %>
   <div class="alert alert-warning">
-    <%= Gesmew.t(:establishment_is_empty_add_establishment)%>
+    <%= Gesmew.t(:inspector_is_empty_add_inspector)%>
   </div>
 <% end %>
 

@@ -1,12 +1,12 @@
-<%= render 'order_actions', inspection: @inspection, events: @order_events %>
+<%= render 'inspection_actions', inspection: @inspection, events: @inspection_events %>
 
-<%= render 'gesmew/admin/shared/order_tabs', current: :shipments %>
+<%= render 'gesmew/admin/shared/inspection_tabs', current: :shipments %>
 
 <% content_for :page_title do %>
   / <%= plural_resource_name(Gesmew::Shipment) %>
 <% end %>
 
-<div data-hook="admin_order_edit_header">
+<div data-hook="admin_inspection_edit_header">
   <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
 </div>
 
@@ -18,11 +18,11 @@
 
 <% if @inspection.line_items.empty? %>
   <div class="alert alert-warning">
-    <%= Gesmew.t(:your_order_is_empty_add_product)%>
+    <%= Gesmew.t(:your_inspection_is_empty_add_product)%>
   </div>
 <% end %>
 
-<div data-hook="admin_order_edit_form">
+<div data-hook="admin_inspection_edit_form">
   <div id="inspection-form-wrapper">
     <%= render partial: 'form', locals: { inspection: @inspection } %>
   </div>
@@ -32,4 +32,4 @@
   <%= javascript_tag 'var expand_variants = true;' %>
 <% end %>
 
-<%= render 'gesmew/admin/shared/order_summary' %>
+<%= render 'gesmew/admin/shared/inspection_summary' %>

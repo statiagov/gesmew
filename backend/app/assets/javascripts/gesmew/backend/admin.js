@@ -1,12 +1,9 @@
 //= require_self
 //= require gesmew/backend/handlebar_extensions
-//= require gesmew/backend/variant_autocomplete
-//= require gesmew/backend/taxon_autocomplete
-//= require gesmew/backend/option_type_autocomplete
 //= require gesmew/backend/user_picker
+//= require gesmew/backend/option_type_autocomplete
 //= require gesmew/backend/product_picker
 //= require gesmew/backend/option_value_picker
-//= require gesmew/backend/taxons
 
 /**
 This is a collection of javascript functions and whatnot
@@ -15,7 +12,6 @@ Hopefully, this will evolve into a propper class.
 **/
 
 jQuery(function($) {
-  console.log("LOGGING")
   // Add some tips
   $('.with-tip').tooltip();
 

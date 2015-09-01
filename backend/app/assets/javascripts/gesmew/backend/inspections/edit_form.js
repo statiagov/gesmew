@@ -7,7 +7,7 @@ $(document).ready(function () {
 
       var id = '#' + $(this).prop('id').replace('_quantity', '_id');
 
-      $.post('/admin/inspections/' + $('input#order_number').val() + '/line_items/' + $(id).val(), {
+      $.post('/admin/inspections/' + $('input#inspection_number').val() + '/line_items/' + $(id).val(), {
           _method: 'put',
           'line_item[quantity]': $(this).val(),
           token: Gesmew.api_key

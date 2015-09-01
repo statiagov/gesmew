@@ -406,7 +406,7 @@ en:
     add_new_style: Add New Style
     add_one: Add One
     add_option_value: Add Option Value
-    add_establishment: Add Establishment
+    add_inspector: Add Inspector
     add_establishment_properties: Add Establishment Properties
     add_rule_of_type: Add rule of type
     add_state: Add State
@@ -746,6 +746,7 @@ en:
     inactive: Inactive
     incl: incl.
     inspectors: Inspector(s)
+    inspector_placeholder: Choose an Inspector
     inspection_approved: Inspection Aproved
     inspection_number: Inspection Number
     inspection_type: Insp. Type
@@ -961,7 +962,7 @@ en:
     order_sure_want_to: Are you sure you want to %{event} this inspection?
     order_total: Inspection Total
     order_updated: Inspection Updated
-    inspections: Orders
+    inspections: Inspections
     out_of_stock: Out of Stock
     overview: Overview
     package_from: package from
@@ -1403,7 +1404,7 @@ en:
       must_be_non_negative: must be a non-negative value
     value: Value
     variant: Variant
-    variant_placeholder: Choose a variant
+    establishment_placeholder: Choose an Establishment
     variants: Variants
     version: Version
     void: Void
@@ -1414,7 +1415,7 @@ en:
     year: Year
     you_have_no_orders_yet: You have no inspections yet
     your_cart_is_empty: Your cart is empty
-    your_order_is_empty_add_establishment: Your inspection is empty, please search for and add a establishment above
+    establishment_is_empty_add_establishment: Your inspection is empty, please search for and add a establishment above
     zip: Zip
     zipcode: Zip Code
     zone: Zone

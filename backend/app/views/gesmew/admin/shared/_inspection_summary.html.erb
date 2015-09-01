@@ -3,78 +3,28 @@
     <h3 class="panel-title"><%= Gesmew.t(:summary) %></h3>
   </div>
 
-  <table class="table table-condensed table-bordered" id="order_tab_summary" data-hook>
+  <table class="table table-condensed table-binspectioned" id="inspection_tab_summary" data-hook>
     <tbody class="additional-info">
       <tr>
-        <td id="order_status" width="35%" data-hook>
+        <td id="inspection_status" width="35%" data-hook>
           <strong><%= Gesmew.t(:status) %>:</strong>
         </td>
         <td>
           <span class="state label label-<%= @inspection.state %>">
-            <%= Gesmew.t(@inspection.state, :scope => :order_state) %>
+            <%= Gesmew.t(@inspection.state, :scope => :inspection_state) %>
           </span>
         </td>
       </tr>
       <tr>
-        <td data-hook='admin_order_tab_subtotal_title'>
-          <strong><%= Gesmew.t(:subtotal) %>:</strong>
+        <td data-hook='admin_inspection_tab_scorel_title'>
+          <strong><%= Gesmew.t(:score) %>:</strong>
         </td>
         <td id='item_total'>
-          <%= @inspection.display_item_total.to_html %>
+          <%= @inspection.score_total %>
         </td>
-      </tr>
-
-      <% if @inspection.checkout_steps.include?("delivery") && @inspection.ship_total > 0 %>
-        <tr>
-          <td data-hook='admin_order_tab_ship_total_title'>
-            <strong><%= Gesmew.t(:ship_total) %>:</strong>
-          </td>
-          <td id='ship_total'>
-            <%= @inspection.display_ship_total.to_html %>
-          </td>
-        </tr>
-      <% end %>
-
-      <% if @inspection.included_tax_total != 0 %>
-        <tr>
-          <td data-hook='admin_order_tab_included_tax_title'>
-            <strong><%= Gesmew.t(:tax_included) %>:</strong>
-          </td>
-          <td id='included_tax_total'>
-            <%= @inspection.display_included_tax_total.to_html %>
-          </td>
-        </tr>
-      <% end %>
-
-      <% if @inspection.additional_tax_total != 0 %>
-        <tr>
-          <td data-hook='admin_order_tab_additional_tax_title'>
-            <strong><%= Gesmew.t(:tax) %>:</strong>
-          </td>
-          <td id='additional_tax_total'>
-            <%= @inspection.display_additional_tax_total.to_html %>
-          </td>
-        </tr>
-      <% end %>
-
-      <tr>
-        <td data-hook='admin_order_tab_total_title'>
-          <strong><%= Gesmew.t(:total) %>:</strong>
-        </td>
-        <td id='order_total'><%= @inspection.display_total.to_html %></td>
       </tr>
 
       <% if @inspection.completed? %>
-        <tr>
-          <td>
-            <strong><%= Gesmew.t(:shipment) %>:</strong>
-          </td>
-          <td id='shipment_status'>
-            <span class="state label label-<%= @inspection.shipment_state %>">
-              <%= Gesmew.t(@inspection.shipment_state, :scope => :shipment_states, :default => [:missing, "none"]) %>
-            </span>
-          </td>
-        </tr>
         <tr>
           <td>
             <strong><%= Gesmew.t(:payment) %>:</strong>
@@ -86,34 +36,12 @@
           </td>
         </tr>
         <tr>
-          <td data-hook='admin_order_tab_date_completed_title'>
+          <td data-hook='admin_inspection_tab_date_completed_title'>
             <strong><%= Gesmew.t(:date_completed) %>:</strong>
           </td>
           <td id='date_complete'>
             <%= pretty_time(@inspection.completed_at) %>
           </td>
-        </tr>
-      <% end %>
-
-      <% if @inspection.approved? %>
-        <tr>
-          <td><strong><%= Gesmew.t(:approver) %></strong></td>
-          <td><%= @inspection.approver.email %></td>
-        </tr>
-        <tr>
-          <td><strong><%= Gesmew.t(:approved_at) %></strong></td>
-          <td><%= pretty_time(@inspection.approved_at) %></td>
-        </tr>
-      <% end %>
-
-      <% if @inspection.canceled? && @inspection.canceler && @inspection.canceled_at %>
-        <tr>
-          <td><strong><%= Gesmew.t(:canceler) %></strong></td>
-          <td><%= @inspection.canceler.email %></td>
-        </tr>
-        <tr>
-          <td><strong><%= Gesmew.t(:canceled_at) %></strong></td>
-          <td><%= pretty_time(@inspection.canceled_at) %></td>
         </tr>
       <% end %>
     </tbody>

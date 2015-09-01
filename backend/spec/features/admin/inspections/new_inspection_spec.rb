@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "New Inspection", :type => :feature do
+describe "New Inspection", :type => :feature, js:true do
   let!(:establishment) { create(:establishment) }
   let!(:inspection_type) { create(:inspection_type) }
-  let!(:user) { create(:admin_user,email: 'user@example.com') }
+  let!(:user) { create(:admin_user,email: 'user@example.com', firstname:'Vaughn', lastname:'Sams') }
 
   stub_authorization!
 
@@ -12,7 +12,7 @@ describe "New Inspection", :type => :feature do
   end
 
   it "does check if you have a establishment and inspector before letting proccess the inspection" do
-    sleep 1.minute
+    sleep 10.minute
   end
 
   it "completes new inspection successfully without using the cart", js: true do

@@ -12,7 +12,7 @@ module Gesmew
               [event, :admin, inspection],
               method: :put,
               icon: "#{event}",
-              data: { confirm: Gesmew.t(:order_sure_want_to, event: label) }
+              data: { confirm: Gesmew.t(:inspection_sure_want_to, event: label) }
             )
           end
         end

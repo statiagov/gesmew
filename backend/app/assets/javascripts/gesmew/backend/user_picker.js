@@ -2,7 +2,8 @@ $.fn.userAutocomplete = function () {
   'use strict';
 
   this.select2({
-    minimumInputLength: 1,
+    minimumInputLength: 3,
+    placeholder: Gesmew.translations.inspector_placeholder,
     multiple: true,
     initSelection: function (element, callback) {
       $.get(Gesmew.routes.user_search, {

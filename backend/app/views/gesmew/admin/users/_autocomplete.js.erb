@@ -1,0 +1,21 @@
+<script type='text/template' id='user_autocomplete_template'>
+  <div class='inspector-autocomplete-item media'>
+    <figure class='inspector-image media-left'>
+      {{#if user.image }}
+        <img src='{{user.image}}' class="thumbnail no-marginb" />
+      {{ else }}
+        <img src='<%= image_path("noimage/mini.png") %>' class="thumbnail no-marginb" />
+      {{/if}}
+    </figure>
+
+    <div class='inspector-details media-body'>
+      <h5 class="inspector-name media-heading">{{inspector.name}}</h5>
+      {{#if user.option_values}}
+        {{#each user..option_values}}
+          <strong>{{this.option_type_presentation}}:</strong> {{this.presentation}}<br/>
+        {{/each}}
+      {{/if}}
+      <strong><%= Gesmew.t(:sku) %>:</strong> {{user.sku}}
+    </div>
+  </div>
+</script>
