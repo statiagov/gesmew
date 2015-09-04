@@ -15,8 +15,8 @@ module Gesmew
         else
           @users = Gesmew.user_class.ransack({
             m: 'or',
-            first_name_start: params[:q],
-            last_name_start:  params[:q]
+            contact_information_firstname_start: params[:q],
+            contact_information_lastname_start:  params[:q]
           }).result.limit(10)
         end
       end

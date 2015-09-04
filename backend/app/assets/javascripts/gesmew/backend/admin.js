@@ -1,9 +1,7 @@
 //= require_self
 //= require gesmew/backend/handlebar_extensions
 //= require gesmew/backend/user_picker
-//= require gesmew/backend/option_type_autocomplete
-//= require gesmew/backend/product_picker
-//= require gesmew/backend/option_value_picker
+
 
 /**
 This is a collection of javascript functions and whatnot

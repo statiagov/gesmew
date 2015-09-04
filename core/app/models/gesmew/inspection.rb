@@ -5,7 +5,7 @@ module Gesmew
     friendly_id :number, slug_column: :number, use: :slugged
 
     include Gesmew::Inspection::Flow
-    include Gesmew::Core::NumberGenerator.new(prefix:'I')
+    include Gesmew::Core::NumberGenerator.new(prefix:'IN')
 
     belongs_to :establishment
     belongs_to :inspection_type
