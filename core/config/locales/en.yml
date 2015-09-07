@@ -384,6 +384,7 @@ en:
         subject: Cancellation of Inspection
         subtotal: ! 'Subtotal:'
     inspection_state:
+      pending: pending
       canceled: canceled
       considered_risky: considered risky
       complete: complete
