@@ -3,14 +3,7 @@
 <% end %>
 
 <% content_for :page_actions do %>
-  <!-- <%= button_link_to Gesmew.t(:new_inspection), new_admin_inspection_url, :class => "btn-success", :icon => 'add', :id => 'admin_new_inspection' %> -->
-  <div class="dropdown">
-  <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">New
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><%= link_to Gesmew.t(:inspection), new_admin_inspection_url %></li>
-  </ul>
-</div>
+  <%= button_link_to Gesmew.t(:new_inspection), new_admin_inspection_url, :class => "btn-success", :icon => 'add', :id => 'admin_new_inspection' %>
 <% end if can? :create, Gesmew::Inspection %>
 
 <% content_for :table_filter do %>
@@ -84,13 +77,6 @@
         </div>
 
         <div class="col-md-4">
-          <div class="form-group">
-            <%= label_tag :q_inspection_type_id_in, Gesmew.t(:inspection_type) %>
-            <%= f.select :inspection_type_id_in, Gesmew::InspectionType.all.pluck(:name, :id), {:include_blank => true}, :class => 'select2 js-filterable' %>
-          </div>
-        </div>
-
-        <div class="col-md-4">
 
           <div class="form-group">
 
@@ -136,7 +122,6 @@
           <th class="col-md-1"><%= sort_link @search, :created_at,                           I18n.t(:created_at, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <% end %>
         <th class="col-md-1"><%= sort_link @search, :number,                                 I18n.t(:number, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
-        <th class="col-md-1"><%= sort_link @search, :inspection_type_name,                   I18n.t(:inspection_type, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th class="col-md-1"><%= sort_link @search, :considered_risky,                       I18n.t(:considered_risky, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th class="col-md-1"><%= sort_link @search, :state,                                  I18n.t(:state, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
         <th class="col-md-1"><%= sort_link @search, :establishment_establishment_type_name,  I18n.t(:establishment_type, :scope => 'activerecord.attributes.gesmew/inspection') %></th>
@@ -150,10 +135,6 @@
       <tr data-hook="admin_inspections_index_rows" class="state-<%= inspection.state.downcase %> <%= cycle('odd', 'even') %>">
         <td><%= l (@show_only_completed ? inspection.completed_at : inspection.created_at).try!(:to_date) %></td>
         <td><%= link_to inspection.number, edit_admin_inspection_path(inspection) %></td>
-        <td>
-          <span class="label-<%= labelize(inspection.inspection_type.name) %>"><%= inspection.inspection_type.name %></span>
-          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_inspection_type_id_in" data-ransack-value="<%= inspection.inspection_type.id %>"></span>
-        </td>
         <td>
           <span class="label label-<%= risky_label(inspection.considered_risky) %>">
             <%= risky_text(inspection.considered_risky)  %>

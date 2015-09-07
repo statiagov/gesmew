@@ -142,7 +142,6 @@ class GesmewInitial < ActiveRecord::Migration
 
     create_table :gesmew_inspections do |t|
       t.references  :establishment
-      t.references  :inspection_type,  default: 1, :null => false
       t.string      :state
       t.string      :number, :limit => 15
       t.datetime    :completed_at
@@ -152,7 +151,6 @@ class GesmewInitial < ActiveRecord::Migration
     end
 
     add_index :gesmew_inspections, [:establishment_id], :name => 'index_gesmew_inspections_on_establishment_id'
-    add_index :gesmew_inspections, [:inspection_type_id], :name => 'index_gesmew_inspections_on_inspection_type_id'
 
     create_table :gesmew_inspection_users do |t|
       t.belongs_to :user
