@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "New Inspection", :type => :feature, js:true do
   let!(:establishment) { create(:establishment) }
   let!(:inspection_type) { create(:inspection_type) }
-  let!(:user) { create(:admin_user,email: 'user@example.com', firstname:'Vaughn', lastname:'Sams') }
+  let!(:user) { create(:admin_user,email: 'user@example.com', firstname:'Gerwin', lastname:'Schoobe') }
 
   stub_authorization!
 
