@@ -11,9 +11,15 @@
       </li>
     <% end %>
 
-    <% if can? :update, @inspection && @inspection.inspection_steps.include?("grading") %>
+    <% if can? :update, @inspection && @inspection.inspection_steps.include?("grading_and_commenting") %>
+      <li<%== ' class="active"' if current == :grading_and_commenting %> data-hook='admin_inspection_tabs_grading'>
+        <%= link_to_with_icon 'education', Gesmew.t(:grade_and_comment), edit_admin_inspection_url(@inspection) %>
+      </li>
+    <% end %>
+
+    <% if can? :update, @inspection && @inspection.inspection_steps.include?("grading_and_commenting") %>
       <li<%== ' class="active"' if current == :grading %> data-hook='admin_inspection_tabs_grading'>
-        <%= link_to_with_icon 'education', Gesmew.t(:grading), edit_admin_inspection_url(@inspection) %>
+        <%= link_to_with_icon 'envelope', Gesmew.t(:add_letter), edit_admin_inspection_url(@inspection) %>
       </li>
     <% end %>
   </ul>

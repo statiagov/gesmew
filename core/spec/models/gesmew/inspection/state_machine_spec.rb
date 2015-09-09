@@ -25,14 +25,14 @@ describe Gesmew::Inspection, type: :model do
         inspection.state = "processing"
         inspection.run_callbacks(:create)
       end
-      it "shouild transistion to grading" do
+      it "shouild transistion to grading and commenting" do
         inspection.next
-        expect(inspection.state).to eq("grading")
+        expect(inspection.state).to eq("grading_and_commenting")
       end
     end
-    context "when current state is grading" do
+    context "when current state is grading and commenting" do
       before do
-        inspection.state = "grading"
+        inspection.state = "grading_and_commenting"
         inspection.run_callbacks(:create)
       end
       it "shouild transistion to completed" do

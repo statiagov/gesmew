@@ -56,12 +56,12 @@ module Gesmew
               transition to: :processing, from: :pending
             end
 
-            event :grade do
-              transition to: :grading, from: :processing
+            event :grade_and_comment do
+              transition to: :grading_and_commenting, from: :processing
             end
 
             event :complete do
-              transition to: :completed, from: :grading
+              transition to: :completed, from: :grading_and_commenting
             end
           end
 

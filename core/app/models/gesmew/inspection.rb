@@ -5,7 +5,7 @@ module Gesmew
     friendly_id :number, slug_column: :number, use: :slugged
 
     include Gesmew::Inspection::Flow
-    include Gesmew::Core::NumberGenerator.new(prefix:'IN')
+    include Gesmew::Core::NumberGenerator.new(prefix:'N')
 
     belongs_to :establishment
     belongs_to :inspection_type
@@ -38,7 +38,7 @@ module Gesmew
 
     inspection_flow do
       go_to_state :processing
-      go_to_state :grading
+      go_to_state :grading_and_commenting
       go_to_state :completed
     end
   end

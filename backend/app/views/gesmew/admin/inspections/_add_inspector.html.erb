@@ -1,15 +1,17 @@
 <%= render partial: "gesmew/admin/users/autocomplete", formats: :js %>
 
+<%= render partial: "gesmew/admin/users/autocomlete_inspectors_detail", formats: :js %>
+
 <div id="add-user" data-hook class="panel panel-default">
   <div class="panel-heading">
     <h1 class="panel-title"><%= Gesmew.t(:add_inspector) %></h1>
   </div>
   <div class="panel-body">
     <div data-hook="add_user_name" class="form-group">
-      <%= label_tag :add_user_id, Gesmew.t(:first_or_lastname) %>
-      <%= hidden_field_tag :add_user_id, "", class: "user_autocomplete fullwidth-input" %>
+      <%= label_tag :add_inspector_id, Gesmew.t(:first_or_lastname) %>
+      <%= hidden_field_tag :add_inspector_id, "", class: "user_autocomplete fullwidth-input" %>
     </div>
 
-    <div id="stock_details"></div>
+    <div id="inspector_details"></div>
   </div>
 </div>

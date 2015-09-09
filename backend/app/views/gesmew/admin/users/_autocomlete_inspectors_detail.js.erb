@@ -1,0 +1,23 @@
+<script type='text/template' id='inspector_autocomplete_detail_template'>
+
+  <label><%= Gesmew.t(:select_inpsector) %></label>
+
+  <table class="stock-levels table table-bordered" data-hook="stock-levels">
+    <thead>
+      <th><%= Gesmew.t(:name) %></th>
+      <th><%= Gesmew.t(:email) %></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{inspector.name}}</td>
+        <td>{{inspector.email}}</td>
+        <td class="actions actions-1 text-center">
+          <button class="btn btn-sm btn-success add_inspector with-tip" data-variant-id="{{inspector.id}}" title="<%= Gesmew.t(:add) %>" data-action="add">
+            <span class="icon icon-add"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>

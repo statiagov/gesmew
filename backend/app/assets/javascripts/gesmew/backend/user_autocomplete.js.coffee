@@ -2,6 +2,7 @@
 $(document).ready ->
   if $("#user_autocomplete_template").length > 0
     window.userTemplate = Handlebars.compile($("#user_autocomplete_template").text())
+    window.inspectorDetailTemplate = Handlebars.compile($("#inspector_autocomplete_detail_template").text())
   return
 
 formatuserResult = (inspector) ->

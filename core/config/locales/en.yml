@@ -82,6 +82,7 @@ en:
         precision: 1
 
   gesmew:
+    add_letter: Add Letter
     abbreviation: Abbreviation
     accept: Accept
     acceptance_status: Acceptance status
@@ -258,6 +259,7 @@ en:
     first_name: First Name
     first_name_begins_with: First Name Begins With
     gateway: Gateway
+    grade_and_comment: Grade & Comment
     gateway_error: Gateway Error
     general: General
     general_settings: General Settings
@@ -283,12 +285,14 @@ en:
     inactive: Inactive
     incl: incl.
     inspectors: Inspector(s)
+    inspector_is_empty_add_inspector: No inspector(s) added
     inspector_placeholder: Choose an Inspector
     inspection_approved: Inspection Aproved
     inspection_number: Inspection Number
     inspection_type: Insp. Type
     inspection_state:
       establishment: choosing establishment
+      grading_and_comments: grading & comments
       pending: pending
     included_in_price: Included in Price
     included_price_validation: cannot be selected unless you have set a Default Tax Zone
@@ -453,7 +457,9 @@ en:
     secure_connection_type: Secure Connection Type
     security_settings: Security Settings
     select: Select
+    select_establishment: Select Establishment
     send_mails_as: Send Mails As
+    select_inpsector: Select Inspector
     server: Server
     server_error: The server returned an error
     show: Show

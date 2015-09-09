@@ -1,16 +1,17 @@
-// This file contains the code for interacting with line items in the manual cart
+// This file contains the code for interacting with inspectors on the inspection proccess page
 $(document).ready(function () {
     'use strict';
 
     // handle variant selection, show stock level.
-    $('#add_line_item_variant_id').change(function(){
-        var variant_id = $(this).val();
+    $('#add_inspector_id').change(function(){
+        var inspector_id = $(this).val();
 
-        var variant = _.find(window.variants, function(variant){
-            return variant.id == variant_id
-        })
-        $('#stock_details').html(variantLineItemTemplate({variant: variant}));
-        $('#stock_details').show();
+        var inspector = _.find(window.inspectors, function(inspector){
+            return inspector.id == inspector_id
+        });
+        console.log(inspector);
+        $('#inspector_details').html(inspectorDetailTemplate({inspector: inspector}));
+        $('#inspector_details').show();
 
         $('button.add_variant').click(addVariant);
     });
