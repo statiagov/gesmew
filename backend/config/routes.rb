@@ -1,7 +1,7 @@
 Gesmew::Core::Engine.add_routes do
   namespace :admin do
     get '/search/users', to: "search#users", as: :search_users
-    get '/search/inspections', to: "search#inspections", as: :search_inspections
+    get '/search/establishments', to: "search#establishments", as: :search_establishments
 
     resources :inspections, except: [:show] do
       member do

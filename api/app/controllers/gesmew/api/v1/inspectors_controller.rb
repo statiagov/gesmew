@@ -21,14 +21,7 @@ module Gesmew
           inspector = Gesmew.user_class.find(params[:id])
           inspection.remove_inspector(inspector)
           render :nothing => true, :status => 204
-        end
-
-
-        private
-          def inspection
-            @inspection ||= Gesmew::Inspection.includes(:inspectors).find_by(number: inspection_id)
-            authorize! :update, @inspection
-          end
+        end          
       end
     end
   end

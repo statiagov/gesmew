@@ -1,11 +1,19 @@
+<%= render partial: "gesmew/admin/establishments/autocomplete", formats: :js %>
+
+<%= render partial: "gesmew/admin/establishments/autocomlete_establishments_detail", formats: :js %>
+
+
+
 <div id="select-establishment" data-hook class="panel panel-default">
   <div class="panel-heading">
     <h1 class="panel-title"><%= Gesmew.t(:select_establishment) %></h1>
   </div>
   <div class="panel-body">
     <div data-hook="select_establishment_name" class="form-group">
-      <%= label_tag  :select_establishment_id, Gesmew.t(:establishment) %>
+      <%= label_tag :select_establishment_id, Gesmew.t(:establishment_name_select) %>
       <%= hidden_field_tag :select_establishment_id, "", class: "establishment_autocomplete fullwidth-input" %>
     </div>
+
+    <div id="establishment_details"></div>
   </div>
 </div>

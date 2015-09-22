@@ -10,7 +10,8 @@ formatuserResult = (inspector) ->
 
 $.fn.userAutocomplete = ->
   @select2
-    placeholder: Gesmew.translations.inspector_placeholder
+    placeholder: Gesmew.translations.inspector_placeholder,
+    autoFocus: false,
     minimumInputLength: 3
     initSelection: (element, callback) ->
       $.get Gesmew.routes.user_search, {ids:element.val()}, (data) ->

@@ -66,6 +66,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.string        :lastname
       t.string        :fullname
       t.string        :address
+      t.string        :country, :default => "Caribbean Netherlands"   
       t.string        :district
       t.string        :phone
       t.string        :alternative_phone
@@ -107,6 +108,7 @@ class GesmewInitial < ActiveRecord::Migration
 
     create_table :gesmew_establishments do |t|
       t.string     :name
+      t.string     :number, :limit => 15
       t.references :establishment_type,  :null => false
       t.references :contact_information, :null => false
       t.integer    :workers
@@ -141,9 +143,9 @@ class GesmewInitial < ActiveRecord::Migration
     end
 
     create_table :gesmew_inspections do |t|
+      t.string      :number, :limit => 15
       t.references  :establishment
       t.string      :state
-      t.string      :number, :limit => 15
       t.datetime    :completed_at
       t.boolean     :considered_risky
       t.integer     :state_lock_version, default: 0, null: false

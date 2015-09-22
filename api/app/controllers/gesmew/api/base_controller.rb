@@ -31,15 +31,6 @@ module Gesmew
         end.with_indifferent_access
       end
 
-      # users should be able to set price when importing inspections via api
-      def permitted_line_item_attributes
-        if @current_user_roles.include?("admin")
-          super + [:price, :variant_id, :sku]
-        else
-          super
-        end
-      end
-
       def content_type
         case params[:format]
         when "json"
@@ -122,24 +113,10 @@ module Gesmew
         request.headers["X-Gesmew-Inspection-Token"] || params[:inspection_token]
       end
 
-      def find_product(id)
-        product_scope.friendly.find(id.to_s)
+      def find_establishment(id)
+        Gesmew::Establishment.friendly.find(id.to_s)
       rescue ActiveRecord::RecordNotFound
-        product_scope.find(id)
-      end
-
-      def product_scope
-        if @current_user_roles.include?("admin")
-          scope = Establishment.with_deleted.accessible_by(current_ability, :read).includes(*product_includes)
-
-          unless params[:show_deleted]
-            scope = scope.not_deleted
-          end
-        else
-          scope = Establishment.accessible_by(current_ability, :read).active.includes(*product_includes)
-        end
-
-        scope
+        Gesmew::Establishment.find(id)
       end
 
       def inspection_id
@@ -150,6 +127,12 @@ module Gesmew
         @inspection = Gesmew::Inspection.find_by(number: order_id)
         authorize! :read, @inspection, inspection_token
       end
+
+      protected
+        def inspection
+          @inspection ||= Gesmew::Inspection.includes(:inspectors).find_by(number: inspection_id)
+          authorize! :update, @inspection
+        end
     end
   end
 end

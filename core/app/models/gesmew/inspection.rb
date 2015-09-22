@@ -50,6 +50,9 @@ module Gesmew
       save
     end
 
+    def stringy_establishment
+      establishment.class.name.demodulize.underscore
+    end
 
     inspection_flow do
       go_to_state :processing

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "New Inspection", :type => :feature, js:true do
-  let!(:establishment) { create(:establishment) }
+  let!(:establishment) { create(:establishment, name:'Duggins Shopping Center N.V.', firstname: 'Louise', lastname: 'Gumbs') }
   let!(:inspection_type) { create(:inspection_type) }
   let!(:user_1) { create(:admin_user,email: 'user_1@example.com', firstname:'Ingrid', lastname:'Houtman') }
   let!(:user_2) { create(:admin_user,email: 'user_2@example.com', firstname:'Bernadine', lastname:'Woodley') }

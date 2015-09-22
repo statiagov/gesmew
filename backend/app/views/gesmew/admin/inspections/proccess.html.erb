@@ -2,19 +2,15 @@
 
 <%= render 'gesmew/admin/shared/inspection_tabs', current: :proccess %>
 
-<div data-hook="admin_inspection_edit_header">
+<!-- <div data-hook="admin_inspection_edit_header">
   <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
-</div>
+</div> -->
 
-<!-- <% if @inspection.considered_risky? %>
-  <%= render 'gesmew/admin/inspections/risk_analysis', latest_payment: @inspection.payments.inspection("created_at DESC").first %>
-<% end %> -->
-
-<%= render 'select_establishment' if can?(:update, @inspection) %>
+<%= render "#{@inspection.stringy_establishment}", inspection: @inspection %>
 
 <%= render 'add_inspector' if can?(:update, @inspection) %>
 <% unless @inspection.inspectors.any? %>
-  <div class="alert alert-warning">
+  <div class="alert alert-danger">
     <%= Gesmew.t(:inspector_is_empty_add_inspector)%>
   </div>
 <% end %>

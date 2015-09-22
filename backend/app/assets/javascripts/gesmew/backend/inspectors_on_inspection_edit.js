@@ -36,7 +36,7 @@ inspectorApiPost = function(inspector_id){
           token: Gesmew.api_key
         }
     }).done(function( msg ) {
-        window.location.reload();
+        window.location.reload(true);
     }).fail(function(msg) {
       console.log(msg)
         alert(msg.responseJSON.error)

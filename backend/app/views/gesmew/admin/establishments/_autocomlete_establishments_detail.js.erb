@@ -1,0 +1,23 @@
+<script type='text/template' id='establishment_autocomplete_detail_template'>
+
+  <label><%= Gesmew.t(:select_establishment) %></label>
+
+  <table class="establishment-select table table-bordered" data-hook="establishment-select">
+    <thead>
+      <th><%= Gesmew.t(:name) %></th>
+      <th><%= Gesmew.t(:owner_fullname) %></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{establishment.name}}</td>
+        <td>{{establishment.owner_name}}</td>
+        <td class="actions actions-1 text-center">
+          <button class="btn btn-sm btn-success select_establishment with-tip" data-variant-id="{{establishment.id}}" title="<%= Gesmew.t(:select) %>" data-action="select">
+            Select
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>

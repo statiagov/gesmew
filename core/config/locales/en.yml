@@ -239,6 +239,8 @@ en:
       one: 1 error prohibited this record from being saved
       other: ! '%{count} errors prohibited this record from being saved'
     establishment: Establishment
+    establishment_name_select: ! "Name (enter at least first 3 characters)"
+    establishment_is_empty_add_establishment: This Inspection does not have an Estalishment
     event: Event
     establishment_type: Est. Type
     events:
@@ -250,10 +252,11 @@ en:
     exchange_for: Exchange for
     expedited_exchanges_warning: "Any specified exchanges will ship to the customer immediately upon saving. The customer will be charged the full amount of the item if they do not return the original item within %{days_window} days."
     excl: excl.
+    establishment_placeholder: Select an Establishment
     expiration: Expiration
     extension: Extension
     filename: Filename
-    first_or_lastname: First or Last Name (enter at least first 3 characters of the inspector name)
+    first_or_lastname: ! First or Last Name (enter at least first 3 characters)
     filter: Filter
     filter_results: Filter Results
     first_name: First Name
@@ -402,6 +405,7 @@ en:
     order_updated: Inspection Updated
     inspections: Inspections
     out_of_stock: Out of Stock
+    owner_fullname: "Owner's Fullname"
     overview: Overview
     package_from: package from
     pagination:
@@ -550,7 +554,6 @@ en:
       must_be_int: must be an integer
       must_be_non_negative: must be a non-negative value
     value: Value
-    establishment_placeholder: Choose an Establishment
     version: Version
     void: Void
     what_is_this: What's This?
