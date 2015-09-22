@@ -22,4 +22,29 @@ describe Gesmew::Admin::BaseController, type: :controller do
       expect(response).to redirect_to '/root'
     end
   end
+
+  context "#auto_complete_ids_to_exclude" do
+    before do
+
+    end
+
+    it "it should return [] when obj is nil" do
+      allow(controller).to receive(:params).and_return({related:'inspectors'})
+      expect(controller.send(:auto_complete_ids_to_exclude, nil)).to eq([])
+    end
+
+    it "should return [6, 9] when related is 'inspection/N101" do
+      allow(controller).to receive(:params).and_return({related:'inspectors'})
+      inspection = double(Gesmew::Inspection, inspectors: [double(id: 6), double(id: 9)])
+      expect(Gesmew::Inspection).to receive_message_chain(:friendly, :find).with('N101').and_return(inspection)
+      expect(controller.send(:auto_complete_ids_to_exclude, 'inspection/N101').sort).to eq([6,9])
+    end
+
+    it "should return [] when related object association is not found" do
+      allow(controller).to receive(:params).and_return({related:'inspectors'})
+      inspection = double(Gesmew::Inspection)
+      expect(Gesmew::Inspection).to receive_message_chain(:friendly, :find).with('N101').and_return(inspection)
+      expect(controller.send(:auto_complete_ids_to_exclude, 'inspection/N101')).to eq([])
+    end
+  end
 end

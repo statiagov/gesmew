@@ -4,20 +4,15 @@ module Gesmew
       respond_to :json
       layout false
 
-      # http://gesmewcommerce.com/blog/2010/11/02/json-hijacking-vulnerability/
       before_action :check_json_authenticity, only: :index
 
-      # TODO: Clean this up by moving searching out to user_class_extensions
-      # And then JSON building with something like Active Model Serializers
+      # TODO: Clean this UP urgently, association is hard coded!!!
       def users
         if params[:ids]
           @users = Gesmew.user_class.where(id: params[:ids].split(',').flatten)
         else
-          @users = Gesmew.user_class.ransack({
-            m: 'or',
-            contact_information_firstname_start: params[:q],
-            contact_information_lastname_start:  params[:q]
-          }).result.limit(10)
+          exclude_ids = auto_complete_ids_to_exclude(params[:object])
+          @users = Gesmew.user_class.text_search(params[:q]).search(id_not_in:exclude_ids).result.limit(10)
         end
       end
 

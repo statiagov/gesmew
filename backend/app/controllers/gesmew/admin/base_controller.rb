@@ -61,6 +61,22 @@ module Gesmew
           redirect_to edit_admin_order_customer_url(@inspection)
         end
       end
+
+      def auto_complete_ids_to_exclude(obj)
+        return [] if obj.blank? || related.blank?
+        return [] unless obj.index('/')
+        obj_class, id =  obj.split('/')
+        obj = "gesmew/#{obj_class}".classify.constantize.friendly.find(id)
+        if obj && obj.respond_to?(related)
+          obj.send(related).map(&:id)
+        else
+          []
+        end
+      end
+
+     def related
+       params[:related]
+     end
     end
   end
 end

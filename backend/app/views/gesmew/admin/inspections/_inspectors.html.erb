@@ -1,0 +1,33 @@
+<% if inspection.inspectors.exists? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">
+        <%= Gesmew.t(:inspectors) %>
+      </h1>
+    </div>
+    <table class="table table-bordered inspectors" data-hook="inspectors">
+      <thead>
+        <th colspan="1"><%= Gesmew.t(:full_name) %></th>
+        <th class="text-center"><%= Gesmew.t(:email) %></th>
+        <th class="inspections-actions text-center" data-hook="admin_inspection_form_inspector_header_actions"></th>
+      </thead>
+      <tbody>
+        <% inspection.inspectors.each do |inspector| %>
+          <tr class="inspector" id="inspector-<%= inspector.id %>">
+            <td class="inspector-full-name text-center">
+              <%= inspector.full_name %>
+            </td>
+            <td class="inspector-email text-center">
+              <%= inspector.email %>
+            </td>
+            <td class="cart-line-item-delete actions actions-4 text-center" data-hook="inspector_delete">
+              <% if can? :update, inspector %>
+                <%= link_to_with_icon 'delete', Gesmew.t('delete'), "#", class: 'delete-inspector btn btn-danger btn-sm', data: { 'inspector-id' => inspector.id, action: 'remove'}, title: Gesmew.t('delete'), no_text: true %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

@@ -11,6 +11,11 @@ Gesmew::Core::Engine.config.to_prepare do
       has_many :inspection_users, class_name: 'Gesmew::InspectionUser', :foreign_key => :user_id
       has_many :inspections, class_name: 'Gesmew::Inspection', :through => :inspection_users
 
+      scope :text_search, ->(query) {search(
+        m: 'or',
+        contact_information_firstname_start: query,
+        contact_information_lastname_start: query
+      ).result}
 
       # has_gesmew_role? simply needs to return true or false whether a user has a role or not.
       def has_gesmew_role?(role_in_question)

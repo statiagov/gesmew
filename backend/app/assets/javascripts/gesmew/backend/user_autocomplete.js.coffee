@@ -21,10 +21,13 @@ $.fn.userAutocomplete = ->
       datatype: "json"
       data: (term, page) ->
         q: term
+        object: 'inspection/' + inspection_number
+        related: 'inspectors'
         token: Gesmew.api_key
 
       results: (data) ->
         window.inspectors = data
+        console.log(data)
         results: data
 
     formatResult: formatuserResult

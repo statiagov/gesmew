@@ -14,9 +14,13 @@ module Gesmew
     has_many  :inspection_users, class_name: Gesmew::InspectionUser, :foreign_key => :inspection_id
 
     if Gesmew.user_class
-      has_many   :inspectors, class_name: Gesmew.user_class.to_s, :through => :inspection_users, :source => :user
+      has_many   :inspectors, -> {uniq}, class_name: Gesmew.user_class.to_s, :through => :inspection_users, :source => :user
     else
-      has_many   :inspectors, -> {distinct}, :through => :inspection_users, source: :user
+      has_many   :inspectors, -> {uniq}, :through => :inspection_users, source: :user
+    end
+
+    def establishment
+      super || Gesmew::NullEstablishment.new
     end
 
     def establishment_type
@@ -33,6 +37,17 @@ module Gesmew
 
     def can_cancel?
       return false unless completed? and state != 'canceled'
+    end
+
+    def add_inspector(inspector)
+      self.inspectors << inspector
+      save
+      self
+    end
+
+    def remove_inspector(inspector)
+      self.inspectors.delete(inspector)
+      save
     end
 
 

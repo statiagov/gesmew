@@ -1,0 +1,11 @@
+<tr id="<%= gesmew_dom_id(f.object) %>" data-hook="admin_inspector_row">
+  <td>
+    <%=f.object.inspector.fullname%>
+  </td>
+  <td data-hook="admin_inspection_form_inspector_actions" class="actions">
+    <%= link_to_delete f.object, {
+      url: "",
+      no_text: true
+    } %>
+  </td>
+</tr>

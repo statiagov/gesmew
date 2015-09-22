@@ -139,7 +139,7 @@ module Gesmew
             inspection_steps << step
           end).map(&:to_s)
           # Ensure there is always a complete step
-          steps << "complete" unless steps.include?("complete")
+          steps << "completed" unless steps.include?("completed")
           steps
         end
 

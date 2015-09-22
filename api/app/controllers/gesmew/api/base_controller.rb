@@ -62,9 +62,9 @@ module Gesmew
       def authenticate_user
         return if @current_api_user
 
-        if requires_authentication? && api_key.blank? && order_token.blank?
+        if requires_authentication? && api_key.blank? && inspection_token.blank?
           render "gesmew/api/errors/must_specify_api_key", status: 401 and return
-        elsif order_token.blank? && (requires_authentication? || api_key.present?)
+        elsif inspection_token.blank? && (requires_authentication? || api_key.present?)
           render "gesmew/api/errors/invalid_api_key", status: 401 and return
         else
           # An anonymous user
@@ -118,8 +118,8 @@ module Gesmew
       end
       helper_method :api_key
 
-      def order_token
-        request.headers["X-Gesmew-Inspection-Token"] || params[:order_token]
+      def inspection_token
+        request.headers["X-Gesmew-Inspection-Token"] || params[:inspection_token]
       end
 
       def find_product(id)
@@ -142,21 +142,13 @@ module Gesmew
         scope
       end
 
-      def variants_associations
-        [{ option_values: :option_type }, :default_price, :images]
+      def inspection_id
+        params[:inspection_id] || params[:inspection_number]
       end
 
-      def product_includes
-        [:option_types, :taxons, product_properties: :property, variants: variants_associations, master: variants_associations]
-      end
-
-      def order_id
-        params[:order_id] || params[:checkout_id] || params[:order_number]
-      end
-
-      def authorize_for_order
+      def authorize_for_inspection
         @inspection = Gesmew::Inspection.find_by(number: order_id)
-        authorize! :read, @inspection, order_token
+        authorize! :read, @inspection, inspection_token
       end
     end
   end

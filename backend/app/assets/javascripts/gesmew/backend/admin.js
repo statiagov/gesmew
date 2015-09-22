@@ -361,7 +361,7 @@ $(document).ready(function(){
     $(this).parent().fadeOut();
   });
 
-  window.Gesmew.advanceOrder = function() {
+  window.Gesmew.advanceInspection = function() {
       $.ajax({
           type: "PUT",
           async: false,

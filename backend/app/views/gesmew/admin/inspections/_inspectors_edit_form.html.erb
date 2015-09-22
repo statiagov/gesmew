@@ -1,0 +1,19 @@
+<div data-hook="admin_order_form_fields">
+  <% if @inspection.try(:errors).present? %>
+      <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
+  <% end %>
+
+  <%= render "gesmew/admin/inspections/inspectors", inspection: inspection %>
+
+  <% if inspection.inspectors.exists? %>
+    <div class="alert alert-success" id="inspectors-total" data-hook="inspectors_details_total">
+      <%= Gesmew.t(:number_of_inspectors) %>: <strong class="inspection-total"><%= @inspection.inspectors.size %></strong>
+    </div>
+  <% end %>
+
+  <%= javascript_tag do %>
+    var inspection_number = '<%= @inspection.number %>';
+
+    <%= render partial: 'gesmew/admin/shared/update_inspection_state', handlers: [:js] %>
+  <% end %>
+</div>

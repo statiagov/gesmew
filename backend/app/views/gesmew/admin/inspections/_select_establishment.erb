@@ -3,10 +3,9 @@
     <h1 class="panel-title"><%= Gesmew.t(:select_establishment) %></h1>
   </div>
   <div class="panel-body">
-    <div data-hook="add_user_name" class="form-group">
-      <% establishment_array =  Gesmew::Establishment.all.map {|establishment| [establishment.name,establishment.id]} %>
-      <%= label_tag  :establishment_id, Gesmew.t(:establishment) %>
-      <%= select_tag :establishment_id, options_for_select(establishment_array),{:include_blank => true, :class => 'select2 js-filterable fullwidth-input'} %>
+    <div data-hook="select_establishment_name" class="form-group">
+      <%= label_tag  :select_establishment_id, Gesmew.t(:establishment) %>
+      <%= hidden_field_tag :select_establishment_id, "", class: "establishment_autocomplete fullwidth-input" %>
     </div>
   </div>
 </div>

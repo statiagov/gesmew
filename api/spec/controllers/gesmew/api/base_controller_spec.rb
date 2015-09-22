@@ -17,29 +17,6 @@ describe Gesmew::Api::BaseController, :type => :controller do
     end
   end
 
-  context "when validating based on an inspection token" do
-    let!(:inspection) { create :inspection }
-
-    context "with a correct inspection token" do
-      it "succeeds" do
-        api_get :index, order_token: inspection.guest_token, order_id: inspection.number
-        expect(response.status).to eq(200)
-      end
-
-      it "succeeds with an order_number parameter" do
-        api_get :index, order_token: inspection.guest_token, order_number: inspection.number
-        expect(response.status).to eq(200)
-      end
-    end
-
-    context "with an incorrect inspection token" do
-      it "returns unauthorized" do
-        api_get :index, order_token: "NOT_A_TOKEN", order_id: inspection.number
-        expect(response.status).to eq(401)
-      end
-    end
-  end
-
   context "cannot make a request to the API" do
     it "without an API key" do
       api_get :index
@@ -75,22 +52,6 @@ describe Gesmew::Api::BaseController, :type => :controller do
     resource.valid? # get some errors
     expect(subject).to receive(:index).and_raise(ActiveRecord::RecordInvalid.new(resource))
     get :index, token: 'exception-message'
-    expect(json_response).to eql('exception' => "Validation failed: Name can't be blank, Price can't be blank, Shipping category can't be blank")
-  end
-
-  it "maps semantic keys to nested_attributes keys" do
-    klass = double(:nested_attributes_options => { :line_items => {},
-                                                  :bill_address => {} })
-    attributes = { 'line_items' => { :id => 1 },
-                   'bill_address' => { :id => 2 },
-                   'name' => 'test inspection' }
-
-    mapped = subject.map_nested_attributes_keys(klass, attributes)
-    expect(mapped.has_key?('line_items_attributes')).to be true
-    expect(mapped.has_key?('name')).to be true
-  end
-
-  it "lets a subclass override the establishment associations that are eager-loaded" do
-    expect(controller.respond_to?(:product_includes, true)).to be
+    expect(json_response).to eql('exception' => "Validation failed: Name can't be blank, Establishment type can't be blank, Contact information can't be blank")
   end
 end

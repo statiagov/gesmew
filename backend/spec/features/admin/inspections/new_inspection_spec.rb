@@ -12,7 +12,16 @@ describe "New Inspection", :type => :feature, js:true do
     visit gesmew.new_admin_inspection_path
   end
 
-  it "does check if you have a establishment and inspector before letting proccess the inspection" do
-    sleep 10.minute
+  context "adding and removing inspector to inspection" do
+    it "inspector info shows up just fine when added" do
+      select2_search user_1.first_name, from: Gesmew.t(:first_or_lastname)
+      click_icon :add
+      wait_for_ajax
+      expect(page).to have_content(user_1.full_name)
+    end
+
+    it "inspector info does not show up when removed" do
+      sleep 10.minutes
+    end
   end
 end
