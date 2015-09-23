@@ -3,6 +3,7 @@
 //= require jquery.cookie
 //= require jquery.jstree/jquery.jstree
 //= require jquery_ujs
+//= require sweetalert
 //= require jquery-ui/datepicker
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete
@@ -11,6 +12,7 @@
 //= require velocity
 //= require gesmew
 //= require gesmew/backend/gesmew-select2
+
 //= require_tree .
 
 Gesmew.routes.clear_cache = Gesmew.pathFor('admin/general_settings/clear_cache')
