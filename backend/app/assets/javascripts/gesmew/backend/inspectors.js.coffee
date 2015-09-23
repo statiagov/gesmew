@@ -18,6 +18,6 @@ removeInspector = (inspector_id) ->
     data:
       token: Gesmew.api_key
   ).done((msg) ->
-    window.location.reload()
+    window.location.reload(true)
   ).fail (msg) ->
     console.log(msg)

@@ -62,14 +62,14 @@ class GesmewInitial < ActiveRecord::Migration
     add_index :gesmew_preferences, [:key], :name => 'index_gesmew_preferences_on_key', :unique => true
 
     create_table :gesmew_contact_information do |t|
+      t.string        :email
       t.string        :firstname
       t.string        :lastname
       t.string        :fullname
       t.string        :address
-      t.string        :country, :default => "Caribbean Netherlands"   
+      t.string        :country, :default => "Caribbean Netherlands"
       t.string        :district
-      t.string        :phone
-      t.string        :alternative_phone
+      t.string        :phone_number
       t.timestamps    null: false
     end
 
@@ -82,6 +82,9 @@ class GesmewInitial < ActiveRecord::Migration
       t.string     :encrypted_password,     :limit => 128
       t.string     :password_salt,          :limit => 128
       t.string     :email
+      t.string     :firstname
+      t.string     :lastname
+      t.string     :fullname
       t.string     :remember_token
       t.string     :persistence_token
       t.string     :reset_password_token
@@ -92,7 +95,6 @@ class GesmewInitial < ActiveRecord::Migration
       t.datetime   :current_sign_in_at
       t.datetime   :last_sign_in_at
       t.string     :current_sign_in_ip
-      t.references :contact_information
       t.string     :last_sign_in_ip
       t.string     :login
       t.string     :authentication_token
@@ -103,15 +105,11 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :gesmew_users, [:contact_information_id], :name => 'index_gesmew_users_on_contact_information_id'
-
-
     create_table :gesmew_establishments do |t|
       t.string     :name
       t.string     :number, :limit => 15
       t.references :establishment_type,  :null => false
       t.references :contact_information, :null => false
-      t.integer    :workers
       t.timestamps null: false
     end
 

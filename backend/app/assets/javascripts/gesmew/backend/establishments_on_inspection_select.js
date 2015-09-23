@@ -24,7 +24,7 @@ selectEstablishment = function() {
 }
 
 establishmentApiPost = function(establishment_id){
-    var url = Gesmew.routes.inspections_api + "/" + inspection_number + '/establishment';
+    var url = Gesmew.routes.inspections_api + "/" + inspection_number + '/establishments';
     console.log(url);
     $.ajax({
         type: "POST",

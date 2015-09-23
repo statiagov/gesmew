@@ -2,5 +2,5 @@
   <% if @inspection.try(:errors).present? %>
       <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
   <% end %>
-  <%= render "gesmew/admin/inspections/establishment_detail", inspection: inspection %>
+  <%= render "gesmew/admin/inspections/establishment_detail", establishment: inspection.establishment %>
 </div>

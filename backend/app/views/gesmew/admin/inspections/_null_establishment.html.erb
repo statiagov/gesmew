@@ -1,4 +1,4 @@
-<%= render 'select_establishment' if can?(:update, @inspection) %>
+<%= render 'select_establishment' if can?(:update, inspection) %>
 <div class="alert alert-danger">
   <%= Gesmew.t(:establishment_is_empty_add_establishment)%>
 </div>

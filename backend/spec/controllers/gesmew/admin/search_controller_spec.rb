@@ -9,7 +9,7 @@ describe Gesmew::Admin::SearchController, :type => :controller do
     let(:user_2) { create(:user, :email => "user_2@example.com", firstname:'Michail', lastname:'Gumbs') }
 
     it "can find a user by their first or last name "do
-      gesmew_xhr_get :users, :q => user_1.first_name
+      gesmew_xhr_get :users, :q => user_1.firstname
       expect(assigns[:users]).to include(user_1)
       expect(assigns[:users]).to_not include(user_2)
     end
@@ -18,7 +18,7 @@ describe Gesmew::Admin::SearchController, :type => :controller do
       it "excludes inspector_ids" do
         inspection =  create(:inspection)
         inspection.add_inspector(user_1)
-        gesmew_xhr_get :users, {:q => user_1.first_name, :object => "inspection/#{inspection.id}", :related => "inspectors" }
+        gesmew_xhr_get :users, {:q => user_1.firstname, :object => "inspection/#{inspection.id}", :related => "inspectors" }
         expect(assigns[:users]).to_not include(user_1)
       end
     end
@@ -29,7 +29,7 @@ describe Gesmew::Admin::SearchController, :type => :controller do
     let(:establishment_2) { create(:establishment, name:'Golden Era')}
 
     it "can find an establishment by it's name" do
-      gesmew_xhr_get :establishments,  :q => establishment_1.name 
+      gesmew_xhr_get :establishments,  :q => establishment_1.name
       expect(assigns[:establishments]).to     include(establishment_1)
       expect(assigns[:establishments]).to_not include(establishment_2)
     end

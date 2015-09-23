@@ -28,8 +28,8 @@ module Gesmew
       contact_information.country
     end
 
-    def phone
-      contact_information.phone
+    def phone_number
+      contact_information.phone_number
     end
   end
 end

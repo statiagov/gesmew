@@ -215,7 +215,7 @@ describe "Inspection Listing", type: :feature, js:true do
 
       it "only shows the inspections with the selected inspector" do
         click_on 'Filter'
-        select inspector_1.full_name, from: "Inspector(s)"
+        select inspector_1.fullname, from: "Inspector(s)"
         click_on 'Filter Results'
         within_row(1) { expect(page).to have_content("I200") }
         within("table#listing_inspections") do
@@ -229,8 +229,8 @@ describe "Inspection Listing", type: :feature, js:true do
         inspector_2.inspections <<  inspection_3
 
         click_on 'Filter'
-        select inspector_1.full_name, from: "Inspector(s)"
-        select inspector_2.full_name, from: "Inspector(s)"
+        select inspector_1.fullname, from: "Inspector(s)"
+        select inspector_2.fullname, from: "Inspector(s)"
         click_on 'Filter Results'
         within_row(1) do
           expect(page).to have_content("I200")

@@ -1,7 +1,7 @@
 collection(@users)
 attributes :email, :id
 node(:name) do |u|
-  u.full_name
+  u.fullname
 end
 child(:gesmew_roles => :roles) {
   attributes :name

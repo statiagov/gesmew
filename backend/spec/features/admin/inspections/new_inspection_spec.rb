@@ -12,15 +12,24 @@ describe "New Inspection", :type => :feature, js:true do
     visit gesmew.new_admin_inspection_path
   end
 
-  context "adding and removing inspector to inspection" do
-    it "inspector info shows up just fine when added" do
-      select2_search user_1.first_name, from: Gesmew.t(:first_or_lastname)
+  context "acceptance testing coming here" do
+    it "info shows up just fine when added" do
+      select2_search establishment.name, from: Gesmew.t(:establishment_name_select)
+      click_button('Select')
+      wait_for_ajax
+      expect(page).to have_content(establishment.name)
+      select2_search user_1.firstname, from: Gesmew.t(:first_or_lastname)
       click_icon :add
       wait_for_ajax
-      expect(page).to have_content(user_1.full_name)
+      expect(page).to have_content(user_1.fullname)
     end
-
-    it "inspector info does not show up when removed" do
+  end
+  context "view interactive testing..." do
+    before do
+      create_list(:establishment, 50)
+      create_list(:admin_user, 15)
+    end
+    it "sleeeeeep" do
       sleep 10.minutes
     end
   end

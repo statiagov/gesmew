@@ -63,7 +63,7 @@
         <div class="col-md-4">
           <div class="form-group">
             <%= label_tag :q_inspectors_id_in, Gesmew.t(:inspectors) %>
-            <%= f.select  :inspectors_id_in, Gesmew.user_class.includes(:contact_information).all.pluck(:fullname, :id),{:include_blank => true}, :multiple => true, :class => 'select2' %>
+            <%= f.select  :inspectors_id_in, Gesmew.user_class.all.pluck(:fullname, :id),{:include_blank => true}, :multiple => true, :class => 'select2' %>
           </div>
         </div>
       </div>
@@ -156,7 +156,7 @@
           <ul>
             <% inspection.inspectors.all.each do |inspector| %>
                 <li>
-                  <%= link_to("#{inspector.full_name}", edit_admin_user_path(inspector)) %>
+                  <%= link_to("#{inspector.fullname}", edit_admin_user_path(inspector)) %>
                 </li>
             <% end %>
          </ul>

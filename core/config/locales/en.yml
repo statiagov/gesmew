@@ -16,7 +16,8 @@ en:
         number_of_inspectors: Number of Inspectors
         completed_at: Completed At
         establishment: Establishment
-        establishment_type: Est. Type
+        establishment_type: Establishment Type
+        est_type: Est. Type
         created_at: Inspection Date
         inspectors: Inspector(s)
         inspection_type: Insp. Type
@@ -150,6 +151,7 @@ en:
     approver: Approver
     approved_at: Approved at
     are_you_sure: Are you sure?
+    are_you_sure_dissociate_establishment_from_inspection: "Are you sure you want to dissociate the establishment from this inspection ?"
     are_you_sure_remove: Are you sure you want to remove this record?
     associated_adjustment_closed: The associated adjustment is closed, and will not be recalculated. Do you want to open it?
     at_symbol: '@'
@@ -240,7 +242,7 @@ en:
       other: ! '%{count} errors prohibited this record from being saved'
     establishment: Establishment
     establishment_name_select: ! "Name (enter at least first 3 characters)"
-    establishment_is_empty_add_establishment: This Inspection does not have an Estalishment
+    establishment_is_empty_add_establishment: This inspection does not have an estalishment associated to it
     event: Event
     establishment_type: Est. Type
     events:
@@ -560,6 +562,5 @@ en:
     width: Width
     year: Year
     you_have_no_inspections_yet: You have no inspections yet
-    establishment_is_empty_add_establishment: Your inspection is empty, please search for and add a establishment above
     zip: Zip
     zipcode: Zip Code

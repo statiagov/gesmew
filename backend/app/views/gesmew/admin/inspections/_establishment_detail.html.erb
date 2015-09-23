@@ -1,42 +1,13 @@
 <div class="">
-  <h1><%= @inspection.establishment.name %></h1>
+  <h1><%= establishment.name %></h1>
   <address>
-    <strong><%= @inspection.establishment.owner_fullname %></strong><br>
-    <%= @inspection.establishment.address %><br>
-    <%= @inspection.establishment.country %><br>
-    <abbr title="Phone">P:</abbr> <%= @inspection.establishment.phone %><br>
+    <strong><%= establishment.owner_fullname %></strong><br>
+    <%= establishment.address %><br>
+    <%= establishment.country %><br>
+    <abbr title="Phone">P:</abbr> <%= establishment.phone_number %><br>
+    <a href="mailto:#"><%= establishment.contact_information.email %></a><br>
     <small>to change establishment click
-      <%= link_to 'here', "#", class: 'remove-establishment', data: { 'establishment-id' => @inspection.establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
+      <%= link_to 'here', "#", class: 'remove-establishment', data: { 'establishment-id' => establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
     </small>
   </address>
 </div>
-
-<!-- <div class="panel panel-default">
-  <div class="panel-heading">
-    <h1 class="panel-title">
-      <%= Gesmew.t(:establishment) %>
-    </h1>
-  </div>
-  <table class="table table-bordered establishment" data-hook="establishment">
-    <thead>
-      <th colspan="1"><%= Gesmew.t(:name) %></th>
-      <th class="text-center"><%= Gesmew.t(:owner_name) %></th>
-      <th class="inspections-actions text-center" data-hook="admin_inspection_form_establishment_header_actions"></th>
-    </thead>
-    <tbody>
-      <tr class="establishment">
-        <td class="inspector-full-name text-center">
-          <%= @inspection.establishment.name %>
-        </td>
-        <td class="inspector-owner text-center">
-          <%= @inspection.establishment.contact_information.fullname %>
-        </td>
-        <td class="flow-establishment-remove actions actions-4 text-center" data-hook="establishment_remove">
-          <% if can? :update, @inspection %>
-            <%= link_to_with_icon 'delete', Gesmew.t('remove'), "#", class: 'remove-establishment btn btn-danger btn-sm', data: { 'establishment-id' => @inspection.establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
-          <% end %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div> -->
