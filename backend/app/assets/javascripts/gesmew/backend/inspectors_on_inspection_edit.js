@@ -38,7 +38,6 @@ inspectorApiPost = function(inspector_id){
     }).done(function( msg ) {
         window.location.reload(true);
     }).fail(function(msg) {
-      console.log(msg)
         alert(msg.responseJSON.error)
     });
 

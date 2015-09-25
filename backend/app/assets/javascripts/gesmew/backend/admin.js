@@ -361,16 +361,28 @@ $(document).ready(function(){
     $(this).parent().fadeOut();
   });
 
-  window.Gesmew.advanceInspection = function() {
-      $.ajax({
-          type: "PUT",
-          async: false,
-          data: {
-            token: Gesmew.api_key
-          },
-          url: Gesmew.url(Gesmew.routes.checkouts_api + "/" + order_number + "/advance")
-      }).done(function() {
-          window.location.reload();
+  window.Gesmew.advanceInspection = function(path) {
+    if(inspection_state ==  'pending'){
+      swal({
+        title: 'Is the information correct?',
+        text: 'It cannot be changed once you move to the next step.',
+        type: 'warning',
+        showCancelButton: true,
+        onfirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Yes, proceed to to next step.',
+        cancelButtonText: 'No, wait.',
+        closeOnConfirm: true,
+        closeOnCancel: true,
+      }, function(confirm){
+        if(confirm) {
+          window.location.replace(path);
+        }
+        return
       });
+    }
+    else {
+      window.location.replace(path);
+    }
+
   }
 });

@@ -5,7 +5,7 @@ module Gesmew
 
         before_action :find_inspection, except: [:create, :mine, :current, :index, :update]
 
-        # Dynamically defines our stores checkout steps to ensure we check authorization on each step.
+        # Dynamically defines our inspection flow steps to ensure we check authorization on each step.
         Inspection.inspection_steps.keys.each do |step|
           define_method step do
             find_inspection
@@ -78,34 +78,31 @@ module Gesmew
           end
         end
 
-        def inspector
-          
-        end
-
-        def mine
-          if current_api_user.persisted?
-            @inspections = current_api_user.inspections.reverse_chronological.ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
+        def advance
+          find_inspection(true)
+          authorize! :update, @inspection
+          if @inspection.next
+            respond_with(@inspection, default_template: :show)
           else
-            render "gesmew/api/errors/unauthorized", status: :unauthorized
+            render text: nil, status: 409
           end
         end
 
+        # def mine
+        #   if current_api_user.persisted?
+        #     @inspections = current_api_user.inspections.reverse_chronological.ransack(params[:q]).result.page(params[:page]).per(params[:per_page])
+        #   else
+        #     render "gesmew/api/errors/unauthorized", status: :unauthorized
+        #   end
+        # end
+
         private
-          def order_params
+          def inspection_params
             if params[:inspection]
-              normalize_params
               params.require(:inspection).permit(permitted_order_attributes)
             else
               {}
             end
-          end
-
-          def normalize_params
-            params[:inspection][:payments_attributes] = params[:inspection].delete(:payments) if params[:inspection][:payments]
-            params[:inspection][:shipments_attributes] = params[:inspection].delete(:shipments) if params[:inspection][:shipments]
-            params[:inspection][:line_items_attributes] = params[:inspection].delete(:line_items) if params[:inspection][:line_items]
-            params[:inspection][:ship_address_attributes] = params[:inspection].delete(:ship_address) if params[:inspection][:ship_address]
-            params[:inspection][:bill_address_attributes] = params[:inspection].delete(:bill_address) if params[:inspection][:bill_address]
           end
 
           def find_inspection(lock = false)

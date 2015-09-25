@@ -10,4 +10,9 @@ FactoryGirl.define do
     end
     completed_at  {nil}
   end
+
+  factory :invalid_inspection, class: Gesmew::Inspection do
+    establishment {nil}
+    completed_at  {nil}
+  end
 end

@@ -7,12 +7,6 @@ module Gesmew
 
     let!(:inspection) { create(:inspection) }
 
-    let(:attributes) do
-      [:number, :item_total, :display_total, :total, :state, :adjustment_total, :user_id,
-       :created_at, :updated_at, :completed_at, :payment_total, :shipment_state, :payment_state,
-       :email, :special_instructions, :total_quantity, :display_item_total, :currency]
-    end
-
     let(:current_api_user) do
       user = Gesmew.user_class.new(:email => "gesmew@example.com")
       user.gesmew_roles << Gesmew::Role.find_or_create_by(name: 'admin')
@@ -75,6 +69,18 @@ module Gesmew
           establishment = json_response['establishment']
           expect(establishment).to_not be_nil
           expect(establishment).to eq("Duggins Supermarket N.V.")
+        end
+      end
+    end
+
+    describe 'PUT #advance' do
+      subject {api_put :advance, id:inspection.to_param}
+
+      context 'when validation errors are present' do
+        let(:inspection) { create :invalid_inspection}
+        it 'returns a 409 status code in the responce' do
+          subject
+          expect(response.status).to eq(409)
         end
       end
     end

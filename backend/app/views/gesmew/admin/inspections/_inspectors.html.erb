@@ -20,9 +20,13 @@
             <td class="inspector-email text-center">
               <%= inspector.email %>
             </td>
-            <td class="cart-line-item-delete actions actions-4 text-center" data-hook="inspector_delete">
-              <% if can? :update, inspector %>
-                <%= link_to_with_icon 'delete', Gesmew.t('delete'), "#", class: 'delete-inspector btn btn-danger btn-sm', data: { 'inspector-id' => inspector.id, action: 'remove'}, title: Gesmew.t('delete'), no_text: true %>
+            <td class="inspector-actions actions-4 text-center" data-hook="inspector_actions">
+              <% if inspection.state?(:pending) %>
+                <% if can? :update, inspector %>
+                  <%= link_to_with_icon 'delete', Gesmew.t('delete'), "#", class: 'delete-inspector btn btn-danger btn-sm', data: { 'inspector-id' => inspector.id, action: 'remove'}, title: Gesmew.t('delete'), no_text: true %>
+                <% end %>
+              <% else %>
+                <span class="icon icon-ok"></span>
               <% end %>
             </td>
           </tr>

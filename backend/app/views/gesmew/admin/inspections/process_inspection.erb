@@ -1,0 +1,42 @@
+<%= render 'inspection_actions', inspection: @inspection, events: @inspection_events %>
+
+<%= render 'gesmew/admin/shared/inspection_tabs', current: :process_inspection %>
+
+<div data-hook="admin_inspection_edit_header">
+  <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
+</div>
+
+<% if @inspection.establishment.present? %>
+  <div class="admin-establishment" data-hook="admin-establishment">
+    <%= render "gesmew/admin/inspections/establishment_detail", establishment: @inspection.establishment %>
+  </div>
+<% else %>
+  <%= render 'select_establishment' if can?(:update, @inspection)  %>
+  <div class="alert alert-warning">
+    <%= Gesmew.t(:there_is_no_establishment_for_this_inspection)%>
+  </div>
+<% end %>
+
+<%= render 'add_inspector' if can?(:update, @inspection) and @inspection.state?(:pending) %>
+
+<% unless @inspection.inspectors.size > 1 %>
+  <div class="alert alert-warning">
+    <%= Gesmew.t(:there_should_be_two_or_more_inspectors)%>
+  </div>
+<% end %>
+
+<div data-hook="admin_inspection_edit_form">
+  <div id="inspection-form-wrapper">
+    <%= render 'inspectors_edit_form', inspection: @inspection %>
+  </div>
+</div>
+
+<% content_for :head do %>
+  <%= javascript_tag 'var expand_variants = true;' %>
+<% end %>
+
+<%= render 'gesmew/admin/shared/inspection_summary' %>
+
+<div class="text-right">
+  <%= button_tag "Next Step", onclick: "Gesmew.advanceInspection('#{gesmew.grade_and_comment_admin_inspection_path}')", class: 'btn btn-success' %>
+</div>

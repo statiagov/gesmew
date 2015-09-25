@@ -145,8 +145,8 @@
           <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_state_eq" data-ransack-value="<%= inspection.state %>"></span>
         </td>
         <td>
-          <span class="label-<%= labelize(inspection.establishment_type.name) %>"><%= inspection.establishment_type.name %></span>
-          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_establishment_establishment_type_id_in" data-ransack-value="<%= inspection.establishment_type.id %>"></span>
+          <span class="label-<%= labelize(inspection.establishment.establishment_type.name) %>"><%= inspection.establishment.establishment_type.name%></span>
+          <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_establishment_establishment_type_id_in" data-ransack-value="<%= inspection.establishment.establishment_type.id %>"></span>
         </td>
         <td>
           <span class="label-<%= labelize(inspection.establishment.name) %>"><%= inspection.establishment.name %></span>

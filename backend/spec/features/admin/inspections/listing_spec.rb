@@ -183,7 +183,7 @@ describe "Inspection Listing", type: :feature, js:true do
 
     context "filter on establishment type" do
       it "only shows the inspections with the selected establishment type" do
-        label = page.find ".label-#{labelize(inspection_1.establishment_type.name)}"
+        label = page.find ".label-#{labelize(inspection_1.establishment.establishment_type.name)}"
         parent_td = label.find(:xpath, '..')
 
         within(parent_td) do

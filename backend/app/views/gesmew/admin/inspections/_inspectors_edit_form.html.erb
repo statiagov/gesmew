@@ -5,7 +5,7 @@
 
   <%= render "gesmew/admin/inspections/inspectors", inspection: inspection %>
 
-  <% if inspection.inspectors.exists? %>
+  <% if inspection.inspectors.size > 1 %>
     <div class="alert alert-success" id="inspectors-total" data-hook="inspectors_details_total">
       <%= Gesmew.t(:number_of_inspectors) %>: <strong class="inspection-total"><%= @inspection.inspectors.size %></strong>
     </div>
@@ -13,6 +13,7 @@
 
   <%= javascript_tag do %>
     var inspection_number = '<%= @inspection.number %>';
+    var inspection_state= '<%= @inspection.state %>';
 
     <%= render partial: 'gesmew/admin/shared/update_inspection_state', handlers: [:js] %>
   <% end %>

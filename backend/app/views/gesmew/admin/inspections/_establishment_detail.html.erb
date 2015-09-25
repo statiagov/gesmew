@@ -6,8 +6,10 @@
     <%= establishment.country %><br>
     <abbr title="Phone">P:</abbr> <%= establishment.phone_number %><br>
     <a href="mailto:#"><%= establishment.contact_information.email %></a><br>
-    <small>to change establishment click
-      <%= link_to 'here', "#", class: 'remove-establishment', data: { 'establishment-id' => establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
-    </small>
+    <% if @inspection.state?(:pending) %>
+      <small>to change establishment click
+        <%= link_to 'here', "#", class: 'remove-establishment', data: { 'establishment-id' => establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
+      </small>
+    <% end %>
   </address>
 </div>

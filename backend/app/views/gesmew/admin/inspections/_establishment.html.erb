@@ -1,6 +1,0 @@
-<div class="admin-establishment" data-hook="admin-establishment">
-  <% if @inspection.try(:errors).present? %>
-      <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
-  <% end %>
-  <%= render "gesmew/admin/inspections/establishment_detail", establishment: inspection.establishment %>
-</div>

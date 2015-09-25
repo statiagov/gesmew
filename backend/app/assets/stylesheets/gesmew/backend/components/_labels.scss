@@ -24,8 +24,14 @@
   background-color: $brand-danger;
 }
 
+// Blue
+.label-processed {
+  background-color: $brand-primary
+}
+
 // Orange
 .label-establishment,
+.label-processing,
 .label-undetermined,
 .label-pending,
 .label-awaiting_return,

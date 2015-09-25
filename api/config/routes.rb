@@ -17,7 +17,11 @@ Gesmew::Core::Engine.add_routes do
         resources :establishments, :controller => 'inspections/establishments'
       end
 
-      resources :inspections, concerns: :inspection_routes
+      resources :inspections, concerns: :inspection_routes do
+        member do
+          put :advance
+        end
+      end
 
       resources :zones
       resources :countries, only: [:index, :show] do

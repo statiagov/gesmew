@@ -53,15 +53,21 @@ module Gesmew
             end
 
             event :process do
-              transition to: :processing, from: :pending
+              transition to: :processed, from: :pending
             end
 
             event :grade_and_comment do
-              transition to: :grading_and_commenting, from: :processing
+              transition to: :grading_and_commenting, from: :processed
             end
 
             event :complete do
               transition to: :completed, from: :grading_and_commenting
+            end
+
+            before_transition to: :processed do |inspection, transition|
+              inspection.ensure_establishment_present
+              inspection.ensure_at_least_two_inspectors
+              false if inspection.errors.any?
             end
           end
 

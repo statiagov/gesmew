@@ -23,7 +23,7 @@ module Gesmew
       it 'can add an establishment to an existing inspection' do
         api_post :create, :establishment => { establishment_id: establishment.id }
         inspection.reload
-        expect(inspection.establishment).to be_kind_of(Gesmew::Establishment)
+        expect(inspection.establishment).to be_present
         expect(response.status).to  eq(201)
       end
     end
@@ -35,7 +35,7 @@ module Gesmew
       it 'can remove an establishment from an existing inspection' do
         api_delete :destroy, :id => establishment.id
         inspection.reload
-        expect(inspection.establishment).to be_kind_of(Gesmew::NullEstablishment)
+        expect(inspection.establishment).to_not be_present
         expect(response.status).to  eq(204)
       end
     end

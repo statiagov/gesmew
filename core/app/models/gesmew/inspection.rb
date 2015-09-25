@@ -19,14 +19,6 @@ module Gesmew
       has_many   :inspectors, -> {uniq}, :through => :inspection_users, source: :user
     end
 
-    def establishment
-      super || Gesmew::NullEstablishment.new
-    end
-
-    def establishment_type
-      establishment.establishment_type
-    end
-
     def score_total
       Random.rand(10) + 1
     end
@@ -36,7 +28,7 @@ module Gesmew
     end
 
     def can_cancel?
-      return false unless completed? and state != 'canceled'
+      return true unless state?(:pending) 
     end
 
     def add_inspector(inspector)
@@ -50,14 +42,22 @@ module Gesmew
       save
     end
 
-    def stringy_establishment
-      establishment.class.name.demodulize.underscore
-    end
-
     inspection_flow do
-      go_to_state :processing
+      go_to_state :processed
       go_to_state :grading_and_commenting
       go_to_state :completed
+    end
+
+    def ensure_establishment_present
+      unless establishment.present?
+        errors.add(:base, Gesmew.t(:there_is_no_establishment_for_this_inspection)) and return false
+      end
+    end
+
+    def ensure_at_least_two_inspectors
+      unless inspectors.size > 1
+        errors.add(:base, Gesmew.t(:there_should_be_two_or_more_inspectors)) and return false
+      end
     end
   end
 end

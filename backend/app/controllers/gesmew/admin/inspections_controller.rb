@@ -2,7 +2,7 @@ module Gesmew
   module Admin
     class InspectionsController < Gesmew::Admin::BaseController
       before_action :initialize_inspection_events
-      before_action :load_inspection, only: [:edit, :update, :cancel, :resume, :approve, :resend, :open_adjustments, :close_adjustments, :proccess]
+      before_action :load_inspection, only: [:edit, :update, :approve, :process_inspection, :grade_and_comment]
 
       respond_to :html
 
@@ -48,16 +48,25 @@ module Gesmew
 
       def new
         @inspection = Gesmew::Inspection.create(inspection_params)
-        redirect_to proccess_admin_inspection_url(@inspection)
+        redirect_to process_inspection_admin_inspection_url(@inspection)
       end
 
       def edit
         can_not_transition_without_customer_info
       end
 
-      def proccess
+      def process_inspection
         if @inspection.completed?
           redirect_to edit_admin_inspection_url(@inspection)
+        end
+      end
+
+      def grade_and_comment
+        if @inspection.state?(:pending)
+          unless @inspection.process
+            redirect_to(process_inspection_admin_inspection_url(@inspection),
+              flash: {error: "Some errors prevented you from going to the next step, please check the form below."}) and return
+          end
         end
       end
 
@@ -75,45 +84,10 @@ module Gesmew
         render :action => :edit
       end
 
-      def cancel
-        @inspection.canceled_by(try_gesmew_current_user)
-        flash[:success] = Gesmew.t(:inspection_canceled)
-        redirect_to :back
-      end
-
-      def resume
-        @inspection.resume!
-        flash[:success] = Gesmew.t(:inspection_resumed)
-        redirect_to :back
-      end
-
       def approve
         @inspection.approved_by(try_gesmew_current_user)
         flash[:success] = Gesmew.t(:inspection_approved)
         redirect_to :back
-      end
-
-      def resend
-        InspectionMailer.confirm_email(@inspection.id, true).deliver_later
-        flash[:success] = Gesmew.t(:inspection_email_resent)
-
-        redirect_to :back
-      end
-
-      def open_adjustments
-        adjustments = @inspection.all_adjustments.where(state: 'closed')
-        adjustments.update_all(state: 'open')
-        flash[:success] = Gesmew.t(:all_adjustments_opened)
-
-        respond_with(@inspection) { |format| format.html { redirect_to :back } }
-      end
-
-      def close_adjustments
-        adjustments = @inspection.all_adjustments.where(state: 'open')
-        adjustments.update_all(state: 'closed')
-        flash[:success] = Gesmew.t(:all_adjustments_closed)
-
-        respond_with(@inspection) { |format| format.html { redirect_to :back } }
       end
 
       private
@@ -122,7 +96,7 @@ module Gesmew
         end
 
         def load_inspection
-          @inspection = Inspection.friendly.find(params[:id])
+          @inspection ||= Inspection.friendly.find(params[:id])
           authorize! action, @inspection
         end
 

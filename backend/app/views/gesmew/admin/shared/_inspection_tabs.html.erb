@@ -5,15 +5,15 @@
 
 <% content_for :sidebar do %>
   <ul class="nav nav-pills nav-stacked" data-hook="admin_inspection_tabs">
-    <% if can?(:update, @inspection) && @inspection.inspection_steps.include?("processing") %>
-      <li<%== ' class="active"' if current == :proccess %> data-hook='admin_inspection_tabs_proccess'>
-        <%= link_to_with_icon 'oil', Gesmew.t(:proccess), gesmew.proccess_admin_inspection_url(@inspection) %>
+    <% if can?(:update, @inspection) && @inspection.inspection_steps.include?("processed") %>
+      <li<%== ' class="active"' if current == :process_inspection %> data-hook='admin_inspection_tabs_proccess'>
+        <%= link_to_with_icon 'oil', Gesmew.t(:process_inspection), gesmew.process_inspection_admin_inspection_url(@inspection) %>
       </li>
     <% end %>
 
     <% if can? :update, @inspection && @inspection.inspection_steps.include?("grading_and_commenting") %>
-      <li<%== ' class="active"' if current == :grading_and_commenting %> data-hook='admin_inspection_tabs_grading'>
-        <%= link_to_with_icon 'education', Gesmew.t(:grade_and_comment), edit_admin_inspection_url(@inspection) %>
+      <li<%== ' class="active"' if current == :grade_and_comment %> data-hook='admin_inspection_tabs_grading'>
+        <%= link_to_with_icon 'education', Gesmew.t(:grade_and_comment), gesmew.grade_and_comment_admin_inspection_url(@inspection) %>
       </li>
     <% end %>
 
