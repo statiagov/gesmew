@@ -7,6 +7,8 @@ describe Gesmew::Inspection, type: :model do
     Gesmew::Inspection.define_state_machine!
     # We don't care about this validation here
     allow(inspection).to receive(:require_email)
+    allow(inspection).to receive(:ensure_at_least_two_inspectors)
+    allow(inspection).to receive(:ensure_establishment_present)
   end
 
   context "#next!" do

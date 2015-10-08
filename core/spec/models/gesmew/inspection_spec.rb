@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Gesmew::Inspection, type: :model do
   let(:inspector) {create(:admin_user)}
   let(:inspection)  {create(:inspection)}

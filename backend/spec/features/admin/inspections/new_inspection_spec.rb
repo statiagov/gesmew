@@ -12,9 +12,12 @@ describe "New Inspection", :type => :feature, js:true do
     visit gesmew.new_admin_inspection_path
   end
 
-  it "checks if the inspection has an establishment and at least one inspector before going to the next step", js:false do
+  it "checks if the inspection has an establishment and at least one inspector before going to the next step"  do
     click_button('Next Step')
-    expect(page).to have_content('Errors')
+    sleep 2.second
+    expect(find('.sweet-alert')).to have_content('Yes, proceed to to next step.')
+    click_button('Yes, proceed to to next step.')
+    expect(page).to have_content('errors')
   end
 
   it "" do
@@ -29,6 +32,6 @@ describe "New Inspection", :type => :feature, js:true do
   end
 
   it "manual testing" do
-    sleep 10.minutes
+    sleep 60.minutes
   end
 end

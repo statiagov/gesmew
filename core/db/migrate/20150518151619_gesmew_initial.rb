@@ -118,7 +118,7 @@ class GesmewInitial < ActiveRecord::Migration
 
     create_table :gesmew_establishment_types do |t|
       t.string :name, :null => false
-      t.string :description
+      t.text   :description
       t.timestamps null: false
     end
 
@@ -147,10 +147,16 @@ class GesmewInitial < ActiveRecord::Migration
       t.datetime    :completed_at
       t.boolean     :considered_risky
       t.integer     :state_lock_version, default: 0, null: false
+      t.float       :points_possible
       t.timestamps  null: false
     end
 
     add_index :gesmew_inspections, [:establishment_id], :name => 'index_gesmew_inspections_on_establishment_id'
+
+    create_table :gesmew_inspection_scopes do |t|
+      t.string :name
+      t.text   :description
+    end
 
     create_table :gesmew_inspection_users do |t|
       t.belongs_to :user
@@ -161,5 +167,43 @@ class GesmewInitial < ActiveRecord::Migration
     add_index :gesmew_inspection_users, [:inspection_id], :name => 'index_gesmew_inspection_users_on_inspection_id'
     add_index :gesmew_inspection_users, [:user_id], :name => 'index_gesmew_inspection_users_on_user_id'
 
+    create_table :gesmew_rubrics do |t|
+      t.belongs_to :user
+      t.integer :context_id
+      t.string :context_type
+      t.text :data
+      t.integer :points_possible
+      t.string :title
+      t.text :description
+      t.boolean :read_only, default: false
+      t.timestamps null: false
+    end
+    add_index :gesmew_rubrics, [:context_id, :context_type], :name => 'index_gesmew_rubrics_on_context_id_and_context_type'
+
+    create_table :gesmew_rubric_associations do |t|
+      t.belongs_to :rubric
+      t.integer :association_id
+      t.string :association_type
+      t.string :context_type
+      t.integer :context_id
+      t.string :title
+      t.text :description
+      t.text :summary_data
+      t.string :url
+      t.timestamps null: false
+    end
+    add_index :gesmew_rubric_associations,[:association_id, :association_type], :name => 'index_gesmew_rubric_associations_on_ass_id_and_ass_type'
+
+    create_table :gesmew_rubric_assessments do |t|
+      t.integer :assessor_id
+      t.belongs_to :rubric
+      t.belongs_to :rubric_association
+      t.float :score
+      t.text :data
+      t.integer :artifact_id
+      t.string :artifact_type
+      t.timestamps
+    end
+    add_index :gesmew_rubric_assessments,[:artifact_id, :artifact_type], :name => 'index_gesmew_rubric_asessments_on_arti_id_and_arti_type'
   end
 end

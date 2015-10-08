@@ -28,6 +28,10 @@ en:
         state: State
         total_score: Total Score
         considered_risky: Risky
+    models:
+      gesmew/inspection:
+        one: Inspection
+        other: Inspections
 
   devise:
     confirmations:
@@ -172,6 +176,7 @@ en:
     cancel: cancel
     canceler: Canceler
     canceled_at: Canceled at
+    context_rubric_name: "%{name} Rubric"
     cannot_perform_operation: Cannot perform requested operation
     capture: Capture
     capture_events: Capture events

@@ -364,6 +364,7 @@ $(document).ready(function(){
   window.Gesmew.advanceInspection = function(path) {
     if(inspection_state ==  'pending'){
       swal({
+        id: 'boo',
         title: 'Is the information correct?',
         text: 'It cannot be changed once you move to the next step.',
         type: 'warning',

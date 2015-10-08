@@ -1,3 +1,10 @@
 eval(File.read(File.dirname(__FILE__) + '/../common_gesmew_dependencies.rb'))
 
+group :test do
+  platforms :ruby_20, :ruby_21, :ruby_22 do
+    gem 'syck', '1.0.4'
+    gem 'iconv', '1.0.4'
+  end
+end
+
 gemspec
