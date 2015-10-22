@@ -10,7 +10,6 @@ module Gesmew
     before_save :update_inspection_points
     before_save :update_values
 
-
     ValidAssociationModels = {
       'Gesmew::Inspection' => Gesmew::Inspection
    }
@@ -32,7 +31,7 @@ module Gesmew
       self.title ||= self.association_object.number
     end
 
-    def assess(opts={})
+    def assess(opts={}, initital=false)
       association = self
       ratings = []
       score = nil
@@ -40,11 +39,17 @@ module Gesmew
       replace_ratings = false
       params = opts[:assessment]
       self.rubric.criteria_object.each do |criterion|
-        data = params["criterion_#{criterion.id}".to_sym]
+        if initital
+          data ||= {points:0}
+        else
+          data = params["criterion_#{criterion.id}".to_sym]
+        end
         rating = {}
         if data
           replace_ratings = true
           has_score = (data[:points]).present?
+          rating[:name] = criterion[:name]
+          rating[:description] = criterion[:description]
           rating[:points] = [criterion.points, data[:points].to_f].min if has_score
           if has_score
             score ||= 0
@@ -61,5 +66,9 @@ module Gesmew
       assessment.tap(&:save)
     end
 
+    def assessment(opts={})
+      return nil unless opts.present?
+      self.rubric_assessments.where(assessor: opts[:assessor], artifact:opts[:artifact], rubric: self.rubric).first
+    end
   end
 end

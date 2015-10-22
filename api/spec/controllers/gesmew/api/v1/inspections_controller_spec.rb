@@ -20,7 +20,6 @@ module Gesmew
 
     context "the current api user is authenticated" do
       let(:inspection) { create(:inspection)}
-
       it "can view all inspections" do
         api_get :index
 
@@ -80,15 +79,31 @@ module Gesmew
         let(:inspection) { create :invalid_inspection}
         it 'returns a 409 status code in the responce' do
           subject
-          expect(response.status).to eq(409)
+          expect(response.status).to_be eq(409)
         end
+      end
+    end
+
+    describe 'PUT #update' do
+      let(:inspection) { create :inspection, establishment_name: "Duggins Supermarket N.V."}
+      let(:date){Date.today - 2}
+      subject {api_put :update, id:inspection.to_param, :inspection => {inspected_at: date}}
+      it "returns a 200 status code in the responce" do
+        subject
+        expect(response.status).to eq(200)
+      end
+      it "updates the inspection with the appriate values" do
+        subject
+        inspection.reload
+        expect(inspection.inspected_at.to_s).to eq(date.to_s)
+        expect(json_response["inspected_at"]).to eq(date.to_s)
       end
     end
 
     it "inspections contain the basic inspection steps" do
       api_get :show, :id => inspection.to_param
       expect(response.status).to eq(200)
-      expect(json_response["inspection_steps"]).to eq(["processing", "grading_and_commenting", "completed"])
+      expect(json_response["inspection_steps"]).to eq(["processed", "grading_and_commenting", "completed"])
     end
   end
 end

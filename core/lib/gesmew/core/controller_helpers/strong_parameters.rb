@@ -25,10 +25,8 @@ module Gesmew
           ]
         end
 
-        def permitted_order_attributes
-          permitted_checkout_attributes + [
-            line_items_attributes: permitted_line_item_attributes
-          ]
+        def permitted_inspection_attributes
+          permitted_attributes.inspection_atrributes
         end
 
         def permitted_product_attributes

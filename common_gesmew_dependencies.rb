@@ -35,6 +35,7 @@ group :test do
   gem 'with_model'
   gem 'mutant-rspec', '~> 0.8.0'
   gem 'selenium-webdriver'
+  gem 'shoulda-callback-matchers', '~> 1.1.1'
 end
 
 group :test, :development do

@@ -1,3 +1,15 @@
 <%= render 'inspection_actions', inspection: @inspection, events: @inspection_events %>
 
 <%= render 'gesmew/admin/shared/inspection_tabs', current: :grade_and_comment %>
+<% if try_gesmew_current_user.try(:is_part_of_inspection?, @inspection.number) %>
+  <%= react_component('gesmew-rubric-assement-app')  %>
+<% else %>
+  <div class="alert alert-warning">
+    <%= Gesmew.t(:you_are_not_part_of_this_inspection)%>
+  </div>
+<% end %>
+
+<%= javascript_tag do %>
+  var inspection_number = '<%= @inspection.number %>';
+  var inspection_state= '<%= @inspection.state %>';
+<% end %>

@@ -10,6 +10,13 @@ describe Gesmew::Inspection, type: :model do
       inspection.add_inspector(inspector)
       expect(inspection.inspectors.last).to eq(inspector)
     end
+
+    it "should add multipe inspectors given an array" do
+      inspection_2 = create(:admin_user)
+      array = [inspection_2, inspector]
+      inspection.add_inspector(array)
+      expect(inspection.inspectors.all).to eq([inspection_2, inspector])
+    end
   end
 
   describe "#remove_inspector" do
@@ -38,6 +45,23 @@ describe Gesmew::Inspection, type: :model do
       expect(inspection.state).to eq('pending')
     end
   end
+
+  describe "#ensure_scope_present" do
+    let(:inspection) { create :invalid_inspection }
+    before do
+      inspection.next
+    end
+
+    it 'should have an error message' do
+      expect(inspection.errors[:base]).to include(Gesmew.t(:there_is_no_scope_for_this_inspection))
+    end
+
+    it "should have a state of a of 'pending' " do
+      expect(inspection.state).to eq('pending')
+    end
+  end
+
+
 
   describe "#ensure_at_least_two_inspectors" do
     let(:inspection) { create :invalid_inspection }

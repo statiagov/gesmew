@@ -64,10 +64,18 @@ module Gesmew
               transition to: :completed, from: :grading_and_commenting
             end
 
-            before_transition to: :processed do |inspection, transition|
+            before_transition from: :pending do |inspection, transition|
               inspection.ensure_establishment_present
               inspection.ensure_at_least_two_inspectors
+              inspection.ensure_scope_present
               false if inspection.errors.any?
+            end
+
+            if states[:pending]
+              after_transition to: :processed do |inspection, transition|
+                user_id = transition.args[0]
+                inspection.initial_assessment user_id unless inspection.assessed?
+              end
             end
           end
 

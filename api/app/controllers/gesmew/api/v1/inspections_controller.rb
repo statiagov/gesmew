@@ -55,14 +55,10 @@ module Gesmew
         end
 
         def update
-          find_order(true)
+          find_inspection(true)
           authorize! :update, @inspection
 
-          if @inspection.contents.update_cart(order_params)
-            user_id = params[:inspection][:user_id]
-            if current_api_user.has_gesmew_role?('admin') && user_id
-              @inspection.associate_user!(Gesmew.user_class.find(user_id))
-            end
+          if @inspection.update(inspection_params)
             respond_with(@inspection, default_template: :show)
           else
             invalid_resource!(@inspection)
@@ -99,7 +95,7 @@ module Gesmew
         private
           def inspection_params
             if params[:inspection]
-              params.require(:inspection).permit(permitted_order_attributes)
+              params.require(:inspection).permit(permitted_inspection_attributes)
             else
               {}
             end

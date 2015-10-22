@@ -16,6 +16,7 @@ module Gesmew
       criteria = []
       (params[:criteria] || {}).each_with_index do |criterion_data, idx|
         criterion = {}
+        criterion[:name] = criterion_data[:name]
         criterion[:description] = (criterion_data[:description] || Gesmew.t(:no_desription))
         criterion[:points] = criterion_data[:points].to_f || 0
         criterion_data[:id].strip! if criterion_data[:id]
@@ -36,6 +37,11 @@ module Gesmew
       return res if res
       ra = rubric_associations.build(association_object:association, context:context)
       ra.tap(&:save)
+    end
+
+    def dissociate_with(association, context, opts={})
+      res =  self.rubric_associations.where(association_id: association, association_type: association.class.to_s).first
+      self.rubric_associations.destroy(res)
     end
 
     def update_with_association(current_user, rubric_params, context, association_params)

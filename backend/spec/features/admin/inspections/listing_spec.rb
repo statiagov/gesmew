@@ -48,6 +48,7 @@ describe "Inspection Listing", type: :feature, js:true do
     user_c.inspections << inspection_4
 
     visit gesmew.admin_inspections_path
+    sleep 10.minutes
   end
 
   describe "listing inspections" do

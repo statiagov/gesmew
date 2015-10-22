@@ -9,6 +9,7 @@ describe Gesmew::Inspection, type: :model do
     allow(inspection).to receive(:require_email)
     allow(inspection).to receive(:ensure_at_least_two_inspectors)
     allow(inspection).to receive(:ensure_establishment_present)
+    allow(inspection).to receive(:ensure_scope_present)
   end
 
   context "#next!" do

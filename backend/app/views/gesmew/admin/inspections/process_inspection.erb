@@ -1,7 +1,6 @@
 <%= render 'inspection_actions', inspection: @inspection, events: @inspection_events %>
 
 <%= render 'gesmew/admin/shared/inspection_tabs', current: :process_inspection %>
-
 <div data-hook="admin_inspection_edit_header">
   <%= render 'gesmew/admin/shared/error_messages', target: @inspection %>
 </div>
@@ -17,6 +16,8 @@
   </div>
 <% end %>
 
+<%= react_component('inspection-select-date', {date: @inspection.inspected_at}) %>
+
 <%= render 'add_inspector' if can?(:update, @inspection) and @inspection.state?(:pending) %>
 
 <% unless @inspection.inspectors.size > 1 %>
@@ -30,6 +31,15 @@
     <%= render 'inspectors_edit_form', inspection: @inspection %>
   </div>
 </div>
+
+<% if @inspection.scope.present? %>
+  <%= react_component('inspection-scope-show', {scope: @inspection.scope, status:@inspection.state} ) %>
+<% else %>
+  <%= render 'select_inspection_scope' if can?(:update, @inspection)  %>
+  <div class="alert alert-warning">
+    <%= Gesmew.t(:there_is_no_scope_for_this_inspection)%>
+  </div>
+<% end %>
 
 <% content_for :head do %>
   <%= javascript_tag 'var expand_variants = true;' %>

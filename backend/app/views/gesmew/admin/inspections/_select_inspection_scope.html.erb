@@ -1,0 +1,16 @@
+<%= render partial: "gesmew/admin/inspection_scopes/autocomplete", formats: :js %>
+
+<%= render partial: "gesmew/admin/inspection_scopes/autocomlete_inspection_scope_detail", formats: :js %>
+
+<div id="select-inspection" data-hook class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title"><%= Gesmew.t(:select_inspection_scope) %></h1>
+  </div>
+  <div class="panel-body">
+    <div data-hook="select_inspection_scope_name" class="form-group">
+      <%= label_tag :select_inspection_scope_id, Gesmew.t(:inspection_scope_name_select) %>
+      <%= hidden_field_tag :select_inspection_scope_id, "", class: "inspection_scope_autocomplete fullwidth-input" %>
+    </div>
+    <div id="inspection_scope_details"></div>
+  </div>
+</div>

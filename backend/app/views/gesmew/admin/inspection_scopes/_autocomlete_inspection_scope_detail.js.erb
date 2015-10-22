@@ -1,0 +1,23 @@
+<script type='text/template' id='inspection_scope_autocomplete_detail_template'>
+
+  <label><%= Gesmew.t(:select_inspection_scope) %></label>
+
+  <table class="inspection-scope-select table table-bordered" data-hook="inspection_scope-select">
+    <thead>
+      <th><%= Gesmew.t(:name) %></th>
+      <th><%= Gesmew.t(:description) %></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{inspection_scope.name}}</td>
+        <td>{{inspection_scope.description}}</td>
+        <td class="actions actions-1 text-center">
+          <button class="btn btn-sm btn-success select_inspection_scope with-tip" data-variant-id="{{inspection_scope.id}}" title="<%= Gesmew.t(:select) %>" data-action="select">
+            Select
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</script>

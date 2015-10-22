@@ -34,4 +34,15 @@ describe Gesmew::Admin::SearchController, :type => :controller do
       expect(assigns[:establishments]).to_not include(establishment_2)
     end
   end
+
+  describe "inspection_scopes" do
+    let(:inspection_scope_1) { create(:inspection_scope, name:'Containers')}
+    let(:inspection_scope_2) { create(:inspection_scope, name:'Freezers')}
+
+    it "can find a scope by it's name" do
+      gesmew_xhr_get :inspection_scopes,  :q => inspection_scope_1.name
+      expect(assigns[:inspection_scopes ]).to     include(inspection_scope_1)
+      expect(assigns[:inspection_scopes ]).to_not include(inspection_scope_2)
+    end
+  end
 end

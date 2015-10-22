@@ -22,7 +22,7 @@ module Gesmew
       self.abilities.delete(ability)
     end
 
-    def initialize(user)
+    def initialize(user, opts={})
       self.clear_aliased_actions
 
       # override cancan default aliasing (we don't want to differentiate between read and index)

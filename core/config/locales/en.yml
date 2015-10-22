@@ -263,7 +263,7 @@ en:
     expiration: Expiration
     extension: Extension
     filename: Filename
-    first_or_lastname: ! First or Last Name (enter at least first 3 characters)
+    first_or_lastname: ! First or Last Name (enter at least the first 3 characters)
     filter: Filter
     filter_results: Filter Results
     first_name: First Name
@@ -299,12 +299,16 @@ en:
     inspector_is_empty_add_inspector: No inspector(s) added
     inspector_placeholder: Choose an Inspector
     inspection_approved: Inspection Aproved
+    inspection_date: Inspection Date
     inspection_number: Inspection Number
     inspection_type: Insp. Type
     inspection_state:
       establishment: choosing establishment
       grading_and_comments: grading & comments
       pending: pending
+      processed: processed
+    inspection_scope_name_select: ! " Scope name (enter at least the first 3 characters)"
+    inspection_scope_placeholder: "Select a Scope"
     included_in_price: Included in Price
     included_price_validation: cannot be selected unless you have set a Default Tax Zone
     incomplete: Incomplete
@@ -363,6 +367,7 @@ en:
     no_results: No results
     no_resource_found: 'No %{resource} found'
     no_state_changes: No state changes yet.
+    no_scope_selected: No scope selected.
     none: None
     none_selected: None Selected
     not: not
@@ -464,15 +469,18 @@ en:
     say_no: 'No'
     say_yes: 'Yes'
     scope: Scope
+    score: Score
     search: Search
     search_results: Search results for '%{keywords}'
     searching: Searching
     secure_connection_type: Secure Connection Type
     security_settings: Security Settings
     select: Select
+    select_date_of_inspection: Select the date of inspection
     select_establishment: Select Establishment
     send_mails_as: Send Mails As
     select_inpsector: Select Inspector
+    select_inspection_scope: Select Scope
     server: Server
     server_error: The server returned an error
     show: Show
@@ -532,6 +540,7 @@ en:
     there_is_no_establishment_for_this_inspection: There is no establishment for this inspection, please select an establishment and add it the inspection to continue.
     there_were_problems_with_the_following_fields: There were problems with the following fields
     there_should_be_two_or_more_inspectors: There should be two or more inspectors added to this inspection, please make changes to continue.
+    there_is_no_scope_for_this_inspection: There is no scope for this inspection
     this_order_has_already_received_a_refund: This inspection has already received a refund
     thumbnail: Thumbnail
     time: Time
@@ -568,5 +577,6 @@ en:
     width: Width
     year: Year
     you_have_no_inspections_yet: You have no inspections yet
+    you_are_not_part_of_this_inspection: You are not part of this inspection an thus cannot grade it, however you can post your comments.
     zip: Zip
     zipcode: Zip Code

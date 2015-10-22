@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'shared_examples/protect_product_actions'
 
 module Gesmew
   describe Api::V1::Inspections::EstablishmentsController, :type => :controller do

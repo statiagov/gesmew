@@ -124,7 +124,7 @@ module Gesmew
       end
 
       def authorize_for_inspection
-        @inspection = Gesmew::Inspection.find_by(number: order_id)
+        @inspection = Gesmew::Inspection.find_by(number: inspection_id)
         authorize! :read, @inspection, inspection_token
       end
 

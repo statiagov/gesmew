@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Gesmew::Rubric, type: :model do
   let(:scope){build(:inspection_scope)}
-  let(:rubric){Gesmew::Rubric.new(context: scope)}
+  let(:rubric){create(:rubric, context: scope)}
 
   describe "#update_criteria" do
     let(:rubric_params) do
@@ -13,10 +13,12 @@ describe Gesmew::Rubric, type: :model do
           {
             points:9,
             description:"Some description",
+            name:"Temperature",
           },
           {
             points:10,
             description:"Some description",
+            name:'Floors',
           }
         ]
       }
@@ -32,7 +34,18 @@ describe Gesmew::Rubric, type: :model do
   describe "#associate_with" do
     let(:inspection){create(:inspection)}
     it "should associate an object with the rubric" do
+      expect{rubric.associate_with(inspection, scope)}.to change{Gesmew::RubricAssociation.count}.from(0).to(1)
       expect(rubric.associate_with(inspection, scope)).to be_a(Gesmew::RubricAssociation)
+    end
+  end
+
+  describe "#dissociate_with" do
+    let(:inspection){create(:inspection)}
+    before do
+      rubric.associate_with(inspection, scope)
+    end
+    it "should dissociate an object from the rubric" do
+      expect{rubric.dissociate_with(inspection, scope)}.to change{Gesmew::RubricAssociation.count}.from(1).to(0)
     end
   end
 end

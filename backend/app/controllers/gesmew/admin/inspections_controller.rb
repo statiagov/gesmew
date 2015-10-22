@@ -63,10 +63,14 @@ module Gesmew
 
       def grade_and_comment
         if @inspection.state?(:pending)
-          unless @inspection.process
+          unless @inspection.process(try_gesmew_current_user.try(:id))
             redirect_to(process_inspection_admin_inspection_url(@inspection),
               flash: {error: "Some errors prevented you from going to the next step, please check the form below."}) and return
           end
+        end
+        if try_gesmew_current_user.try(:is_part_of_inspection?, @inspection.number)
+          association = @inspection.scope.rubric.associate_with(@inspection, @inspection.scope)
+          @assessment = association.assessment(assessor:try_gesmew_current_user, artifact:@inspection)
         end
       end
 

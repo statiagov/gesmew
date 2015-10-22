@@ -7,6 +7,7 @@ module Gesmew
       :image_attributes,
       :inventory_unit_attributes,
       :line_item_attributes,
+      :inspection_atrributes,
       :option_type_attributes,
       :option_value_attributes,
       :payment_attributes,
@@ -47,6 +48,8 @@ module Gesmew
     @@inventory_unit_attributes = [:shipment, :variant_id]
 
     @@line_item_attributes = [:id, :variant_id, :quantity]
+
+    @@inspection_atrributes = [:inspected_at]
 
     @@option_type_attributes = [:name, :presentation, :option_values_attributes]
 

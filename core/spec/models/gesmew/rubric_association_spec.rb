@@ -22,11 +22,13 @@ describe Gesmew::RubricAssociation do
         {
           points: 10,
           description: 'Some Description',
-          id: 'id1'
+          name:'Floors',
+          id: 'id1',
         },
         {
           points: 10,
           description: 'Some Description',
+          name:'Temperature',
           id: 'id2'
         }
       ]
@@ -46,13 +48,25 @@ describe Gesmew::RubricAssociation do
         }
       })
     end
-    it 'it creates an assessment' do
+    it 'creates an assessment' do
       expect{assess}.to change {Gesmew::RubricAssessment.count}.by(1)
     end
 
-    it 'it does not create a new assessment by the same assessor' do
+    it 'does not create a new assessment by the same assessor' do
       assess
       expect{assess}.to_not change{Gesmew::RubricAssessment.count}
     end
+    context "when initial = true" do
+      let(:assess){association.assess({}, true)}
+
+      it 'creates and assessment' do
+        expect{assess}.to change {Gesmew::RubricAssessment.count}.by(1)
+      end
+
+      it 'should have a score of 0' do
+        expect(assess.score).to eq(0)
+      end
+    end
   end
+  
 end

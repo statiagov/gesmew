@@ -23,6 +23,14 @@ module Gesmew
           @establishments = Gesmew::Establishment.text_search(params[:q])
         end
       end
+
+      def inspection_scopes
+        if params[:ids]
+          @inspection_scopes = Gesmew::InspectionScope.where(id: params[:ids].slpit(",").flatten)
+        else
+          @inspection_scopes = Gesmew::InspectionScope.text_search(params[:q])
+        end
+      end
     end
   end
 end

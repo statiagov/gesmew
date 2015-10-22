@@ -1,0 +1,36 @@
+/*
+
+ This file is part of the ZippyUI Framework
+
+ Copyright (c) 2011 ZippyUI.com
+
+ All rights reserved to zippyui.com
+ This software cannot be used/copied/distributed without the express permission from staff at zippyui.com
+
+ */
+@import '~stylus-normalizer/index.styl'
+
+row()
+  display flex
+  flex-flow row
+  flex 1
+
+column()
+  display flex
+  flex-flow column
+  flex 1
+
+cell()
+  display flex
+  align-items center
+  justify-content center
+  flex 1
+
+ellipsis()
+  text-overflow ellipsis
+  white-space nowrap
+  overflow hidden
+
+unselectable()
+  touch-callout none
+  user-select none

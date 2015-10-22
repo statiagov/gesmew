@@ -18,9 +18,12 @@ Gesmew::Core::Engine.config.to_prepare do
         email: query
       ).result}
 
-      # has_gesmew_role? simply needs to return true or false whether a user has a role or not.
       def has_gesmew_role?(role_in_question)
         gesmew_roles.where(name: role_in_question.to_s).any?
+      end
+
+      def is_part_of_inspection?(inspection_number)
+        inspections.where(number: inspection_number).any?
       end
 
       def analytics_id

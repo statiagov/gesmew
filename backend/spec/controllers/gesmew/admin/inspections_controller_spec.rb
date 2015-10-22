@@ -12,6 +12,20 @@ class InspectionSpecificAbility
 end
 
 describe Gesmew::Admin::InspectionsController, type: :controller do
+  def allow_pending_validations_after_callback
+    allow(inspection).to receive(:require_email)
+    allow(inspection).to receive(:ensure_at_least_two_inspectors)
+    allow(inspection).to receive(:ensure_establishment_present)
+    allow(inspection).to receive(:ensure_scope_present)
+
+    allow(controller).to receive_message_chain(:try_gesmew_current_user, :is_part_of_inspection?).and_return(true)
+    allow(inspection).to receive(:initial_assessment)
+    association = Gesmew::RubricAssociation.new
+    rubric = inspection.scope.rubric
+    assessment = Gesmew::RubricAssessment.new
+    allow(rubric).to receive(:associate_with).and_return(association)
+    allow(association).to receive(:assessment).and_return(assessment)
+  end
 
   context "with authorization" do
     stub_authorization!
@@ -29,8 +43,7 @@ describe Gesmew::Admin::InspectionsController, type: :controller do
       mock_model(
         Gesmew::Inspection,
         completed?:      true,
-        number:          'I123456789',
-        contact_info: mock_model(Gesmew::ContactInformation)
+        number:          'I123456789'
       )
     end
 
@@ -94,50 +107,41 @@ describe Gesmew::Admin::InspectionsController, type: :controller do
     # end
     #
     context "search" do
-      let(:user) { create(:user) }
+      let(:user) { create(:admin_user) }
 
       before do
         allow(controller).to receive_messages gesmew_current_user: user
-        user.gesmew_roles << Gesmew::Role.find_or_create_by(name: 'admin')
 
-        create(:inspection)
+        create(:inspection, completed_at: Date.today)
         expect(Gesmew::Inspection.count).to eq 1
       end
 
       it "does not display duplicated results" do
         gesmew_get :index, q: {
-          number_con: inspection.number
+          number_cont: Gesmew::Inspection.first.number
         }
-        expect(assigns[:inspections].map { |o| o.number }.count).to eq 1
+        expect(assigns[:inspections].count).to eq 1
       end
     end
-    #
-    # context "#open_adjustments" do
-    #   let(:closed) { double('closed_adjustments') }
-    #
-    #   before do
-    #     allow(adjustments).to receive(:where).and_return(closed)
-    #     allow(closed).to receive(:update_all)
-    #   end
-    #
-    #   it "changes all the closed adjustments to open" do
-    #     expect(adjustments).to receive(:where).with(state: 'closed')
-    #       .and_return(closed)
-    #     expect(closed).to receive(:update_all).with(state: 'open')
-    #     gesmew_post :open_adjustments, id: inspection.number
-    #   end
-    #
-    #   it "sets the flash success message" do
-    #     gesmew_post :open_adjustments, id: inspection.number
-    #     expect(flash[:success]).to eql('All adjustments successfully opened!')
-    #   end
-    #
-    #   it "redirects back" do
-    #     gesmew_post :open_adjustments, id: inspection.number
-    #     expect(response).to redirect_to(:back)
-    #   end
-    # end
-    #
+
+    context "#grade_and_comment" do
+      let(:inspection) {create(:inspection)}
+      before do
+        user = create(:admin_user)
+        allow(controller).to receive(:try_gesmew_current_user).and_return(user)
+      end
+      it "it returns an assessment object" do
+        allow_pending_validations_after_callback
+        gesmew_get :grade_and_comment, id: inspection.number
+        expect(assigns[:assessment]).to be_a(Gesmew::RubricAssessment)
+      end
+
+      it "redirects back unless passes validiation" do
+        gesmew_get :grade_and_comment, id: inspection.number
+        expect(response).to redirect_to(redirect_to process_inspection_admin_inspection_url(inspection))
+      end
+    end
+
     # context "#close_adjustments" do
     #   let(:open) { double('open_adjustments') }
     #

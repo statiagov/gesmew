@@ -143,8 +143,12 @@ class GesmewInitial < ActiveRecord::Migration
     create_table :gesmew_inspections do |t|
       t.string      :number, :limit => 15
       t.references  :establishment
+      t.integer     :scope_id
+      t.string      :scope_type
+      t.boolean     :assessed, default: false
       t.string      :state
       t.datetime    :completed_at
+      t.date        :inspected_at, default: Date.today
       t.boolean     :considered_risky
       t.integer     :state_lock_version, default: 0, null: false
       t.float       :points_possible
@@ -202,7 +206,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.text :data
       t.integer :artifact_id
       t.string :artifact_type
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :gesmew_rubric_assessments,[:artifact_id, :artifact_type], :name => 'index_gesmew_rubric_asessments_on_arti_id_and_arti_type'
   end
