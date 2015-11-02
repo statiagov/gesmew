@@ -12,24 +12,18 @@ module Gesmew
     validates :establishment_type, presence: true
     validates :contact_information, presence: true
 
+
+    delegate :firstname,    to: :contact_information, allow_nil: true, prefix: false
+    delegate :lastname,     to: :contact_information, allow_nil: true, prefix: false
+    delegate :fullname,     to: :contact_information, allow_nil: true, prefix: false
+    delegate :phone_number, to: :contact_information, allow_nil: true, prefix: false
+    delegate :address,      to: :contact_information, allow_nil: true, prefix: false
+    delegate :country,      to: :contact_information, allow_nil: true, prefix: false
+    delegate :email,        to: :contact_information, allow_nil: true, prefix: false
+
     scope :text_search, ->(query) {search(
       name_start: query
     ).result}
 
-    def owner_fullname
-      contact_information.fullname
-    end
-
-    def address
-      contact_information.address
-    end
-
-    def country
-      contact_information.country
-    end
-
-    def phone_number
-      contact_information.phone_number
-    end
   end
 end

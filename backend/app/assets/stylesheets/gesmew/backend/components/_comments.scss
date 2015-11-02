@@ -1,0 +1,49 @@
+#comments {
+  .comment
+  {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+  }
+
+  .comment li
+  {
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px dotted #B3A9A9;
+  }
+  .comment li:last-child
+  {
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: none;
+  }
+
+  .comment li.left .comment-body
+  {
+      margin-left: 60px;
+  }
+
+  .comment li.right .comment-body
+  {
+      margin-right: 60px;
+  }
+
+
+  .comment li .comment-body p
+  {
+      margin: 0;
+      color: #777777;
+  }
+
+  .panel .slidedown .glyphicon, .comment .glyphicon
+  {
+      margin-right: 5px;
+  }
+
+  .panel-body
+  {
+      overflow-y: scroll;
+      height: 600px;
+  }
+}

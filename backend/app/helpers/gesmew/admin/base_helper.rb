@@ -21,6 +21,10 @@ module Gesmew
         content_tag(:div, capture(&block), class: css_classes.join(' '), id: "#{model}_#{method}_field")
       end
 
+      def first_letter_fullname(first, last)
+        "#{first[0]}#{last[0]}"
+      end
+
       def error_message_on(object, method, options = {})
         object = convert_to_model(object)
         obj = object.respond_to?(:errors) ? object : instance_variable_get("@#{object}")

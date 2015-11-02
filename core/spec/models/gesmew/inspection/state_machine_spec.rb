@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Gesmew::Inspection, type: :model do
   let(:inspection) { Gesmew::Inspection.new }
+  let(:user){build(:user)}
   before do
     # Ensure state machine has been re-defined correctly
     Gesmew::Inspection.define_state_machine!
@@ -10,6 +11,7 @@ describe Gesmew::Inspection, type: :model do
     allow(inspection).to receive(:ensure_at_least_two_inspectors)
     allow(inspection).to receive(:ensure_establishment_present)
     allow(inspection).to receive(:ensure_scope_present)
+    allow(inspection).to receive(:gesmew_user).and_return(user)
   end
 
   context "#next!" do

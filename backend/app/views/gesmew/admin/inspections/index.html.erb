@@ -134,7 +134,7 @@
     <% @inspections.each do |inspection| %>
       <tr data-hook="admin_inspections_index_rows" class="state-<%= inspection.state.downcase %> <%= cycle('odd', 'even') %>">
         <td><%= l (@show_only_completed ? inspection.completed_at : inspection.created_at).try!(:to_date) %></td>
-        <td><%= link_to inspection.number, edit_admin_inspection_path(inspection) %></td>
+        <td><%= link_to inspection.number, process_inspection_admin_inspection_path(inspection) %></td>
         <td>
           <span class="label label-<%= risky_label(inspection.considered_risky) %>">
             <%= risky_text(inspection.considered_risky)  %>

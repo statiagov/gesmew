@@ -9,43 +9,19 @@ Gesmew::Core::Engine.add_routes do
         get :process_inspection
         get :grade_and_comment
         post :resend
-        get :open_adjustments
-        get :close_adjustments
         put :approve
         put :cancel
         put :resume
       end
 
       resources :state_changes, only: [:index]
-
-      resource :customer, controller: "inspections/customer_details"
-      resources :customer_returns, only: [:index, :new, :edit, :create, :update] do
-        member do
-          put :refund
-        end
-      end
+      resources :comments, controller: "inspections/comments"
 
       resources :adjustments
-      resources :return_authorizations do
-        member do
-          put :fire
-        end
-      end
-      resources :payments do
-        member do
-          put :fire
-        end
-
-        resources :log_entries
-        resources :refunds, only: [:new, :create, :edit, :update]
-      end
-
-      resources :reimbursements, only: [:index, :create, :show, :edit, :update] do
-        member do
-          post :perform
-        end
-      end
     end
+
+    resources :inspection_scopes
+
 
     resources :establishments do
       resources :images do
@@ -67,6 +43,8 @@ Gesmew::Core::Engine.add_routes do
         post :sales_total
       end
     end
+
+    resources :establishment_types
 
     resources :roles
 

@@ -40,6 +40,10 @@ module CapybaraExt
     targetted_select2_search(value, options)
   end
 
+  def fill_in_wysihtml5(label, opts={})
+    page.execute_script %Q{var id = $("label:contains(#{label})").attr("for");$("#" + id).data("wysihtml5").editor.setValue("#{opts[:with]}");}
+  end
+
   def targetted_select2_search(value, options)
     page.execute_script %Q{$('#{options[:from]}').select2('open')}
     page.execute_script "$('#{options[:dropdown_css]} input.select2-input').val('#{value}').trigger('keyup-change');"

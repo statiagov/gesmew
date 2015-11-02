@@ -40,7 +40,7 @@ module Gesmew
       params = opts[:assessment]
       self.rubric.criteria_object.each do |criterion|
         if initital
-          data ||= {points:0}
+          data = {points:0}
         else
           data = params["criterion_#{criterion.id}".to_sym]
         end
@@ -48,12 +48,14 @@ module Gesmew
         if data
           replace_ratings = true
           has_score = (data[:points]).present?
+          rating[:id] = criterion[:id]
           rating[:name] = criterion[:name]
           rating[:description] = criterion[:description]
-          rating[:points] = [criterion.points, data[:points].to_f].min if has_score
+          rating[:score] = [criterion.points, data[:score].to_f].min if has_score
+          rating[:points] = criterion[:points]
           if has_score
             score ||= 0
-            score += rating[:points]
+            score += rating[:score]
           end
           ratings << rating
         end

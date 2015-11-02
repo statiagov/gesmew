@@ -26,7 +26,7 @@ describe "New Inspection", :type => :feature, js:true do
   end
   before do
     rubric.update_criteria(rubric_params)
-    allow_any_instance_of(Gesmew::Admin::InspectionsController).to receive_messages(:try_gesmew_current_user => user_1)
+    allow_any_instance_of(Gesmew::Admin::BaseController).to receive_messages(:try_gesmew_current_user => user_1)
   end
   stub_authorization!
 
@@ -80,11 +80,11 @@ describe "New Inspection", :type => :feature, js:true do
       rubric.associate_with(inspection, scope)
     end
 
-    describe "Showing the rubric" do
+    describe "Rubric" do
       context "when the current user is not part of the inspection" do
         let(:user_3){create(:admin_user)}
         before do
-          allow_any_instance_of(Gesmew::Admin::InspectionsController).to receive_messages(:try_gesmew_current_user => user_3)
+          allow_any_instance_of(Gesmew::Admin::BaseController).to receive_messages(:try_gesmew_current_user => user_3)
           visit gesmew.grade_and_comment_admin_inspection_path(inspection)
         end
         it "rubric does not show" do
@@ -97,12 +97,23 @@ describe "New Inspection", :type => :feature, js:true do
         let(:user_3){create(:admin_user)}
         before do
           visit gesmew.grade_and_comment_admin_inspection_path(inspection)
-          sleep 60.minutes
         end
         it "rubric does show" do
           expect(page).to have_content('Rubric')
           expect(page).to_not have_content Gesmew.t(:you_are_not_part_of_this_inspection)
         end
+      end
+    end
+    describe "Commenting" do
+      before do
+        allow_any_instance_of(Gesmew::Admin::BaseController).to receive_messages(:try_gesmew_current_user => user_2)
+        visit gesmew.grade_and_comment_admin_inspection_path(inspection)
+      end
+      it "can post a comment" do
+        fill_in_wysihtml5 'Comment', :with => 'Horrible'
+        click_on('Save Comment')
+        expect(page).to have_content 'Horrible'
+        sleep 60.minutes
       end
     end
   end

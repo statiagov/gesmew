@@ -1,0 +1,64 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h1 class="panel-title"><%= Gesmew.t(:add_comment) %></h1>
+  </div>
+  <div class="panel-body">
+    <%= form_for [:admin, commentable, Gesmew::Comment.new], html: { multipart: true } do |f| %>
+      <fieldset data-hook="admin_comment_form_fields" class="no-border-top">
+        <fieldset class="index no-border-bottom">
+          <div data-hook="comment_fields" class="row">
+            <div class="col-md-12">
+              <div class="field">
+                <%= f.label :comment, Gesmew.t(:comment) %>
+                <%= f.text_area :comment, :style => 'height:150px;', :class => 'form-control wysihtml5', placeholder: "Add comment here..." %>
+              </div>
+              <div class="col-md-12">
+                <div class="field">
+                  <%= f.label :image, Gesmew.t(:image) %>
+                  <%= f.file_field :attachment %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="clear"></div>
+
+        <div class="form-buttons filter-actions actions" data-hook="buttons">
+          <%= f.submit "Save Comment", class: "btn btn-success"%>
+        </div>
+      </fieldset>
+    <% end %>
+  </div>
+</div>
+<% if commentable.comments.any? %>
+  <%= render 'gesmew/admin/shared/comment_list', :commentable => commentable %>
+<% else %>
+  <div class="alert alert-info">
+    <%= Gesmew.t(:no_resource_found, resource: I18n.t(:comments, scope: 'gesmew')) %>
+  </div>
+<% end %>
+<%= javascript_tag do %>
+
+    $(document).ready(function(){
+
+      $('.wysihtml5').each(function(i, elem) {
+        $(elem).wysihtml5({'toolbar': {
+            'font-styles': false,
+            'color': false,
+            'emphasis': {
+              'small': true
+            },
+            'blockquote': true,
+            'lists': true,
+            'html': false,
+            'link': true,
+            'image': false,
+            'smallmodals': false
+          }
+
+        });
+      });
+
+    })
+<% end %>

@@ -25,6 +25,7 @@ describe Gesmew::Admin::InspectionsController, type: :controller do
     assessment = Gesmew::RubricAssessment.new
     allow(rubric).to receive(:associate_with).and_return(association)
     allow(association).to receive(:assessment).and_return(assessment)
+    allow(association).to receive(:id).and_return(1)
   end
 
   context "with authorization" do
@@ -130,10 +131,11 @@ describe Gesmew::Admin::InspectionsController, type: :controller do
         user = create(:admin_user)
         allow(controller).to receive(:try_gesmew_current_user).and_return(user)
       end
-      it "it returns an assessment object" do
+      it "it returns an assessment object and association id" do
         allow_pending_validations_after_callback
         gesmew_get :grade_and_comment, id: inspection.number
         expect(assigns[:assessment]).to be_a(Gesmew::RubricAssessment)
+        expect(assigns[:association_id]).to be_an(Integer)
       end
 
       it "redirects back unless passes validiation" do

@@ -2,12 +2,21 @@
 
 <%= render 'gesmew/admin/shared/inspection_tabs', current: :grade_and_comment %>
 <% if try_gesmew_current_user.try(:is_part_of_inspection?, @inspection.number) %>
-  <%= react_component('gesmew-rubric-assement-app')  %>
+  <%= react_component('gesmew-rubric-assement-app', {assessment: @assessment, association_id: @association_id})  %>
 <% else %>
   <div class="alert alert-warning">
     <%= Gesmew.t(:you_are_not_part_of_this_inspection)%>
   </div>
 <% end %>
+
+<%= render 'gesmew/admin/shared/comments', commentable: @inspection %>
+
+<%= render 'gesmew/admin/shared/inspection_summary' %>
+
+<div class="text-right">
+  <%= button_tag "Next Step", onclick: "Gesmew.advanceInspection('#{gesmew.grade_and_comment_admin_inspection_path}')", class: 'btn btn-success' %>
+</div>
+
 
 <%= javascript_tag do %>
   var inspection_number = '<%= @inspection.number %>';

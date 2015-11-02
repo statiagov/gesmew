@@ -21572,7 +21572,7 @@
 	              Gesmew.translations.select_date_of_inspection,
 	              '.'
 	            ),
-	            _react2['default'].createElement('input', { type: 'text', onClick: this.toggleDatePicker.bind(this), className: 'datepicker-from form-control', value: this.formatDate(this.state.date) }),
+	            _react2['default'].createElement('input', { type: 'text', readOnly: true, onClick: this.toggleDatePicker.bind(this), className: 'datepicker-from form-control', value: this.formatDate(this.state.date) }),
 	            datePickerHtml
 	          )
 	        )
@@ -21593,17 +21593,14 @@
 	  }, {
 	    key: 'onChange',
 	    value: function onChange(date) {
-	      var _this = this;
-
 	      if (this.props.status !== 'completed') {
+	        this.setState({ date: date });
 	        _axios2['default'].put(Gesmew.routes.inspections_api + '/' + inspection_number, {
 	          token: Gesmew.api_key,
 	          inspection: {
 	            inspected_at: date
 	          }
-	        }).then(function () {
-	          _this.setState({ date: date });
-	        })['catch'](function (r) {
+	        }).then(function () {})['catch'](function (r) {
 	          console.log(r);
 	        });
 	      }
@@ -34645,14 +34642,18 @@
 	  function Main(props) {
 	    _classCallCheck(this, _Main);
 
-	    console.log(props);
 	    _get(Object.getPrototypeOf(_Main.prototype), 'constructor', this).call(this, props);
 	  }
 
 	  _createClass(Main, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var _this = this;
+
 	      _storesRubricAssessmentStore2['default'].listen(this.onChange.bind(this));
+	      setTimeout(function () {
+	        _actionsRubricAssessmentActions2['default'].loadAssessment(_this.props.assessment);
+	      }, 100);
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
@@ -34667,7 +34668,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-
 	      return _react2['default'].createElement(
 	        'div',
 	        { className: 'panel panel-default' },
@@ -34757,14 +34757,14 @@
 	      );
 	    }
 	  }, {
-	    key: 'toggleEditMode',
-	    value: function toggleEditMode(toggle, e) {
-	      e.preventDefault();
-	      RubricActions.toggleEditMode(toggle);
-	    }
-	  }, {
 	    key: 'saveRubric',
-	    value: function saveRubric() {}
+	    value: function saveRubric(e) {
+	      e.preventDefault();
+	      var params = {
+	        criteria: this.state.criteria.toJS()
+	      };
+	      _actionsRubricAssessmentActions2['default'].saveAssessment(params);
+	    }
 	  }], [{
 	    key: 'getStores',
 	    value: function getStores() {
@@ -34934,7 +34934,13 @@
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _axios = __webpack_require__(158);
+
+	var _axios2 = _interopRequireDefault(_axios);
 
 	var alt = __webpack_require__(277);
 
@@ -34949,14 +34955,19 @@
 	      this.dispatch(obj);
 	    }
 	  }, {
-	    key: 'removeCriteria',
-	    value: function removeCriteria(id) {
-	      this.dispatch(id);
+	    key: 'loadAssessment',
+	    value: function loadAssessment(assessment) {
+	      this.dispatch(assessment);
 	    }
 	  }, {
-	    key: 'toggleEditMode',
-	    value: function toggleEditMode(codition) {
-	      this.dispatch(codition);
+	    key: 'saveAssessment',
+	    value: function saveAssessment(assessment) {
+	      console.log(assessment);
+	      this.dispatch();
+	      // axios.put(`${Gesmew.routs.inspections_api}/${inspections_number}/assess`,{
+	      //   token: Gesmew.api_key,
+	      //
+	      // })
 	    }
 	  }]);
 
@@ -37508,11 +37519,11 @@
 	    _classCallCheck(this, RubricAssessmentStore);
 
 	    this.state = {
-	      editMode: false,
-	      criteria: Immutable.fromJS([{ id: 1, name: 'Mold', description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.", score: 0, points: 10 }, { id: 2, name: 'Floor', description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.", score: 0, points: 5 }, { id: 3, name: 'Some other criteria', description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.", score: 0, points: 5 }])
+	      criteria: []
 	    };
 	    this.bindListeners({
-	      handleUpdateScore: RubricAssessmentActions.UPDATE_SCORE
+	      handleUpdateScore: RubricAssessmentActions.UPDATE_SCORE,
+	      handleFetchCriteria: RubricAssessmentActions.LOAD_ASSESSMENT
 	    });
 	  }
 
@@ -37529,18 +37540,9 @@
 	      });
 	    }
 	  }, {
-	    key: 'handleRemoveCriteria',
-	    value: function handleRemoveCriteria(id) {
-	      if (this.state.criteria.size > 3) {
-	        var criteriaIndex = this.state.criteria.findIndex(function (s) {
-	          return s.get('id') === id;
-	        });
-	        this.setState({
-	          criteria: this.state.criteria['delete'](criteriaIndex)
-	        });
-	      } else {
-	        alert("A rubric needs at least three criteria");
-	      }
+	    key: 'handleFetchCriteria',
+	    value: function handleFetchCriteria(assessment) {
+	      this.state.criteria = Immutable.fromJS(assessment.data);
 	    }
 	  }, {
 	    key: 'handleToggleEditMode',

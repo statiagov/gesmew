@@ -34,7 +34,7 @@ class SelectDate extends React.Component {
           <div className="form-group">
             <label style={{cursor: "pointer", cursor: "hand"}} htmlFor="inspected_at">
               {Gesmew.translations.select_date_of_inspection}.</label>
-            <input type="text" onClick={this.toggleDatePicker.bind(this)} className="datepicker-from form-control" value={this.formatDate(this.state.date)}/>
+            <input type="text" readOnly onClick={this.toggleDatePicker.bind(this)} className="datepicker-from form-control" value={this.formatDate(this.state.date)}/>
             {datePickerHtml}
           </div>
         </div>
@@ -54,13 +54,13 @@ class SelectDate extends React.Component {
 
   onChange(date){
     if(this.props.status !== 'completed'){
+      this.setState({date:date})
       axios.put(`${Gesmew.routes.inspections_api}/${inspection_number}`,{
         token: Gesmew.api_key,
         inspection:{
           inspected_at: date
         }
       }).then(()=>{
-        this.setState({date:date})
       }).catch((r)=>{
         console.log(r);
       })

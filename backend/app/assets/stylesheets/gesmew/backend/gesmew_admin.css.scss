@@ -2,6 +2,7 @@
 
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
+@import "bootstrap-wysihtml5/bootstrap3-wysihtml5";
 
 @import 'components/sidebar';
 @import 'components/tables';
@@ -18,6 +19,7 @@
 @import 'components/progress';
 @import 'components/spinner';
 @import 'components/rubric';
+@import 'components/comments';
 
 @import 'sections/account';
 

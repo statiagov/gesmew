@@ -7,15 +7,11 @@ var ImmutableStore = require('alt/utils/ImmutableUtil');
 class RubricAssessmentStore {
   constructor(){
     this.state = {
-      editMode:false,
-      criteria: Immutable.fromJS([
-        {id:1, name:'Mold', description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.", score: 0, points:10},
-        {id:2, name:'Floor', description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.", score: 0, points:5},
-        {id:3, name:'Some other criteria', description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.", score: 0, points:5},
-      ])
+      criteria: []
     }
     this.bindListeners({
-      handleUpdateScore: RubricAssessmentActions.UPDATE_SCORE
+      handleUpdateScore: RubricAssessmentActions.UPDATE_SCORE,
+      handleFetchCriteria: RubricAssessmentActions.LOAD_ASSESSMENT
     });
   }
 
@@ -45,15 +41,8 @@ class RubricAssessmentStore {
     })
   }
 
-  handleRemoveCriteria(id){
-    if(this.state.criteria.size > 3) {
-      let criteriaIndex =  this.state.criteria.findIndex((s) => s.get('id') === id);
-      this.setState({
-        criteria: this.state.criteria.delete(criteriaIndex)
-      })
-    }else {
-      alert("A rubric needs at least three criteria")
-    }
+  handleFetchCriteria(assessment){
+    this.state.criteria = Immutable.fromJS(assessment.data)
   }
 
   handleToggleEditMode(condition){

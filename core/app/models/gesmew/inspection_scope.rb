@@ -4,7 +4,7 @@ module Gesmew
     has_many :inspections, as: :scope
 
     scope :text_search, ->(query) {search(
-      name_start: query
+      name_cont: query
     ).result}
   end
 end

@@ -1,0 +1,30 @@
+<div id="comments">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">
+        <%= Gesmew.t(:comment_listing) %>
+      </h1>
+    </div>
+    <div class="panel-body">
+        <ul class="comment">
+            <% commentable.comments.reverse.each do |comment| %>
+              <li class="left clearfix"><span class="comment-img pull-left">
+                <%= image_tag "http://placehold.it/50/55C1E7/fff&text=#{first_letter_fullname(comment.user_firstname, comment.user_lastname)}",
+                alt:"User Avatar", class:"img-circle" %>
+              </span>
+                  <div class="comment-body clearfix">
+                      <div class="header">
+                          <strong class="primary-font"><%=comment.user.try(:fullname)%></strong> <small class="pull-right text-muted">
+                              <span class="glyphicon glyphicon-time"></span><%= pretty_time(comment.created_at) %></small>
+                      </div>
+                      <p><%= comment.comment.html_safe %></p>
+                      <% if comment.attachment.present? %>
+                        <span class="image"><%= image_tag(comment.attachment.url(:mini)) %> </span>
+                      <% end %>
+                  </div>
+              </li>
+            <% end %>
+        </ul>
+    </div>
+  </div>
+</div>

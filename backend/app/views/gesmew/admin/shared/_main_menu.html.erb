@@ -1,6 +1,6 @@
 <% if can? :admin, Gesmew::Inspection %>
   <ul class="nav nav-sidebar">
-    <%= tab *Gesmew::BackendConfiguration::INSPECTION_TABS, icon: 'eye-open' %>
+    <%= main_menu_tree Gesmew.t(:inspection), icon: 'eye-open', sub_menu: "inspections", url: "#sidebar-inspections" %>
   </ul>
 <% end %>
 

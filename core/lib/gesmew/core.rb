@@ -1,5 +1,6 @@
 require 'rails/all'
 require 'active_merchant'
+require 'acts_as_commentable'
 require 'acts_as_list'
 require 'awesome_nested_set'
 require 'cancan'

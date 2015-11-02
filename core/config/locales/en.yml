@@ -87,6 +87,7 @@ en:
         precision: 1
 
   gesmew:
+    add_comment: Add Comment
     add_letter: Add Letter
     abbreviation: Abbreviation
     accept: Accept
@@ -191,7 +192,11 @@ en:
     close: Close
     code: Code
     company: Company
+    contact_name: Contact Name
     complete: complete
+    comment: Comment
+    comments: Comments
+    comment_listing: Comment Listing
     configuration: Configuration
     configurations: Configurations
     confirm: Confirm
@@ -295,6 +300,7 @@ en:
     implement_requires_manual_intervention: "Must implement #requires_manual_intervention? for your EligibilityValidator."
     inactive: Inactive
     incl: incl.
+    inspector: Inspector
     inspectors: Inspector(s)
     inspector_is_empty_add_inspector: No inspector(s) added
     inspector_placeholder: Choose an Inspector

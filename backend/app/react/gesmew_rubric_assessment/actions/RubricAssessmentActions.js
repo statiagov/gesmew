@@ -1,16 +1,22 @@
 var alt = require('../alt');
+import axios from 'axios';
 
 class RubricAssessmentActions {
   updateScore(obj) {
     this.dispatch(obj);
   }
 
-  removeCriteria(id){
-    this.dispatch(id);
+  loadAssessment(assessment){
+    this.dispatch(assessment);
   }
 
-  toggleEditMode(codition){
-    this.dispatch(codition)
+  saveAssessment(assessment){
+    console.log(assessment)
+    this.dispatch()
+    // axios.put(`${Gesmew.routs.inspections_api}/${inspections_number}/assess`,{
+    //   token: Gesmew.api_key,
+    //
+    // })
   }
 }
 

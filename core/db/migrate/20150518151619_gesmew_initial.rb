@@ -30,7 +30,6 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-
     create_table :gesmew_roles do |t|
       t.string :name
       t.timestamps null: false
@@ -131,7 +130,6 @@ class GesmewInitial < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-
     add_index :gesmew_state_changes, [:stateful_id, :stateful_type]
 
     create_table :gesmew_inspection_types do |t|
@@ -156,6 +154,27 @@ class GesmewInitial < ActiveRecord::Migration
     end
 
     add_index :gesmew_inspections, [:establishment_id], :name => 'index_gesmew_inspections_on_establishment_id'
+
+    create_table :gesmew_comments do |t|
+      t.string      :title, limit: 50, default: ""
+      t.text        :comment
+      t.references  :commentable, polymorphic: true
+      t.references  :user
+      t.string      :role, default: "comments"
+
+      t.timestamps null: false
+    end
+
+    add_index :gesmew_comments, :commentable_type
+    add_index :gesmew_comments, :commentable_id
+    add_index :gesmew_comments, :user_id
+
+    create_table :comments_types  do |t|
+      t.string :name
+      t.string :applies_to
+
+      t.timestamps
+    end
 
     create_table :gesmew_inspection_scopes do |t|
       t.string :name

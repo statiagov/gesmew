@@ -1,5 +1,6 @@
 module Gesmew
   class Inspection < Gesmew::Base
+    acts_as_commentable class_name: 'Gesmew::Comment'
 
     extend FriendlyId
     friendly_id :number, slug_column: :number, use: :slugged
@@ -9,6 +10,7 @@ module Gesmew
 
     belongs_to :establishment
     belongs_to :scope, polymorphic: true
+    has_many   :comments, as: :commentable
     has_many   :state_changes, as: :stateful, dependent: :destroy
     validates_inclusion_of :scope_type, allow_nil:true, in:['Gesmew::InspectionScope']
 

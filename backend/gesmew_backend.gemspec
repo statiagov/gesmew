@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'select2-rails',   '3.5.9.1' # 3.5.9.2 breaks several specs
   s.add_dependency 'sprockets-rails', '~> 2.2'
   s.add_dependency 'react_webpack_rails'
+  s.add_dependency 'bootstrap-wysihtml5-rails'
 end

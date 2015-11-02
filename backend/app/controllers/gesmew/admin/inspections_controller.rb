@@ -9,6 +9,7 @@ module Gesmew
       def index
         params[:q] ||= {}
         params[:q][:completed_at_not_null] ||= '1' if Gesmew::Config[:show_only_complete_inspections_by_default]
+        params[:q][:state_not_eq] ||= 'pending'
         @show_only_completed = params[:q][:completed_at_not_null] == '1'
         params[:q][:s] ||= @show_only_completed ? 'completed_at desc' : 'created_at desc'
         params[:q][:completed_at_not_null] = '' unless @show_only_completed
@@ -71,6 +72,7 @@ module Gesmew
         if try_gesmew_current_user.try(:is_part_of_inspection?, @inspection.number)
           association = @inspection.scope.rubric.associate_with(@inspection, @inspection.scope)
           @assessment = association.assessment(assessor:try_gesmew_current_user, artifact:@inspection)
+          @association_id = association.id
         end
       end
 

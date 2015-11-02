@@ -11,7 +11,6 @@ import validator from 'validator';
 export default class Main extends React.Component {
 
   constructor(props){
-    console.log(props)
     super(props)
   }
 
@@ -25,6 +24,10 @@ export default class Main extends React.Component {
 
   componentDidMount(){
     RubricAssessmentStore.listen(this.onChange.bind(this));
+    setTimeout(()=>{
+      RubricAssessmentActions.loadAssessment(this.props.assessment);
+    },100)
+
   }
 
   componentWillUnmount(){
@@ -36,7 +39,6 @@ export default class Main extends React.Component {
   }
 
   render() {
-
     return (
       <div className="panel panel-default">
         <div className="panel-heading clearfix">
@@ -80,13 +82,12 @@ export default class Main extends React.Component {
     )
   }
 
-  toggleEditMode(toggle, e){
+  saveRubric(e){
     e.preventDefault();
-    RubricActions.toggleEditMode(toggle)
-  }
-
-  saveRubric(){
-
+    var params = {
+      criteria: this.state.criteria.toJS()
+    }
+    RubricAssessmentActions.saveAssessment(params)
   }
 
 }

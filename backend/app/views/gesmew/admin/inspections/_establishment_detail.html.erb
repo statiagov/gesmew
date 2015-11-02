@@ -1,15 +1,33 @@
-<div class="">
-  <h1><%= establishment.name %></h1>
-  <address>
-    <strong><%= establishment.owner_fullname %></strong><br>
-    <%= establishment.address %><br>
-    <%= establishment.country %><br>
-    <abbr title="Phone">P:</abbr> <%= establishment.phone_number %><br>
-    <a href="mailto:#"><%= establishment.contact_information.email %></a><br>
-    <% if @inspection.state?(:pending) %>
-      <small>to change establishment click
-        <%= link_to 'here', "#", class: 'remove-establishment', data: { 'establishment-id' => establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
-      </small>
-    <% end %>
-  </address>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="panel-title"><%= Gesmew.t(:establishment) %>: <%= establishment.name %>
+      <% if @inspection.state?(:pending) %>
+        <%= link_to '(change)', "#", class: 'remove-establishment', data: { 'establishment-id' => establishment.id, action: 'remove'}, title: Gesmew.t('remove'), no_text: true %>
+      <% end %>
+    </div>
+  </div>
+  <table class="table table-bordered establishment" data-hook="inspectors">
+    <thead>
+      <th class="text-center"><%= Gesmew.t(:contact_name) %></th>
+      <th class="text-center"><%= Gesmew.t(:address) %></th>
+      <th class="text-center"><%= Gesmew.t(:email) %></th>
+      <th class="text-center"><%= Gesmew.t(:phone_number) %></th>
+    </thead>
+    <tbody>
+      <tr class="establishment">
+        <td class="owner-full-name text-center">
+          <%= establishment.fullname %>
+        </td>
+        <td class="address text-center">
+          <%= establishment.address %>
+        </td>
+        <td class="email text-center">
+          <%= establishment.email %>
+        </td>
+        <td class="phone_number text-center">
+          <%= establishment.phone_number %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

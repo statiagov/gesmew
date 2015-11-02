@@ -3,17 +3,19 @@
 //= require jquery.cookie
 //= require jquery.jstree/jquery.jstree
 //= require jquery_ujs
+//= require underscore-min.js
 //= require sweetalert
 //= require jquery-ui/datepicker
 //= require jquery-ui/sortable
 //= require jquery-ui/autocomplete
-//= require modernizr
-//= require underscore-min.js
-//= require velocity
-//= require gesmew
+//= require bootstrap-wysihtml5
 //= require gesmew/backend/gesmew-select2
 //= require react_integration
 //= require react_bundle
+//= require modernizr
+//= require velocity
+//= require gesmew
+
 
 //= require_tree .
 
