@@ -1,0 +1,12 @@
+<% content_for :page_title do %>
+  <%= Gesmew.t(:editing_resource, resource: Gesmew::InspectionScope.model_name.human) %>
+<% end %>
+
+<%= render :partial => 'gesmew/admin/shared/error_messages', :locals => { :target => @inspection_scope } %>
+
+<%= form_for [:admin, @inspection_scope] do |f| %>
+  <fieldset>
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <%= render :partial => 'gesmew/admin/shared/edit_resource_links' %>
+  </fieldset>
+<% end %>

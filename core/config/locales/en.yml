@@ -254,7 +254,7 @@ en:
     establishment_name_select: ! "Name (enter at least first 3 characters)"
     establishment_is_empty_add_establishment: This inspection does not have an estalishment associated to it
     event: Event
-    establishment_type: Est. Type
+    establishment_type: Establishment Type
     events:
       gesmew:
         inspection:
@@ -421,6 +421,7 @@ en:
     order_sure_want_to: Are you sure you want to %{event} this inspection?
     order_total: Inspection Total
     order_updated: Inspection Updated
+    owner_fullname: Owner's Fullname
     inspections: Inspections
     out_of_stock: Out of Stock
     owner_fullname: "Owner's Fullname"
@@ -470,6 +471,7 @@ en:
     roles: Roles
     role: Role
     rules: Rules
+    rubric: Rubric
     safe: Safe
     save_and_continue: Save and Continue
     say_no: 'No'

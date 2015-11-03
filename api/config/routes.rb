@@ -23,7 +23,7 @@ Gesmew::Core::Engine.add_routes do
         end
       end
 
-      resources :rubrics 
+      resources :rubrics
 
       resources :users do
         resources :credit_cards, only: [:index]

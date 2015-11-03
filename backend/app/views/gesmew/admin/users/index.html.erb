@@ -20,20 +20,10 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <%= f.label Gesmew.t(:first_name) %>
-            <%= f.text_field :bill_address_firstname_cont, :class => 'form-control' %>
+            <%= f.label Gesmew.t(:fullname) %>
+            <%= f.text_field :fullname_cont, :class => 'form-control' %>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <%= f.label Gesmew.t(:last_name) %>
-            <%= f.text_field :bill_address_lastname_cont, :class => 'form-control' %>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <%= f.label Gesmew.t(:company) %>
-        <%= f.text_field :bill_address_company_cont, :class => 'form-control' %>
       </div>
       <div data-hook="admin_users_index_search_buttons" class="form-actions">
         <%= button Gesmew.t(:search), 'search' %>
@@ -48,6 +38,9 @@
       <th>
         <%= sort_link @search,:email, Gesmew.t(:user), {}, {:title => 'users_email_title'} %>
       </th>
+      <th>
+        <%= sort_link @search, :fullname, Gesmew.t(:user), {},{:title => 'users_fulllname_title'} %>
+      </th>
       <th data-hook="admin_users_index_header_actions" class="actions"></th>
     </tr>
   </thead>
@@ -55,6 +48,7 @@
     <% @users.each do |user|%>
       <tr id="<%= gesmew_dom_id user %>" data-hook="admin_users_index_rows">
         <td class='user_email'><%=link_to user.email, edit_admin_user_url(user) %></td>
+        <td class='user_fullname'><%= user.fullname %>
         <td data-hook="admin_users_index_row_actions" class="actions actions-2 text-right">
           <%= link_to_edit user, :no_text => true %>
           <%= link_to_delete user, :no_text => true %>

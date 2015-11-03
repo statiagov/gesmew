@@ -1,0 +1,12 @@
+<% content_for :page_title do %>
+  <%= Gesmew.t(:editing_resource, resource: Gesmew::EstablishmentType.model_name.human) %>
+<% end %>
+
+<%= render :partial => 'gesmew/admin/shared/error_messages', :locals => { :target => @establishment_type } %>
+
+<%= form_for [:admin, @establishment_type] do |f| %>
+  <fieldset>
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <%= render :partial => 'gesmew/admin/shared/edit_resource_links' %>
+  </fieldset>
+<% end %>

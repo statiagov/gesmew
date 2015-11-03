@@ -7,10 +7,10 @@ module Gesmew
     validates_inclusion_of :artifact_type, allow_nil: true, in: ['Gesmew::Inspection']
     serialize_utf8_safe :data
 
-    after_create :update_artifact_assessed, if: lambda { |assessment| assessment.artifact.present? }
-
-    def update_artifact_assessed
-      self.artifact.update_attribute(:assessed, true)
-    end
+    # after_create :update_artifact_assessed, if: lambda { |assessment| assessment.artifact.present? }
+    #
+    # def update_artifact_assessed
+    #   self.artifact.update_attribute(:assessed, true)
+    # end
   end
 end

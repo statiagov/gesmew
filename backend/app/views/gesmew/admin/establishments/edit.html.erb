@@ -1,0 +1,19 @@
+<% content_for :page_title do %>
+  <%= link_to Gesmew.t(:establishment), admin_establishments_path %> /
+  <%= @establishment.name %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <% if can?(:create, Gesmew::Establishment) %>
+    <%= button_link_to Gesmew.t(:new_establishment), new_object_url, { class: "btn-success", icon: 'add', id: 'admin_new_establishment' } %>
+  <% end %>
+<% end %>
+
+<%= render partial: 'gesmew/admin/shared/error_messages', locals: { target: @establishment } %>
+
+<%= form_for [:admin, @establishment], method: :put do |f| %>
+  <fieldset>
+    <%= render partial: 'form', locals: { f: f } %>
+    <%= render partial: 'gesmew/admin/shared/edit_resource_links' %>
+  </fieldset>
+<% end %>

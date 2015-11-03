@@ -6,6 +6,7 @@ module Gesmew
     end
 
     def clear_gesmew_api_key!
+      byebug
       self.gesmew_api_key = nil
       save!
     end

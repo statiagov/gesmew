@@ -1,17 +1,18 @@
 module Gesmew
   module Admin
-    class EstablishmentsController < ResourceController
+    class InspectionScopesController < ResourceController
+      after_action :create_rubric, only: [:create]
 
       def index
         respond_with(@collection)
       end
 
-      def new
-        @contact_information = Gesmew::ContactInformation.new
-        @establishment = @contact_information.establishments.new
-      end
-
       protected
+
+        def location_after_save
+          gesmew.edit_admin_inspection_scope_path(@inspection_scope)
+        end
+
         def collection
           return @collection if defined?(@collection)
           params[:q] = {} if params[:q].blank?
@@ -20,14 +21,13 @@ module Gesmew
           @search = @collection.ransack(params[:q])
           @collection = @search.result(distinct: true).
             page(params[:page]).
-            per(params[:per_page]) || Gesmew::Config[:establishments_per_page]
+            per(params[:per_page]) || Gesmew::Config[:inspection_scopes_per_page]
           @collection
         end
 
-        def find_resource
-          Gesmew::Establishment.find_by(number: params[:id])
+        def create_rubric
+          Gesmew::Rubric.create(context:@inspection_scope)
         end
-
     end
   end
 end

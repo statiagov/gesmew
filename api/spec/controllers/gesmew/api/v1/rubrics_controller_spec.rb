@@ -11,14 +11,13 @@ module Gesmew
       user.generate_gesmew_api_key!
       user
     end
-
+    let(:rubric){create(:rubric, context:scope)}
+    let!(:attributes) {[:id, :points_possible, :criteria]}
     before do
       stub_authentication!
     end
 
-    context 'retrieve rubric criteria data' do
-      let!(:attributes) {[:id, :points_possible, :criteria]}
-      let(:rubric){create(:rubric, context:scope)}
+    context '#show' do
       let(:rubric_params) do
         {
           id:rubric.id,
@@ -41,11 +40,38 @@ module Gesmew
         rubric.update_criteria(rubric_params)
       end
       it 'returns the valid json representation' do
-        api_post :show, id: rubric.id
+        api_get :show, id: scope.id
         expect(json_response).to have_attributes(attributes)
         expect(response.status).to  eq(200)
         expect(json_response['criteria'].first['name']).to eq "Temperature"
         expect(json_response['points_possible']).to eq rubric.points_possible
+      end
+    end
+
+    context "#update" do
+      let(:rubric_params) do
+        {
+          criteria: [
+            {
+              name: "123478-OP",
+              points:9,
+              description:"The temperature should be...",
+            },
+            {
+              name: "Mold",
+              points:10,
+              description:"No mold!!",
+            }
+          ]
+        }
+      end
+      it "updates a rubric" do
+        rubric
+        expect(rubric.data).to eq(nil)
+        api_put :update, id: scope.id, criteria: rubric_params[:criteria]
+        rubric.reload
+        expect(response.status).to  eq(200)
+        expect(rubric.data).to_not be(nil)
       end
     end
   end

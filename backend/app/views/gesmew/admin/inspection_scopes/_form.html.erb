@@ -1,0 +1,29 @@
+<div data-hook="admin_inspection_scope_form">
+  <div class="row">
+    <div class="col-md-3">
+        <%= f.field_container :name, class: ['form-group'] do %>
+        <%= f.label :name, Gesmew.t(:name) %> <span class="required">*</span>
+        <%= f.text_field :name, :class => 'form-control', placeholder:"Scope name" %>
+        <%= f.error_message_on :name %>
+      <% end %>
+    </div>
+    <div class="col-md-9">
+      <%= f.field_container :description, class: ['form-group'] do %>
+        <%= f.label :description, Gesmew.t(:description) %> <span class="required">*</span>
+        <%= f.text_area :description, :class => 'form-control', placeholder:"Scope description" %>
+        <%= f.error_message_on :description %>
+      <% end %>
+    </div>
+  </div>
+  <% if @inspection_scope.try(:id) %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.field_container :rubric, class: ['form-group'] do %>
+          <%= f.label :rubric, Gesmew.t(:rubric) %> <span class="required">*</span>
+          <%= react_component('gesmew-rubric-app',{ id:@inspection_scope.id})  %>
+          <%= f.error_message_on :rubric %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -9,7 +9,6 @@ module Gesmew
               assessor: current_api_user,
               assessment: params[:assessment]
             })
-            byebug
           end
 
           private

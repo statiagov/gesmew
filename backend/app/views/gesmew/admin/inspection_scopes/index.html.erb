@@ -1,0 +1,68 @@
+<% content_for :page_title do %>
+  <%= plural_resource_name(Gesmew::InspectionScope) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= button_link_to Gesmew.t(:new_scope), new_object_url, { :class => "btn-success", :icon => 'add', 'data-update' => 'new_inspection_scope', :id => 'new_inspection_scope_link' } %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <div data-hook="admin_inspection_scopes_sidebar">
+    <%= search_form_for [:admin, @search] do |f| %>
+
+      <% locals = {:f => f} %>
+
+      <div class="row">
+        <div class="col col-md-6">
+          <div data-hook="admin_property_index_search" class="form-group">
+            <%= f.label :name_cont, Gesmew.t(:name) %>
+            <%= f.text_field :name_cont, :class => "form-control js-quick-search-target" %>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= f.label :description_cont, Gesmew.t(:description) %>
+            <%= f.text_field :description_cont, :class => "form-control" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions" data-hook="admin_pinspection_scopes_index_search_buttons">
+        <%= button Gesmew.t(:search), 'search' %>
+      </div>
+
+    <% end %>
+  </div>
+<% end %>
+
+<% if @inspection_scopes.any? %>
+  <table class="table" id='listing_inspection_scopes' data-hook>
+    <thead>
+      <tr data-hook="listing_inspection_scopes_header">
+        <th><%= Gesmew.t(:name) %></th>
+        <th><%= Gesmew.t(:description) %></th>
+        <th class="actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @inspection_scopes.each do |scope| %>
+        <tr id="<%= gesmew_dom_id scope %>" data-hook="listing_inspection_scopes_row">
+          <td><%= scope.name %></td>
+          <td><%= scope.description %></td>
+          <td class="actions actions-2 text-right">
+            <%= link_to_edit(scope, :no_text => true) %>
+            <%= link_to_delete(scope, :no_text => true) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Gesmew.t(:no_resource_found, resource: plural_resource_name(Gesmew::InspectionScope)) %>,
+    <%= link_to Gesmew.t(:add_one), new_object_url %>!
+  </div>
+<% end %>
+
+<%= paginate @collection %>

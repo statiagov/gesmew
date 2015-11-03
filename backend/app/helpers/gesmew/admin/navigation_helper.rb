@@ -82,11 +82,11 @@ module Gesmew
       # the per_page_dropdown is used on index pages like inspections, establishments, promotions etc.
       # this method generates the select_tag
       def per_page_dropdown
-        # there is a config setting for admin_products_per_page, only for the inspections page
-        if @establishments && per_page_default = Gesmew::Config.admin_products_per_page
+        # there is a config setting for admin_establishments_per_page, only for the inspections page
+        if @establishments && per_page_default = Gesmew::Config.admin_establishments_per_page
           per_page_options = []
           5.times do |amount|
-            per_page_options << (amount + 1) * Gesmew::Config.admin_products_per_page
+            per_page_options << (amount + 1) * Gesmew::Config.admin_establishments_per_page
           end
         else
           per_page_default = 15

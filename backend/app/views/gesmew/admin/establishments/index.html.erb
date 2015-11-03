@@ -1,0 +1,69 @@
+<% content_for :page_title do %>
+  <%= plural_resource_name(Gesmew::Establishment) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= button_link_to Gesmew.t(:new_establishments), new_object_url, { :class => "btn-success", :icon => 'add', :id => 'admin_new_establishments' } %>
+<% end if can?(:create, Gesmew::Establishment) %>
+
+<% content_for :table_filter do %>
+  <div data-hook="admin_establishments_sidebar">
+
+    <%= search_form_for [:admin, @search] do |f| %>
+      <%- locals = {:f => f} %>
+      <div data-hook="admin_establishments_index_search" class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= f.label :name_cont, Gesmew.t(:name) %>
+            <%= f.text_field :name_cont, :size => 15, class: "form-control js-quick-search-target" %>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= label_tag :q_establishment_type_id_in, Gesmew.t(:establishment_type) %>
+            <%= f.select  :establishment_type_id_in, Gesmew::EstablishmentType.all.pluck(:name, :id),{:include_blank => true}, :class => 'select2 js-filterable' %>
+          </div>
+        </div>
+      </div>
+      <div data-hook="admin_establishments_index_search_buttons" class="form-actions">
+        <%= button Gesmew.t(:search), 'search' %>
+      </div>
+    <% end %>
+
+  </div>
+<% end %>
+
+<% if @collection.any? %>
+  <table class="table" id="listing_establishments">
+    <thead>
+      <tr data-hook="admin_establishments_index_headers">
+        <th><%= Gesmew.t(:number) %></th>
+        <th><%= sort_link @search,:name, Gesmew.t(:name), { default_order: "desc" }, {title: 'admin_establishments_listing_name_title'} %></th>
+        <th><%= sort_link @search,:establishment_type, Gesmew.t(:establishment_type), { default_order: "desc" }, {title: 'admin_establishments_listing_type_title'} %></th>
+        <th><%= sort_link @search, :fullname, Gesmew.t(:owner_fullname), { default_order: "desc" }, {title: 'admin_establishments_listing_fullname_title'} %></th>
+        <th data-hook="admin_establishments_index_header_actions" class="actions"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collection.each do |establishment| %>
+          <tr id="<%= gesmew_dom_id establishment %>" data-hook="admin_establishments_index_rows" class="<%= cycle('odd', 'even') %>">
+            <td class="number"><%= establishment.number rescue '' %></td>
+            <td><%= link_to establishment.try(:name), edit_admin_establishment_path(establishment) %></td>
+            <td class="number"><%= establishment.establishment_type.name %></td>
+            <td class-"fullname"><%= establishment.fullname %></td>
+            <td class="actions actions-3 text-right" data-hook="admin_establishments_index_row_actions">
+              <%= link_to_edit establishment, no_text: true, class: 'edit' if can?(:edit, establishment)  %>
+              <%= link_to_delete establishment, no_text: true if can?(:delete, establishment)  %>
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Gesmew.t(:no_resource_found, resource: plural_resource_name(Gesmew::Establishment)) %>,
+    <%= link_to Gesmew.t(:add_one), new_object_url %>!
+  </div>
+<% end %>
+
+<%= render partial: 'gesmew/admin/shared/index_table_options', locals: { collection: @collection } %>

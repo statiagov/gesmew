@@ -60,11 +60,16 @@
 
 	var _gesmew_rubric_assessmentComponentsMain2 = _interopRequireDefault(_gesmew_rubric_assessmentComponentsMain);
 
+	var _gesmew_rubricComponentsMain = __webpack_require__(297);
+
+	var _gesmew_rubricComponentsMain2 = _interopRequireDefault(_gesmew_rubricComponentsMain);
+
 	window.React = __webpack_require__(2);
 
 	registerComponent('inspection-scope-show', _componentsInspectionScopeShow2['default']);
 	registerComponent('gesmew-rubric-assement-app', _gesmew_rubric_assessmentComponentsMain2['default']);
 	registerComponent('inspection-select-date', _componentsInspectionSelectDate2['default']);
+	registerComponent('gesmew-rubric-app', _gesmew_rubricComponentsMain2['default']);
 
 /***/ },
 /* 1 */
@@ -37542,6 +37547,7 @@
 	  }, {
 	    key: 'handleFetchCriteria',
 	    value: function handleFetchCriteria(assessment) {
+	      console.log(assessment);
 	      this.state.criteria = Immutable.fromJS(assessment.data);
 	    }
 	  }, {
@@ -54999,6 +55005,963 @@
 	id.reset = function() {
 	  return count = 0;
 	};
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _EditableCell = __webpack_require__(298);
+
+	var _EditableCell2 = _interopRequireDefault(_EditableCell);
+
+	var _altUtilsConnectToStores = __webpack_require__(291);
+
+	var _altUtilsConnectToStores2 = _interopRequireDefault(_altUtilsConnectToStores);
+
+	var _storesRubricStore = __webpack_require__(301);
+
+	var _storesRubricStore2 = _interopRequireDefault(_storesRubricStore);
+
+	var _actionsRubricActions = __webpack_require__(299);
+
+	var _actionsRubricActions2 = _interopRequireDefault(_actionsRubricActions);
+
+	var _uniqueid = __webpack_require__(296);
+
+	var _uniqueid2 = _interopRequireDefault(_uniqueid);
+
+	var _immutable = __webpack_require__(294);
+
+	var _immutable2 = _interopRequireDefault(_immutable);
+
+	var _validator = __webpack_require__(290);
+
+	var _validator2 = _interopRequireDefault(_validator);
+
+	var _reactSpinkit = __webpack_require__(302);
+
+	var _reactSpinkit2 = _interopRequireDefault(_reactSpinkit);
+
+	var Main = (function (_React$Component) {
+	  _inherits(Main, _React$Component);
+
+	  function Main(props) {
+	    _classCallCheck(this, _Main);
+
+	    _get(Object.getPrototypeOf(_Main.prototype), 'constructor', this).call(this, props);
+	  }
+
+	  _createClass(Main, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _storesRubricStore2['default'].listen(this.onChange.bind(this));
+	      _actionsRubricActions2['default'].fetchRubric(this.props.id);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _storesRubricStore2['default'].unlisten(this.onChange.bind(this));
+	    }
+	  }, {
+	    key: 'onChange',
+	    value: function onChange(state) {
+	      this.setState(state, function () {
+	        if (state.criteria.size > 0) {
+	          var ref = this.refs['cell' + state.criteria.last().get('id')];
+	          if (ref) {
+	            ref.focus();
+	          }
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this = this;
+
+	      var deleteRowHeading;
+	      if (this.props.editMode == true) {
+	        deleteRowHeading = _react2['default'].createElement('th', { className: 'text-center' });
+	      }
+
+	      if (!this.props.rubric_id) {
+	        return _react2['default'].createElement(_reactSpinkit2['default'], { spinnerName: 'double-bounce' });
+	      }
+
+	      return _react2['default'].createElement(
+	        'div',
+	        null,
+	        _react2['default'].createElement(
+	          'table',
+	          { className: 'table table-bordered' },
+	          _react2['default'].createElement(
+	            'thead',
+	            null,
+	            _react2['default'].createElement(
+	              'th',
+	              { className: 'text-center' },
+	              'Criteria'
+	            ),
+	            _react2['default'].createElement(
+	              'th',
+	              { className: 'text-center' },
+	              'Description'
+	            ),
+	            _react2['default'].createElement(
+	              'th',
+	              { className: 'text-center' },
+	              'Pts'
+	            )
+	          ),
+	          _react2['default'].createElement(
+	            'tbody',
+	            null,
+	            this.props.criteria.map(function (c) {
+	              return _react2['default'].createElement(
+	                'tr',
+	                { key: c.get('id') },
+	                _react2['default'].createElement(_EditableCell2['default'], {
+	                  editing: c.get('editing'),
+	                  ref: 'cell' + c.get('id'),
+	                  keyName: 'name',
+	                  id: c.get('id'),
+	                  text: c.get('name'),
+	                  cellLength: 4
+	                }),
+	                _react2['default'].createElement(_EditableCell2['default'], {
+	                  keyName: 'description',
+	                  id: c.get('id'),
+	                  text: c.get('description'),
+	                  cellLength: 6
+	                }),
+	                _react2['default'].createElement(_EditableCell2['default'], {
+	                  keyName: 'points',
+	                  id: c.get('id'),
+	                  validator: _validator2['default'].isFloat,
+	                  text: c.get('points')
+	                }),
+	                _react2['default'].createElement(
+	                  'td',
+	                  null,
+	                  _react2['default'].createElement(
+	                    'a',
+	                    { onClick: _this.removeCriteria.bind(_this, c.get('id')), href: '#' },
+	                    _react2['default'].createElement('span', { className: 'glyphicon glyphicon-remove' })
+	                  )
+	                )
+	              );
+	            }),
+	            _react2['default'].createElement(
+	              'tr',
+	              { style: { marginTop: "0px", lineHeigh: "20px" } },
+	              _react2['default'].createElement(
+	                'td',
+	                { colSpan: '4' },
+	                _react2['default'].createElement(
+	                  'div',
+	                  { style: { float: "left" } },
+	                  _react2['default'].createElement(
+	                    'a',
+	                    { onClick: this.addCriteria.bind(this, (0, _uniqueid2['default'])({ multiplier: 10 })), href: '#' },
+	                    _react2['default'].createElement(
+	                      'i',
+	                      { className: 'glyphicon glyphicon-plus' },
+	                      ' '
+	                    ),
+	                    'Add Criteria'
+	                  )
+	                ),
+	                _react2['default'].createElement(
+	                  'div',
+	                  { style: { float: "right" } },
+	                  _react2['default'].createElement(
+	                    'span',
+	                    { style: { paddingRight: "10px" } },
+	                    'Total Points: ',
+	                    _storesRubricStore2['default'].getPointTotal()
+	                  )
+	                )
+	              )
+	            ),
+	            (function () {
+	              switch (_this.props.criteria.size > 0) {
+	                case true:
+	                  return _react2['default'].createElement(
+	                    'tr',
+	                    null,
+	                    _react2['default'].createElement(
+	                      'td',
+	                      { colSpan: '3' },
+	                      _react2['default'].createElement(
+	                        'div',
+	                        { className: 'pull-right' },
+	                        _react2['default'].createElement(
+	                          'a',
+	                          { href: '#', onClick: _this.updateRubric.bind(_this), className: 'btn btn-success btn-sm' },
+	                          'Update Rubric'
+	                        )
+	                      )
+	                    )
+	                  );
+	              }
+	            })()
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'toggleEditMode',
+	    value: function toggleEditMode(toggle, e) {
+	      e.preventDefault();
+	      _actionsRubricActions2['default'].toggleEditMode(toggle);
+	    }
+	  }, {
+	    key: 'addCriteria',
+	    value: function addCriteria(id, e) {
+	      e.preventDefault();
+	      var criteria = _immutable2['default'].fromJS({
+	        id: id,
+	        editing: true,
+	        name: 'Criteria name',
+	        description: 'Description of criteria',
+	        points: 10
+	      });
+	      _actionsRubricActions2['default'].addCriteria(criteria);
+	    }
+	  }, {
+	    key: 'removeCriteria',
+	    value: function removeCriteria(id, e) {
+	      e.preventDefault();
+	      _actionsRubricActions2['default'].removeCriteria(id);
+	    }
+	  }, {
+	    key: 'updateRubric',
+	    value: function updateRubric(e) {
+	      e.preventDefault();
+	      var params = {
+	        id: this.props.id,
+	        criteria: this.props.criteria.toJS()
+	      };
+	      _actionsRubricActions2['default'].updateRubric(params);
+	    }
+	  }], [{
+	    key: 'getStores',
+	    value: function getStores() {
+	      return [_storesRubricStore2['default']];
+	    }
+	  }, {
+	    key: 'getPropsFromStores',
+	    value: function getPropsFromStores() {
+	      return _storesRubricStore2['default'].getState();
+	    }
+	  }]);
+
+	  var _Main = Main;
+	  Main = (0, _altUtilsConnectToStores2['default'])(Main) || Main;
+	  return Main;
+	})(_react2['default'].Component);
+
+	exports['default'] = Main;
+	module.exports = exports['default'];
+
+/***/ },
+/* 298 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _actionsRubricActions = __webpack_require__(299);
+
+	var _actionsRubricActions2 = _interopRequireDefault(_actionsRubricActions);
+
+	var _validator = __webpack_require__(290);
+
+	var _validator2 = _interopRequireDefault(_validator);
+
+	var EditableCell = (function (_React$Component) {
+	  _inherits(EditableCell, _React$Component);
+
+	  function EditableCell(props) {
+	    _classCallCheck(this, EditableCell);
+
+	    _get(Object.getPrototypeOf(EditableCell.prototype), 'constructor', this).call(this, props);
+	    this.state = {
+	      editing: this.props.editing,
+	      text: this.props.text
+	    };
+	  }
+
+	  _createClass(EditableCell, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this = this;
+
+	      var editLinkStyle = {
+	        float: "right",
+	        marginBottom: "10px"
+	      };
+
+	      var html;
+	      if (this.state.editing) {
+	        html = _react2['default'].createElement('textarea', { ref: 'text_input', rows: this.props.cellLength > 2 ? "3" : null, defaultValue: this.state.text || '', className: 'form-control', onFocus: this.handleFocus, type: 'text', onChange: this.onChange.bind(this) });
+	      } else {
+	        html = this.props.text;
+	      }
+
+	      return _react2['default'].createElement(
+	        'td',
+	        { height: '50px', className: 'col-md-' + this.props.cellLength, onMouseOver: this.pencilShow.bind(this), onMouseLeave: this.pencilHide.bind(this), style: { padding: "20px" } },
+	        html,
+	        (function () {
+	          switch (_this.state.editing) {
+	            case true:
+	              return _react2['default'].createElement(
+	                'div',
+	                { style: { marginTop: "5px" }, className: 'text-center' },
+	                _react2['default'].createElement(
+	                  'button',
+	                  { ref: 'ok', onClick: _this.updateCriteria.bind(_this), style: { marginRight: "3px" }, className: 'btn btn-primary btn-xs' },
+	                  'Ok'
+	                ),
+	                _react2['default'].createElement(
+	                  'button',
+	                  { onClick: _this.toggleEditing.bind(_this, false), className: 'btn btn-xs' },
+	                  'Cancel'
+	                )
+	              );
+	              break;
+	            default:
+	              return _react2['default'].createElement(
+	                'span',
+	                { ref: 'pencil', className: 'hidden', style: editLinkStyle },
+	                _react2['default'].createElement(
+	                  'a',
+	                  { href: '#', onClick: _this.toggleEditing.bind(_this, true) },
+	                  _react2['default'].createElement('i', { className: 'glyphicon glyphicon-pencil' })
+	                )
+	              );
+	          }
+	        })()
+	      );
+	    }
+	  }, {
+	    key: 'pencilShow',
+	    value: function pencilShow(e) {
+	      e.preventDefault();
+	      if (this.state.editing == false) {
+	        this.refs.pencil.getDOMNode().className = null;
+	      }
+	    }
+	  }, {
+	    key: 'pencilHide',
+	    value: function pencilHide(e) {
+	      e.preventDefault();
+	      if (this.state.editing == false) {
+	        this.refs.pencil.getDOMNode().className = 'hidden';
+	      }
+	    }
+	  }, {
+	    key: 'onChange',
+	    value: function onChange(event) {
+	      var value = event.target.value;
+	      if (isNaN(value) == false) {
+	        value = _validator2['default'].toFloat(value);
+	      }
+
+	      if (this.props.validator(value)) {
+	        this.refs.ok.getDOMNode().disabled = false;
+	        console.log(value);
+	        this.setState({ text: value });
+	      } else {
+	        this.refs.ok.getDOMNode().disabled = true;
+	      }
+	    }
+	  }, {
+	    key: 'handleFocus',
+	    value: function handleFocus(e) {
+	      e.target.select();
+	    }
+	  }, {
+	    key: 'updateCriteria',
+	    value: function updateCriteria() {
+	      _actionsRubricActions2['default'].updateCriteria({
+	        id: this.props.id,
+	        text: this.state.text,
+	        keyName: this.props.keyName
+	      });
+	      this.setState({ editing: false });
+	    }
+	  }, {
+	    key: 'focus',
+	    value: function focus() {
+	      if (this.state.editing) {
+	        this.refs.text_input.getDOMNode().focus();
+	      }
+	    }
+	  }, {
+	    key: 'toggleEditing',
+	    value: function toggleEditing(toggled, e) {
+	      var _this2 = this;
+
+	      e.preventDefault();
+	      this.setState({ editing: toggled }, function () {
+	        _this2.focus();
+	      });
+	    }
+	  }], [{
+	    key: 'defaultProps',
+	    value: {
+	      cellLength: 2,
+	      editing: false,
+	      validator: _validator2['default'].isAscii
+	    },
+	    enumerable: true
+	  }]);
+
+	  return EditableCell;
+	})(_react2['default'].Component);
+
+	exports['default'] = EditableCell;
+	module.exports = exports['default'];
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _axios = __webpack_require__(158);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var alt = __webpack_require__(300);
+
+	var RubricActions = (function () {
+	  function RubricActions() {
+	    _classCallCheck(this, RubricActions);
+	  }
+
+	  _createClass(RubricActions, [{
+	    key: 'addCriteria',
+	    value: function addCriteria(criteria) {
+	      this.dispatch(criteria);
+	    }
+	  }, {
+	    key: 'updateCriteria',
+	    value: function updateCriteria(obj) {
+	      this.dispatch(obj);
+	    }
+	  }, {
+	    key: 'fetchRubric',
+	    value: function fetchRubric(id) {
+	      var _this = this;
+
+	      this.dispatch();
+	      _axios2['default'].get(Gesmew.routes.rubrics_api + '/' + id, {
+	        params: {
+	          token: Gesmew.api_key
+	        }
+	      }).then(function (response) {
+	        _this.actions.updateRubricLocal(response.data);
+	      });
+	    }
+	  }, {
+	    key: 'removeCriteria',
+	    value: function removeCriteria(id) {
+	      this.dispatch(id);
+	    }
+	  }, {
+	    key: 'toggleEditMode',
+	    value: function toggleEditMode(codition) {
+	      this.dispatch(codition);
+	    }
+	  }, {
+	    key: 'updateRubric',
+	    value: function updateRubric(rubric) {
+	      var _this2 = this;
+
+	      this.dispatch();
+	      console.log(rubric);
+	      _axios2['default'].put(Gesmew.routes.rubrics_api + '/' + rubric.id, {
+	        criteria: rubric.criteria,
+	        token: Gesmew.api_key
+	      }).then(function (response) {
+	        _this2.actions.updateRubricLocal(response.data);
+	      });
+	      this.dispatch(rubric);
+	    }
+	  }, {
+	    key: 'updateRubricLocal',
+	    value: function updateRubricLocal(rubric) {
+	      this.dispatch(rubric);
+	    }
+	  }]);
+
+	  return RubricActions;
+	})();
+
+	module.exports = alt.createActions(RubricActions);
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var Alt = __webpack_require__(278);
+
+	var alt = new Alt();
+
+	module.exports = alt;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var alt = __webpack_require__(300);
+	var RubricActions = __webpack_require__(299);
+	var _ = __webpack_require__(293);
+	var Immutable = __webpack_require__(294);
+	var ImmutableStore = __webpack_require__(295);
+
+	var RubricStore = (function () {
+	  function RubricStore() {
+	    _classCallCheck(this, RubricStore);
+
+	    this.state = {
+	      rubric_id: null,
+	      criteria: Immutable.fromJS([])
+	    };
+	    this.bindListeners({
+	      handleAddCriteria: RubricActions.ADD_CRITERIA,
+	      handleUpdateCriteria: RubricActions.UPDATE_CRITERIA,
+	      handleRemoveCriteria: RubricActions.REMOVE_CRITERIA,
+	      handleToggleEditMode: RubricActions.TOGGLE_EDIT_MODE,
+	      handleUpdateRubric: RubricActions.UPDATE_RUBRIC,
+	      handleUpdateRubricLocal: RubricActions.UPDATE_RUBRIC_LOCAL,
+	      handleFetchRubric: RubricActions.FETCH_RUBRIC
+	    });
+	  }
+
+	  _createClass(RubricStore, [{
+	    key: 'handleAddCriteria',
+	    value: function handleAddCriteria(criterion) {
+	      this.setState({
+	        criteria: this.state.criteria.push(criterion)
+	      });
+	    }
+	  }, {
+	    key: 'handleUpdateCriteria',
+	    value: function handleUpdateCriteria(criterion) {
+	      var criteriaIndex = this.state.criteria.findIndex(function (s) {
+	        return s.get('id') === criterion.id;
+	      });
+	      this.setState({
+	        criteria: this.state.criteria.update(criteriaIndex, function (item) {
+	          return item.set(criterion.keyName, criterion.text);
+	        })
+	      });
+	    }
+	  }, {
+	    key: 'handleRemoveCriteria',
+	    value: function handleRemoveCriteria(id) {
+	      var criteriaIndex = this.state.criteria.findIndex(function (s) {
+	        return s.get('id') === id;
+	      });
+	      this.setState({
+	        criteria: this.state.criteria['delete'](criteriaIndex)
+	      });
+	    }
+	  }, {
+	    key: 'handleUpdateRubricLocal',
+	    value: function handleUpdateRubricLocal(rubric) {
+	      if (rubric.criteria) {
+	        this.setState({
+	          rubric_id: rubric.id,
+	          criteria: Immutable.fromJS(rubric.criteria)
+	        });
+	      } else {
+	        this.state.rubric_id = rubric.id;
+	      }
+	    }
+	  }, {
+	    key: 'handleUpdateRubric',
+	    value: function handleUpdateRubric() {
+	      this.setState({
+	        rubric_id: null,
+	        criteria: Immutable.fromJS([])
+	      });
+	    }
+	  }, {
+	    key: 'handleFetchRubric',
+	    value: function handleFetchRubric() {
+	      this.setState({
+	        rubric_id: null,
+	        criteria: Immutable.fromJS([])
+	      });
+	    }
+	  }, {
+	    key: 'handleToggleEditMode',
+	    value: function handleToggleEditMode(condition) {
+	      this.state.editMode = condition;
+	    }
+	  }], [{
+	    key: 'getPointTotal',
+	    value: function getPointTotal() {
+	      var arr = [];
+	      this.state.criteria.map(function (c, index) {
+	        arr.push(c.get('points'));
+	      });
+	      return _.sum(arr);
+	    }
+	  }]);
+
+	  return RubricStore;
+	})();
+
+	module.exports = alt.createStore(ImmutableStore(RubricStore));
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// Generated by CoffeeScript 1.9.1
+	var React, cx, objectAssign;
+
+	React = __webpack_require__(2);
+
+	cx = __webpack_require__(303);
+
+	objectAssign = __webpack_require__(14);
+
+	module.exports = React.createClass({
+	  displayName: "SpinKit",
+	  propTypes: {
+	    spinnerName: React.PropTypes.string.isRequired,
+	    noFadeIn: React.PropTypes.bool,
+	    overrideSpinnerClassName: React.PropTypes.string
+	  },
+	  getDefaultProps: function() {
+	    return {
+	      spinnerName: 'three-bounce',
+	      noFadeIn: false,
+	      overrideSpinnerClassName: ""
+	    };
+	  },
+	  render: function() {
+	    var classTests, classes;
+	    classTests = {
+	      "fade-in": !this.props.noFadeIn,
+	      spinner: this.props.overrideSpinnerClassName === ""
+	    };
+	    classTests[this.props.overrideSpinnerClassName] = this.props.overrideSpinnerClassName;
+	    classes = cx(classTests);
+	    if (this.props.className) {
+	      classes = classes + " " + this.props.className;
+	    }
+	    if (!this.props.noFadeIn) {
+	      __webpack_require__(304);
+	    }
+	    switch (this.props.spinnerName) {
+	      case "three-bounce":
+	        __webpack_require__(305);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": "three-bounce " + classes
+	        }), React.createElement("div", {
+	          "className": "bounce1"
+	        }), React.createElement("div", {
+	          "className": "bounce2"
+	        }), React.createElement("div", {
+	          "className": "bounce3"
+	        }));
+	      case "double-bounce":
+	        __webpack_require__(306);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": "double-bounce " + classes
+	        }), React.createElement("div", {
+	          "className": "double-bounce1"
+	        }), React.createElement("div", {
+	          "className": "double-bounce2"
+	        }));
+	      case "rotating-plane":
+	        __webpack_require__(307);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": classes
+	        }), React.createElement("div", {
+	          "className": "rotating-plane"
+	        }));
+	      case "wave":
+	        __webpack_require__(308);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": "wave " + classes
+	        }), React.createElement("div", {
+	          "className": "rect1"
+	        }), React.createElement("div", {
+	          "className": "rect2"
+	        }), React.createElement("div", {
+	          "className": "rect3"
+	        }), React.createElement("div", {
+	          "className": "rect4"
+	        }), React.createElement("div", {
+	          "className": "rect5"
+	        }));
+	      case "wandering-cubes":
+	        __webpack_require__(309);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": "wandering-cubes " + classes
+	        }), React.createElement("div", {
+	          "className": "cube1"
+	        }), React.createElement("div", {
+	          "className": "cube2"
+	        }));
+	      case "pulse":
+	        __webpack_require__(310);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": classes
+	        }), React.createElement("div", {
+	          "className": "pulse"
+	        }));
+	      case "chasing-dots":
+	        __webpack_require__(311);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": classes
+	        }), React.createElement("div", {
+	          "className": "chasing-dots"
+	        }, React.createElement("div", {
+	          "className": "dot1"
+	        }), React.createElement("div", {
+	          "className": "dot2"
+	        })));
+	      case "circle":
+	        __webpack_require__(312);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": "circle-wrapper " + classes
+	        }), React.createElement("div", {
+	          "className": "circle1 circle"
+	        }), React.createElement("div", {
+	          "className": "circle2 circle"
+	        }), React.createElement("div", {
+	          "className": "circle3 circle"
+	        }), React.createElement("div", {
+	          "className": "circle4 circle"
+	        }), React.createElement("div", {
+	          "className": "circle5 circle"
+	        }), React.createElement("div", {
+	          "className": "circle6 circle"
+	        }), React.createElement("div", {
+	          "className": "circle7 circle"
+	        }), React.createElement("div", {
+	          "className": "circle8 circle"
+	        }), React.createElement("div", {
+	          "className": "circle9 circle"
+	        }), React.createElement("div", {
+	          "className": "circle10 circle"
+	        }), React.createElement("div", {
+	          "className": "circle11 circle"
+	        }), React.createElement("div", {
+	          "className": "circle12 circle"
+	        }));
+	      case "cube-grid":
+	        __webpack_require__(313);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": "cube-grid " + classes
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }), React.createElement("div", {
+	          "className": "cube"
+	        }));
+	      case "wordpress":
+	        __webpack_require__(314);
+	        return React.createElement("div", React.__spread({}, this.props, {
+	          "className": classes
+	        }), React.createElement("div", {
+	          "className": "wordpress"
+	        }, React.createElement("span", {
+	          "className": "inner-circle"
+	        })));
+	    }
+	  }
+	});
+
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2015 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+
+	function classNames() {
+		var classes = '';
+		var arg;
+
+		for (var i = 0; i < arguments.length; i++) {
+			arg = arguments[i];
+			if (!arg) {
+				continue;
+			}
+
+			if ('string' === typeof arg || 'number' === typeof arg) {
+				classes += ' ' + arg;
+			} else if (Object.prototype.toString.call(arg) === '[object Array]') {
+				classes += ' ' + classNames.apply(null, arg);
+			} else if ('object' === typeof arg) {
+				for (var key in arg) {
+					if (!arg.hasOwnProperty(key) || !arg[key]) {
+						continue;
+					}
+					classes += ' ' + key;
+				}
+			}
+		}
+		return classes.substr(1);
+	}
+
+	// safely export classNames for node / browserify
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	}
+
+	// safely export classNames for RequireJS
+	if (true) {
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+			return classNames;
+		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+
+
+/***/ },
+/* 304 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 305 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 306 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 307 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 308 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 309 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 310 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 311 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 312 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 313 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 314 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);

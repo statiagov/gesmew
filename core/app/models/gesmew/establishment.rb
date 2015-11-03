@@ -4,14 +4,17 @@ module Gesmew
     extend FriendlyId
     friendly_id :number, slug_column: :number, use: :slugged
 
+    include Gesmew::Core::NumberGenerator.new(prefix:'E')
+
     has_many   :inspections
     belongs_to :establishment_type
     belongs_to :contact_information
 
-    validates :name, presence: true, uniqueness: true
-    validates :establishment_type, presence: true
-    validates :contact_information, presence: true
+    accepts_nested_attributes_for :contact_information
 
+    validates :name, presence: true, uniqueness: true
+    validates :establishment_type_id, presence: true
+    validates_associated :contact_information
 
     delegate :firstname,    to: :contact_information, allow_nil: true, prefix: false
     delegate :lastname,     to: :contact_information, allow_nil: true, prefix: false

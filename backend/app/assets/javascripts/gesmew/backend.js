@@ -34,6 +34,8 @@ Gesmew.routes.taxon_products_api = Gesmew.pathFor('api/v1/taxons/establishments'
 Gesmew.routes.taxons_search = Gesmew.pathFor('api/v1/taxons')
 Gesmew.routes.user_search = Gesmew.pathFor('admin/search/users')
 Gesmew.routes.variants_api = Gesmew.pathFor('api/v1/variants')
+Gesmew.routes.rubrics_api = Gesmew.pathFor('api/v1/rubrics')
+Gesmew.routes.inspection_scopes_api = Gesmew.pathFor('api/v1/inspection/scopes')
 Gesmew.routes.inspection_scope_search = Gesmew.pathFor('admin/search/inspection_scopes')
 Gesmew.routes.edit_establishment = function(establishment_id) {
   return Gesmew.pathFor('admin/establishments/' + establishment_id + '/edit')

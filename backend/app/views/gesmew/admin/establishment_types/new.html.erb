@@ -1,0 +1,14 @@
+<%= render :partial => 'gesmew/admin/shared/error_messages', :locals => { :target => @establishment_type } %>
+
+<% content_for :page_title do %>
+  <%= Gesmew.t(:new_establishment_type) %>
+<% end %>
+
+<%= form_for [:admin, @establishment_type] do |f| %>
+  <fieldset data-hook="new_establishment_type">
+    <div class="row">
+      <%= render :partial => 'form', :locals => { :f => f } %>
+      <%= render :partial => 'gesmew/admin/shared/new_resource_links' %>
+    </div>
+  </fieldset>
+<% end %>

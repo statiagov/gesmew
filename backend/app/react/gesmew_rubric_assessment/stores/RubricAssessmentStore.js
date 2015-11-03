@@ -42,6 +42,7 @@ class RubricAssessmentStore {
   }
 
   handleFetchCriteria(assessment){
+    console.log(assessment)
     this.state.criteria = Immutable.fromJS(assessment.data)
   }
 

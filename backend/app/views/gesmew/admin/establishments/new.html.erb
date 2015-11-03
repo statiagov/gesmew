@@ -1,0 +1,39 @@
+<%= render :partial => 'gesmew/admin/shared/error_messages', :locals => { :target => @establishment } %>
+
+<% content_for :page_title do %>
+  <%= Gesmew.t(:new_establishment) %>
+<% end %>
+
+<%= form_for [:admin, @establishment], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="new_establishment">
+    <div class="row">
+      <div class="col-md-8">
+        <%= f.field_container :name, :class => ['form-group'] do %>
+          <%= f.label :name, Gesmew.t(:name) %> <span class="required">*</span>
+          <%= f.text_field :name, :class => 'form-control title' %>
+          <%= f.error_message_on :name %>
+        <% end %>
+        
+        <%= f.field_container :establishment_type, :class => ['form-group'] do %>
+          <%= f.label  :establishment_type, Gesmew.t(:establishment_type) %> <span class="required">*</span>
+          <%= f.collection_select :establishment_type_id, Gesmew::EstablishmentType.all, :id, :name,{}, :class => 'select2 js-filterable' %>
+          <%= f.error_message_on :establishment_type %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="content-header">
+      <h3 class="col-sm-12">Primary Contact Information</h3>
+    </div>
+    <div data-hook="new_establishment__contact_information_attrs" class="row">
+      <%= f.fields_for :contact_information do |c| %>
+        <div class= "col-md-6">
+          <%= render :partial => 'gesmew/admin/shared/address_form', :locals => { :f => c} %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= render :partial => 'gesmew/admin/shared/new_resource_links' %>
+
+  </fieldset>
+<% end %>

@@ -23,13 +23,7 @@ Gesmew::Core::Engine.add_routes do
     resources :inspection_scopes
 
 
-    resources :establishments do
-      resources :images do
-        collection do
-          post :update_positions
-        end
-      end
-    end
+    resources :establishments
 
     resource :general_settings do
       collection do
@@ -48,7 +42,7 @@ Gesmew::Core::Engine.add_routes do
 
     resources :roles
 
-    resources :users do
+    resources :users , controller: "users" do
       member do
         get :addresses
         put :addresses

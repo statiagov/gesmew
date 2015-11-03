@@ -1,0 +1,14 @@
+<%= render partial: 'gesmew/admin/shared/error_messages', locals: { target: @inspection_scope } %>
+
+<% content_for :page_title do %>
+  <%= Gesmew.t(:new_scope) %>
+<% end %>
+
+<%= form_for [:admin, @inspection_scope] do |f| %>
+  <fieldset data-hook="new_inspection_scope">
+    <%= render partial: 'form', locals: { f: f } %>
+    <div class="form-actions">
+      <%= render partial: 'gesmew/admin/shared/new_resource_links' %>
+    </div>
+  </fieldset>
+<% end %>
