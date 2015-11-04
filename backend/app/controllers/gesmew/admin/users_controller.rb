@@ -110,7 +110,7 @@ module Gesmew
 
      def extract_roles_from_params
        if params[:user]
-         @roles_ids = params[:user].delete("spree_role_ids")
+         @roles_ids = params[:user].delete("gesmew_role_ids")
        end
      end
 
