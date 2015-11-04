@@ -273,7 +273,7 @@ en:
     filter_results: Filter Results
     first_name: First Name
     first_name_begins_with: First Name Begins With
-    full_name: Full Name
+    fullname: Full Name
     gateway: Gateway
     grade_and_comment: Grade & Comment
     gateway_error: Gateway Error

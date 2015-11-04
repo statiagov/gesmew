@@ -32,7 +32,7 @@ export default class EditableCell extends React.Component {
     }
 
     return (
-      <td height="50px" className={`col-md-${this.props.cellLength}`} onMouseOver={this.pencilShow.bind(this)} onMouseLeave={this.pencilHide.bind(this)} style={{padding:"20px"}}>
+      <td height="50px" data-toggle="tooltip" title="Double click to edit" className={`col-md-${this.props.cellLength}`} onDoubleClick={this.toggleEditing.bind(this, !this.state.editing)} style={{padding:"20px"}}>
         {html}
 
         {(() => {
@@ -57,20 +57,6 @@ export default class EditableCell extends React.Component {
         })()}
       </td>
     )
-  }
-
-  pencilShow(e){
-    e.preventDefault();
-    if (this.state.editing == false) {
-      this.refs.pencil.getDOMNode().className = null;
-    }
-  }
-
-  pencilHide(e){
-    e.preventDefault();
-    if (this.state.editing == false) {
-      this.refs.pencil.getDOMNode().className = 'hidden';
-    }
   }
 
   onChange(event) {
@@ -113,6 +99,7 @@ export default class EditableCell extends React.Component {
   }
 
   toggleEditing(toggled, e){
+    console.log(toggled)
     e.preventDefault();
     this.setState({editing:toggled}, () =>{
       this.focus();

@@ -55348,7 +55348,7 @@
 
 	      return _react2['default'].createElement(
 	        'td',
-	        { height: '50px', className: 'col-md-' + this.props.cellLength, onMouseOver: this.pencilShow.bind(this), onMouseLeave: this.pencilHide.bind(this), style: { padding: "20px" } },
+	        { height: '50px', 'data-toggle': 'tooltip', title: 'Double click to edit', className: 'col-md-' + this.props.cellLength, onDoubleClick: this.toggleEditing.bind(this, !this.state.editing), style: { padding: "20px" } },
 	        html,
 	        (function () {
 	          switch (_this.state.editing) {
@@ -55381,22 +55381,6 @@
 	          }
 	        })()
 	      );
-	    }
-	  }, {
-	    key: 'pencilShow',
-	    value: function pencilShow(e) {
-	      e.preventDefault();
-	      if (this.state.editing == false) {
-	        this.refs.pencil.getDOMNode().className = null;
-	      }
-	    }
-	  }, {
-	    key: 'pencilHide',
-	    value: function pencilHide(e) {
-	      e.preventDefault();
-	      if (this.state.editing == false) {
-	        this.refs.pencil.getDOMNode().className = 'hidden';
-	      }
 	    }
 	  }, {
 	    key: 'onChange',
@@ -55441,6 +55425,7 @@
 	    value: function toggleEditing(toggled, e) {
 	      var _this2 = this;
 
+	      console.log(toggled);
 	      e.preventDefault();
 	      this.setState({ editing: toggled }, function () {
 	        _this2.focus();

@@ -22,6 +22,10 @@ Gesmew::Core::Engine.config.to_prepare do
         gesmew_roles.where(name: role_in_question.to_s).any?
       end
 
+      def number_of_complete_inspections
+        inspections.where.not(completed_at: nil).count
+      end
+
       def is_part_of_inspection?(inspection_number)
         inspections.where(number: inspection_number).any?
       end
