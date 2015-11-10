@@ -5,7 +5,7 @@ module Gesmew
 
      after_action :sign_in_if_change_own_password, only: :update
 
-     # http://spreecommerce.com/blog/2010/11/02/json-hijacking-vulnerability/
+     # http://gesmewcommerce.com/blog/2010/11/02/json-hijacking-vulnerability/
      before_action :check_json_authenticity, only: :index
      before_action :load_roles
      before_action :extract_roles_from_params, only: [:create, :update]
@@ -71,14 +71,14 @@ module Gesmew
      end
 
      def generate_api_key
-       if @user.generate_spree_api_key!
+       if @user.generate_gesmew_api_key!
          flash[:success] = Gesmew.t('api.key_generated')
        end
        redirect_to edit_admin_user_path(@user)
      end
 
      def clear_api_key
-       if @user.clear_spree_api_key!
+       if @user.clear_gesmew_api_key!
          flash[:success] = Gesmew.t('api.key_cleared')
        end
        redirect_to edit_admin_user_path(@user)
@@ -104,7 +104,7 @@ module Gesmew
 
      def set_roles
        if @roles_ids
-         @user.spree_roles = Gesmew::Role.where(id: @roles_ids)
+         @user.gesmew_roles = Gesmew::Role.where(id: @roles_ids)
        end
      end
 
@@ -116,7 +116,7 @@ module Gesmew
 
      def user_params
        params.require(:user).permit(permitted_user_attributes |
-                                    [:spree_role_ids])
+                                    [:gesmew_role_ids])
      end
 
      # handling raise from Gesmew::Admin::ResourceController#destroy

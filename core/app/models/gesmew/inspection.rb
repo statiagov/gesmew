@@ -65,7 +65,6 @@ module Gesmew
     end
 
     def initial_assessment(user_id)
-      byebug
       user = gesmew_user(user_id)
       if user.is_part_of_inspection?(self.number)
         get_rubric_association.assess({assessor:user, artifact:self},true)
