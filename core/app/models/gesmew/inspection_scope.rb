@@ -9,5 +9,7 @@ module Gesmew
     scope :text_search, ->(query) {search(
       name_cont: query
     ).result}
+
+    delegate :rubric_associations, to: :rubric, allow_nil: true, prefix: false
   end
 end

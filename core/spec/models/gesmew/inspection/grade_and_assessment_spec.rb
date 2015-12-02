@@ -14,7 +14,7 @@ module Gesmew
       allow(inspection).to receive(:ensure_scope_present)
       allow(inspection).to receive(:gesmew_user).and_return(user)
     end
-    context "#initial_assessment" do
+    context "#assessment" do
       it "should be called after transistion to pending" do
         # Explicity set the inspection state
         inspection.state = 'pending'

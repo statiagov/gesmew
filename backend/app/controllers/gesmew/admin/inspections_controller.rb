@@ -70,7 +70,7 @@ module Gesmew
           end
         end
         if try_gesmew_current_user.try(:is_part_of_inspection?, @inspection.number)
-          association = @inspection.scope.rubric.associate_with(@inspection, @inspection.scope)
+          association = @inspection.rubric.associate_with(@inspection, @inspection.scope)
           @assessment = association.assessment(assessor:try_gesmew_current_user, artifact:@inspection)
           @association_id = association.id
         end

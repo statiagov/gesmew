@@ -5,17 +5,13 @@ module Gesmew
 
         def update
           authorize! :update, Gesmew::InspectionScope
-          @rubric = Gesmew::Rubric.find_by(context_id: params[:id])
-          data = {
-            id:params[:id],
-            criteria: params[:criteria]
-          }
-          if @rubric.update_criteria(data)
+          updater = Gesmew::Rubric::Updater.new(params)
+          @rubric = updater.update
+          if @rubric
             respond_with(@rubric, status: 200, template: 'gesmew/api/v1/rubrics/show')
           else
             invalid_resource!(@rubric)
           end
-
         end
 
         def show

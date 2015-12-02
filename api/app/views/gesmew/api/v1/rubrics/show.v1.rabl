@@ -1,7 +1,7 @@
 object @rubric
-attributes :id, :points_possible
+attributes :id, :criteria_count
 if @rubric.data.present?
   child :criteria_object => :criteria do
-    attributes :id, :points, :description, :name
+    attributes :id, :description, :name
   end
 end

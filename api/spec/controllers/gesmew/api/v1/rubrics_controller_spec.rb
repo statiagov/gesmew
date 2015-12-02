@@ -12,7 +12,7 @@ module Gesmew
       user
     end
     let(:rubric){create(:rubric, context:scope)}
-    let!(:attributes) {[:id, :points_possible, :criteria]}
+    let!(:attributes) {[:id, :criteria_count, :criteria]}
     before do
       stub_authentication!
     end
@@ -25,12 +25,10 @@ module Gesmew
           criteria: [
             {
               name: "Temperature",
-              points:9,
               description:"The temperature should be...",
             },
             {
               name: "Mold",
-              points:10,
               description:"No mold!!",
             }
           ]
@@ -44,7 +42,7 @@ module Gesmew
         expect(json_response).to have_attributes(attributes)
         expect(response.status).to  eq(200)
         expect(json_response['criteria'].first['name']).to eq "Temperature"
-        expect(json_response['points_possible']).to eq rubric.points_possible
+        expect(json_response['criteria_count']).to eq rubric.criteria_count
       end
     end
 
@@ -54,12 +52,10 @@ module Gesmew
           criteria: [
             {
               name: "123478-OP",
-              points:9,
               description:"The temperature should be...",
             },
             {
               name: "Mold",
-              points:10,
               description:"No mold!!",
             }
           ]

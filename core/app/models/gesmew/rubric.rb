@@ -8,24 +8,24 @@ module Gesmew
 
     serialize_utf8_safe :data
 
-    CriteriaData = Struct.new(:criteria, :points_possible, :title)
+    CriteriaData = Struct.new(:criteria, :criteria_count, :title)
     def generate_criteria(params)
       @used_ids = {}
       title = params[:title] || Gesmew.t(:context_rubric_name, name: context.name)
-      points_possible = 0
+      criteria_count = 0
       criteria = []
       (params[:criteria] || {}).each_with_index do |criterion_data, idx|
         criterion = {}
         criterion[:name] = criterion_data[:name]
         criterion[:description] = (criterion_data[:description] || Gesmew.t(:no_desription))
-        criterion[:points] = criterion_data[:points].to_f || 0
+        criterion[:required] = criterion_data[:required]
         criterion_data[:id].strip! if criterion_data[:id]
         criterion_data[:id] = nil if criterion_data[:id] && criterion_data[:id].empty?
-        criterion[:id] = unique_item_id(criterion[:id])
-        points_possible += criterion[:points]
+        criterion[:id] = unique_item_id(criterion_data[:id])
+        criteria_count += 1
         criteria[idx.to_i] = criterion
       end
-      CriteriaData.new(criteria, points_possible, title)
+      CriteriaData.new(criteria, criteria_count, title)
     end
 
     def criteria
@@ -54,7 +54,7 @@ module Gesmew
       data = self.generate_criteria(params)
       self.data = data.criteria
       self.title = data.title
-      self.points_possible = data.points_possible
+      self.criteria_count = data.criteria_count
       self.save
       self
     end

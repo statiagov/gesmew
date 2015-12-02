@@ -11,12 +11,10 @@ describe Gesmew::Rubric, type: :model do
         title:rubric.title,
         criteria: [
           {
-            points:9,
             description:"Some description",
             name:"Temperature",
           },
           {
-            points:10,
             description:"Some description",
             name:'Floors',
           }
@@ -25,9 +23,9 @@ describe Gesmew::Rubric, type: :model do
     end
 
     it "should should save or update the rubric criteria to the database" do
-      expect(rubric.points_possible).to eq(nil)
+      expect(rubric.criteria_count).to eq(nil)
       rubric.update_criteria(rubric_params)
-      expect(rubric.points_possible).to eq(19)
+      expect(rubric.criteria_count).to eq(2)
     end
   end
 

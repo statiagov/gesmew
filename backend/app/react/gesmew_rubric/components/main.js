@@ -83,10 +83,10 @@ export default class Main extends React.Component {
                     cellLength={6}
                   />
                   <Cell
-                    keyName="points"
+                    keyName="required"
+                    editing={false}
                     id={c.get('id')}
-                    validator={validator.isFloat}
-                    text={c.get('points')}
+                    text={c.get('required')}
                   />
                   <td>
                     <a onClick={this.removeCriteria.bind(this, c.get('id'))} href="#">

@@ -7,7 +7,7 @@ module Gesmew
     validates_inclusion_of :context_type, allow_nil:true, in:['Gesmew::InspectionScope']
     has_many :rubric_assessments, dependent: :nullify
 
-    before_save :update_inspection_points
+    before_save :update_criteria_count
     before_save :update_values
 
     ValidAssociationModels = {
@@ -23,47 +23,42 @@ module Gesmew
       klass.where(id:a_id).first if a_id.present?
     end
 
-    def update_inspection_points
-      self.association_object.update_attribute(:points_possible, self.rubric.points_possible)
+    def update_criteria_count
+      self.association_object.update_attribute(:criteria_count, self.rubric.criteria_count)
     end
 
     def update_values
       self.title ||= self.association_object.number
     end
 
-    def assess(opts={}, initital=false)
+    def assess(opts={})
       association = self
       ratings = []
-      score = nil
-      has_score = false
+      criterion_met_count = nil
       replace_ratings = false
       params = opts[:assessment]
       self.rubric.criteria_object.each do |criterion|
-        if initital
-          data = {points:0}
+        if opts[:initial].present?
+          data = {criterion_met:false}
         else
           data = params["criterion_#{criterion.id}".to_sym]
         end
         rating = {}
         if data
           replace_ratings = true
-          has_score = (data[:points]).present?
           rating[:id] = criterion[:id]
           rating[:name] = criterion[:name]
           rating[:description] = criterion[:description]
-          rating[:score] = [criterion.points, data[:score].to_f].min if has_score
-          rating[:points] = criterion[:points]
-          if has_score
-            score ||= 0
-            score += rating[:score]
-          end
+          rating[:criterion_met] = data[:criterion_met]
+          criterion_met_count ||= 0
+          criterion_met_count += 1 if rating[:criterion_met] == true
           ratings << rating
         end
       end
       assessment = association.rubric_assessments.where(assessor: opts[:assessor], artifact:opts[:artifact], rubric: self.rubric)
       if assessment.empty? then assessment = nil end
       assessment ||= association.rubric_assessments.build(assessor: opts[:assessor], artifact:opts[:artifact], rubric: self.rubric)
-      assessment.score = score if replace_ratings
+      assessment.criterion_met_count = criterion_met_count if replace_ratings
       assessment.data = ratings if replace_ratings
       assessment.tap(&:save)
     end

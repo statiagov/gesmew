@@ -149,7 +149,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.date        :inspected_at, default: Date.today
       t.boolean     :considered_risky
       t.integer     :state_lock_version, default: 0, null: false
-      t.float       :points_possible
+      t.float       :criteria_count
       t.timestamps  null: false
     end
 
@@ -168,13 +168,6 @@ class GesmewInitial < ActiveRecord::Migration
     add_index :gesmew_comments, :commentable_type
     add_index :gesmew_comments, :commentable_id
     add_index :gesmew_comments, :user_id
-
-    create_table :comments_types  do |t|
-      t.string :name
-      t.string :applies_to
-
-      t.timestamps
-    end
 
     create_table :gesmew_inspection_scopes do |t|
       t.string :name
@@ -195,7 +188,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.integer :context_id
       t.string :context_type
       t.text :data
-      t.integer :points_possible
+      t.integer :criteria_count
       t.string :title
       t.text :description
       t.boolean :read_only, default: false
@@ -221,7 +214,7 @@ class GesmewInitial < ActiveRecord::Migration
       t.integer :assessor_id
       t.belongs_to :rubric
       t.belongs_to :rubric_association
-      t.float :score
+      t.integer :criterion_met_count
       t.text :data
       t.integer :artifact_id
       t.string :artifact_type

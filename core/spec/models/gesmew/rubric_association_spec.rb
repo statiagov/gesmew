@@ -20,13 +20,11 @@ describe Gesmew::RubricAssociation do
     before do
       rubric.data = [
         {
-          points: 10,
           description: 'Some Description',
           name:'Floors',
           id: 'id1',
         },
         {
-          points: 10,
           description: 'Some Description',
           name:'Temperature',
           id: 'id2'
@@ -40,10 +38,10 @@ describe Gesmew::RubricAssociation do
         assessor:create(:admin_user),
         assessment: {
           criterion_id1: {
-            points: 6
+            criterion_met: true
           },
           criterion_id2:{
-            points: 7
+            criterion_met: false
           }
         }
       })
@@ -52,21 +50,27 @@ describe Gesmew::RubricAssociation do
       expect{assess}.to change {Gesmew::RubricAssessment.count}.by(1)
     end
 
+    it 'criterion met should have a count of 1' do
+      assess
+      expect(assess.criterion_met_count).to eq(1)
+    end
+
     it 'does not create a new assessment by the same assessor' do
       assess
       expect{assess}.to_not change{Gesmew::RubricAssessment.count}
     end
-    context "when initial = true" do
-      let(:assess){association.assess({}, true)}
+
+    context "when assessment is empty" do
+      let(:assess){association.assess(artifact:inspection,assessor:create(:admin_user),initial:true)}
 
       it 'creates and assessment' do
         expect{assess}.to change {Gesmew::RubricAssessment.count}.by(1)
       end
 
-      it 'should have a score of 0' do
-        expect(assess.score).to eq(0)
+      it 'criterion met should have a count of 0' do
+        expect(assess.criterion_met_count).to eq(0)
       end
     end
   end
-  
+
 end

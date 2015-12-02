@@ -12,5 +12,11 @@ module Gesmew
     # def update_artifact_assessed
     #   self.artifact.update_attribute(:assessed, true)
     # end
+
+    def update_criteria(criteria)
+      unless criteria.present?
+        byebug
+      end
+    end
   end
 end

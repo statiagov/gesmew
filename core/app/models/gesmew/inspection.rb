@@ -16,6 +16,8 @@ module Gesmew
 
     has_many  :inspection_users, class_name: Gesmew::InspectionUser, :foreign_key => :inspection_id
 
+    delegate :rubric, to: :scope, allow_nil: true, prefix: false
+
     if Gesmew.user_class
       has_many   :inspectors, -> {uniq}, class_name: Gesmew.user_class.to_s, :through => :inspection_users, :source => :user
     else
@@ -67,7 +69,7 @@ module Gesmew
     def initial_assessment(user_id)
       user = gesmew_user(user_id)
       if user.is_part_of_inspection?(self.number)
-        get_rubric_association.assess({assessor:user, artifact:self},true)
+        get_rubric_association.assess(assessor:user, artifact:self)
       end
     end
 
@@ -84,7 +86,7 @@ module Gesmew
     end
 
     def get_rubric_association
-      scope.rubric.rubric_associations.where(association_id:self.id).first
+      rubric.rubric_associations.where(association_id:self.id).first
     end
 
     private
